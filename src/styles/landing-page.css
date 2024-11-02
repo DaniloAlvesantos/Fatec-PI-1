@@ -1,0 +1,191 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+:root {
+  /* Colors */
+  --fatec-red-400: #d32719;
+  --fatec-red-500: #b20000;
+  --fatec-blue-500: #005c6d;
+  --fatec-lightblue-500: #00c1cf;
+  --fatec-red-700: #7e0000;
+  --fatec-blue-700: #004854;
+  --fatec-lightblue-600: #00d8e8;
+  --fatec-matte-red-400: #f95b4d;
+  --fatec-matte-red-500: #ff4c4d;
+  --fatec-matte-blue-500: #4c7eff;
+  --fatec-matte-purple-500: #8a29e6;
+  --fatec-white-500: #f7f7f2;
+  --fatec-dark-500: #0d0d0d;
+  --fatec-gray-500: #666666;
+  --fatec-gray-300: #dadada;
+  /*  Media Query */
+  --sm: 640px;
+  --md: 768px;
+  --lg: 1024px;
+  --xl: 1280px;
+  --2xl: 1536px;
+  /* Font Sizes */
+  --text-xs-font-size: 0.75rem;
+  --text-sm-font-size: 0.875rem;
+  --text-base-font-size: 1rem;
+  --text-lg-font-size: 1.125rem;
+  --text-xl-font-size: 1.25rem;
+  --text-2xl-font-size: 1.5rem;
+  /* Line Heights */
+  --text-xs-line-height: 1rem;
+  --text-sm-line-height: 1.25rem;
+  --text-base-line-height: 1.5rem;
+  --text-lg-line-height: 1.75rem;
+  --text-xl-line-height: 1.75rem;
+}
+
+main {
+  background: linear-gradient(
+      rgba(000, 000, 000, 0.8),
+      rgba(001, 001, 001, 0.8)
+    ),
+    url("../public/fatec-background.png");
+  background-size: cover;
+
+  width: 100%;
+  height: 100vh;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+nav {
+  width: 100%;
+  padding: 1rem;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-fatec {
+  width: auto;
+  height: 5rem;
+
+  object-fit: contain;
+}
+
+.button-primary {
+  background: var(--fatec-red-500);
+  color: var(--fatec-white-500);
+
+  padding: 0.95rem 1.5rem;
+
+  border: 0;
+  border-radius: 8px;
+
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: background ease 400ms;
+}
+
+.button-primary:hover {
+  background: var(--fatec-red-400);
+}
+
+.card-glass {
+  display: flex;
+  flex-direction: column;
+
+  background: rgba(247, 247, 242, 0.32);
+
+  backdrop-filter: blur(3px);
+
+  border-radius: 12px;
+  border: solid 1px var(--fatec-white-500);
+
+  width: 17rem;
+
+  padding: 1rem;
+}
+
+.card-glass div {
+  gap: 1rem;
+}
+
+.card-glass div,
+span {
+  display: inherit;
+  flex-direction: inherit;
+  margin: 0 auto;
+}
+
+.card-glass a {
+  color: var(--fatec-red-500);
+  font-family: "Roboto", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin: 0.5rem 0 0 0.5rem;
+  transition: 400ms ease;
+}
+
+.card-glass a:hover {
+  color: var(--fatec-red-400);
+}
+
+.card-glass input[type="password"] {
+  letter-spacing: 0.2rem;
+}
+
+.card-glass input[type="password"]::placeholder {
+  letter-spacing: initial;
+}
+
+@media (min-width: 760px) {
+  .card-glass {
+    width: 25rem;
+    padding: 2rem;
+  }
+
+  .card-glass input {
+    width: 18rem;
+  }
+
+  label {
+    margin-left: 0;
+    font-size: var(--text-xl-font-size);
+    line-height: var(--text-xl-line-height);
+  }
+}
+
+label {
+  font-family: "Roboto", sans-serif;
+  font-size: var(--text-lg-font-size);
+  line-height: var(--text-lg-line-height);
+
+  margin-left: 0.5rem;
+}
+
+.container-relative {
+    position: relative;
+}
+
+.eye {
+  width: 1.8rem;
+  height: 1.8rem;
+  object-fit: contain;
+
+  position: absolute;
+  bottom: 1.8rem;
+  right: .8rem;
+}
+
+#error {
+  font-family: "Roboto", sans-serif;
+  color: var(--fatec-red-700);
+}
