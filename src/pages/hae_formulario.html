@@ -7,128 +7,167 @@
     <link rel="stylesheet" href="../styles/components.css" />
     <link rel="stylesheet" href="../styles/formulario.css" />
     <link rel="stylesheet" href="../styles/global.css" />
+    <script src="../scripts/form-inscricao.js"></script>
   </head>
   <body>
-    <form>
-      <span class="">
+    <form onsubmit="handleSubmit(event)" id="form-subscription">
+      <span class="checkfield">
         <label for="outras-fatecs">Possuiu aulas em outras Fatecs?</label>
-        <input
-          class="input-secondary"
-          type="checkbox"
-          id="outras-fatecs"
-          name="outras-fatecs"
-        />
+        <input type="checkbox" id="outras-fatecs" name="outras-fatecs" />
       </span>
 
-      <span class="form-field">
-        <label for="quantidade-haes">Quantidade de HAEs</label>
+      <span class="form-field-line">
         <input
-          class="input-secondary"
+          class="input-primary"
           type="number"
           id="quantidade-haes"
           name="quantidade-haes"
+          max="10"
+          value="0"
         />
+        <label for="quantidade-haes">Quantidade de HAEs</label>
       </span>
 
-      <span class="form-field">
+      <span class="form-field-column">
         <label for="titulo-projeto">Título do Projeto</label>
         <input
-          class="input-secondary"
+          class="input-primary"
           type="text"
           id="titulo-projeto"
           name="titulo-projeto"
+          placeholder="Nome do seu projeto"
         />
       </span>
 
-      <span class="form-field">
+      <span class="form-field-column">
         <label for="data-inicio">Data de Início</label>
         <input
-          class="input-secondary"
+          class="input-primary"
           type="date"
           id="data-inicio"
           name="data-inicio"
         />
       </span>
 
-      <span class="form-field"
+      <span class="form-field-column"
         ><label for="data-finalizacao">Data de Finalização</label>
         <input
-          class="input-secondary"
+          class="input-primary"
           type="date"
           id="data-finalizacao"
           name="data-finalizacao"
       /></span>
 
-      <span class="form-field"
-        ><label for="dias-execucao">Dias de Execução</label>
-        <input
-          class="input-secondary"
-          type="date"
-          id="dias-execucao"
-          name="dias-execucao"
-      /></span>
-
-      <span class="form-field">
-        <label for="metas">Metas</label>
-        <input class="input-secondary" type="text" id="metas" name="metas" />
+      <span class="form-field-column"
+        ><label>Dias de Execução</label>
+        <p class="error"></p>
+        <div id="container-inputs" class="form-field-column">
+          <input
+            class="input-primary"
+            type="text"
+            id="dia-execucao1"
+            name="dia-execucao"
+            autocomplete="off"
+            placeholder="Segunda, Noite, 17-19"
+            ondblclick="removeInput(this)"
+            onblur="verifyExecDay(this)"
+          />
+        </div>
+        <button
+          class="button-primary"
+          style="
+            --button-color: var(--fatec-matte-red-500);
+            --button-color-hover: var(--fatec-matte-red-400);
+            padding: 0.5rem 1.5rem;
+          "
+          type="button"
+          id="addInputButton"
+          onclick="addInput()"
+        >
+          +
+        </button>
+        <p class="warn">Duplo no campo click para pagar</p>
       </span>
 
-      <span class="form-field"
+      <span class="form-field-column">
+        <label for="metas">Metas</label>
+        <textarea
+        oninput="autoSize(this)"
+          class="textarea-primary"
+          type="text"
+          id="metas"
+          name="metas"
+          placeholder="Diga suas metas"
+        ></textarea>
+      </span>
+
+      <span class="form-field-column"
         ><label for="objetivos">Objetivos</label>
-        <input
-          class="input-secondary"
+        <textarea
+        oninput="autoSize(this)"
+          class="textarea-primary"
           type="text"
           id="objetivos"
           name="objetivos"
-        />
+          placeholder="Diga seus objetivos"
+        ></textarea>
       </span>
 
-      <span class="form-field"
+      <span class="form-field-column"
         ><label for="justificativa">Justificativa</label>
-        <input
-          class="input-secondary"
+        <textarea
+        oninput="autoSize(this)"
+          class="textarea-primary"
           type="text"
           id="justificativa"
           name="justificativa"
-        />
+          placeholder="Justifique seu projeto"
+        ></textarea>
       </span>
 
-      <span class="form-field">
+      <span class="form-field-column">
         <label for="recursos">Recursos, Materiais e Humanos</label>
         <input
-          class="input-secondary"
+          class="input-primary"
           type="text"
           id="recursos"
           name="recursos"
+          placeholder="Sala, Mesa, Caderno..."
         />
       </span>
 
-      <span class="form-field">
+      <span class="form-field-column">
         <label for="resultado-esperado">Resultado Esperado</label>
-        <input
-          class="input-secondary"
+        <textarea
+        oninput="autoSize(this)"
+          class="textarea-primary"
           type="text"
           id="resultado-esperado"
           name="resultado-esperado"
-        />
+          placeholder="Expectativas de resultado"
+        ></textarea>
       </span>
 
-      <span class="form-field">
+      <span class="form-field-column">
         <label for="metodologia">Metodologia</label>
-        <input
-          class="input-secondary"
+        <textarea
+        oninput="autoSize(this)"
+          class="textarea-primary"
           type="text"
           id="metodologia"
           name="metodologia"
-        />
+          placeholder="Medoto de realização"
+        ></textarea>
       </span>
 
-      <span class="form-field">
+      <span class="form-field-column">
         <label for="cronograma">Cronograma das Atividades</label>
         <textarea
-          class="input-txtarea-secondary"
+        oninput="autoSize(this)"
+          class="textarea-primary"
           id="cronograma"
           name="cronograma"
+          placeholder="Agosto: Apresentação..."
         ></textarea>
       </span>
 

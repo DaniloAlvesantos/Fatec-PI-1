@@ -1,43 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
-
-:root {
-  /* Colors */
-  --fatec-red-400: #d32719;
-  --fatec-red-500: #b20000;
-  --fatec-blue-500: #005c6d;
-  --fatec-lightblue-500: #00c1cf;
-  --fatec-red-700: #7e0000;
-  --fatec-blue-700: #004854;
-  --fatec-lightblue-600: #00d8e8;
-  --fatec-matte-red-400: #f95b4d;
-  --fatec-matte-red-500: #ff4c4d;
-  --fatec-matte-blue-500: #4c7eff;
-  --fatec-matte-purple-500: #8a29e6;
-  --fatec-white-500: #f7f7f2;
-  --fatec-dark-500: #0d0d0d;
-  --fatec-gray-500: #666666;
-  --fatec-gray-300: #dadada;
-  /*  Media Query */
-  --sm: 640px;
-  --md: 768px;
-  --lg: 1024px;
-  --xl: 1280px;
-  --2xl: 1536px;
-  /* Font Sizes */
-  --text-xs-font-size: 0.75rem;
-  --text-sm-font-size: 0.875rem;
-  --text-base-font-size: 1rem;
-  --text-lg-font-size: 1.125rem;
-  --text-xl-font-size: 1.25rem;
-  --text-2xl-font-size: 1.5rem;
-  /* Line Heights */
-  --text-xs-line-height: 1rem;
-  --text-sm-line-height: 1.25rem;
-  --text-base-line-height: 1.5rem;
-  --text-lg-line-height: 1.75rem;
-  --text-xl-line-height: 1.75rem;
-}
-
 .button-primary {
   background: var(--button-color);
   color: var(--fatec-white-500);
@@ -57,6 +17,11 @@
 
 .button-primary:hover {
   background: var(--button-color-hover);
+}
+
+.button-primary:disabled {
+  pointer-events: none;
+  background: #cccccc;
 }
 
 .button-secondary {
@@ -99,13 +64,39 @@
   font-family: "Roboto", sans-serif;
 }
 
-.input-txtarea-secondary {
+.input-primary {
+  background: none;
+
+  border-radius: 10px;
+  border: solid var(--fatec-red-500) 0.153rem;
+
+  padding: 0.5rem;
+  color: var(--fatec-dark-500);
+
+  font-family: "Roboto", sans-serif;
+  font-size: var(--text-base-font-size);
+  line-height: var(--text-base-line-height);
+}
+
+.input-primary::placeholder {
+  color: var(--fatec-dark-500);
+  font-family: "Roboto", sans-serif;
+}
+
+.textarea-primary {
   background: transparent;
-  padding: .5rem;
+  padding: 0.5rem;
   border: 2px solid var(--fatec-red-500);
   border-radius: 12px;
   font-size: 1rem;
   line-height: var(--text-base-line-height);
+  height: auto;
   resize: none;
   outline: none;
+  overflow: hidden;
+}
+
+.textarea-primary::placeholder {
+  color: var(--fatec-dark-500);
+  font-family: "Roboto", sans-serif;
 }
