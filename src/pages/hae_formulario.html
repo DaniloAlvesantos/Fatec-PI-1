@@ -10,177 +10,226 @@
     <script src="../scripts/form-inscricao.js"></script>
   </head>
   <body>
-    <form onsubmit="handleSubmit(event)" id="form-subscription">
-      <span class="checkfield">
-        <label for="outras-fatecs">Possuiu aulas em outras Fatecs?</label>
-        <input type="checkbox" id="outras-fatecs" name="outras-fatecs" />
-      </span>
+    <header class="header">
+      <div class="user">
+        <img src="../public/icons/user.svg" alt="" />
+      </div>
+      <button
+        class="button-primary-outline"
+        style="--button-border: var(--fatec-red-500)"
+      >
+        Sair
+      </button>
+    </header>
+    <section id="hae-section">
+      <div id="hae-container">
+        <div>
+          <h1>Monitoramento de estágio</h1>
+          <p>Curso: DSM</p>
+        </div>
+        <div class="hae-container-header">
+          <span class="hae-container-header-info">
+            <img src="../public/icons/clock.svg" alt="" />
+            <p>2h semanais</p>
+          </span>
+          <span class="hae-container-header-info">
+            <img src="../public/icons/calendar-clock.svg" alt="" />
+            <p>20/10 - 24/12</p>
+          </span>
+        </div>
+      </div>
 
-      <span class="form-field-line">
-        <input
-          class="input-primary"
-          type="number"
-          id="quantidade-haes"
-          name="quantidade-haes"
-          max="10"
-          value="0"
-        />
-        <label for="quantidade-haes">Quantidade de HAEs</label>
-      </span>
+      <div id="about-container">
+        <h3>Sobre a vaga</h3>
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum. de acordo com o curriculo do curso
+          e com sua carga horaria...
+        </p>
+      </div>
+    </section>
+    <hr />
+    <section id="form-section">
+      <h2 class="form-title">Formulario de inscrição</h2>
+      <form onsubmit="handleSubmit(event)" id="form-subscription">
+        <span class="checkfield">
+          <input type="checkbox" id="outras-fatecs" name="outras-fatecs" />
+          <label for="outras-fatecs">Possui aulas em outras Fatecs?</label>
+        </span>
 
-      <span class="form-field-column">
-        <label for="titulo-projeto">Título do Projeto</label>
-        <input
-          class="input-primary"
-          type="text"
-          id="titulo-projeto"
-          name="titulo-projeto"
-          placeholder="Nome do seu projeto"
-        />
-      </span>
+        <span class="form-field-line">
+          <input
+            class="input-primary"
+            type="number"
+            id="quantidade-haes"
+            name="quantidade-haes"
+            max="10"
+            value="0"
+          />
+          <label for="quantidade-haes">Quantidade de HAEs</label>
+        </span>
 
-      <span class="form-field-column">
-        <label for="data-inicio">Data de Início</label>
-        <input
-          class="input-primary"
-          type="date"
-          id="data-inicio"
-          name="data-inicio"
-        />
-      </span>
-
-      <span class="form-field-column"
-        ><label for="data-finalizacao">Data de Finalização</label>
-        <input
-          class="input-primary"
-          type="date"
-          id="data-finalizacao"
-          name="data-finalizacao"
-      /></span>
-
-      <span class="form-field-column"
-        ><label>Dias de Execução</label>
-        <p class="error"></p>
-        <div id="container-inputs" class="form-field-column">
+        <span class="form-field-column">
+          <label for="titulo-projeto">Título do Projeto</label>
           <input
             class="input-primary"
             type="text"
-            id="dia-execucao1"
-            name="dia-execucao"
-            autocomplete="off"
-            placeholder="Segunda, Noite, 17-19"
-            ondblclick="removeInput(this)"
-            onblur="verifyExecDay(this)"
+            id="titulo-projeto"
+            name="titulo-projeto"
+            placeholder="Nome do seu projeto"
           />
-        </div>
+        </span>
+
+        <span class="form-field-column">
+          <label for="data-inicio">Data de Início</label>
+          <input
+            class="input-primary"
+            type="date"
+            id="data-inicio"
+            name="data-inicio"
+          />
+        </span>
+
+        <span class="form-field-column"
+          ><label for="data-finalizacao">Data de Finalização</label>
+          <input
+            class="input-primary"
+            type="date"
+            id="data-finalizacao"
+            name="data-finalizacao"
+        /></span>
+
+        <span class="form-field-column"
+          ><label>Dias de Execução</label>
+          <p class="error"></p>
+          <div id="container-inputs" class="form-field-column">
+            <input
+              class="input-primary"
+              type="text"
+              id="dia-execucao1"
+              name="dia-execucao"
+              autocomplete="off"
+              placeholder="Segunda, Noite, 17-19"
+              ondblclick="removeInput(this)"
+              onblur="verifyExecDay(this)"
+            />
+          </div>
+          <button
+            class="button-primary"
+            style="
+              --button-color: var(--fatec-matte-red-500);
+              --button-color-hover: var(--fatec-matte-red-400);
+              padding: 0.5rem 1.5rem;
+            "
+            type="button"
+            id="addInputButton"
+            onclick="addInput()"
+          >
+            +
+          </button>
+          <p class="warn">Duplo no campo click para pagar</p>
+        </span>
+
+        <span class="form-field-column">
+          <label for="metas">Metas</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            type="text"
+            id="metas"
+            name="metas"
+            placeholder="Diga suas metas"
+          ></textarea>
+        </span>
+
+        <span class="form-field-column"
+          ><label for="objetivos">Objetivos</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            type="text"
+            id="objetivos"
+            name="objetivos"
+            placeholder="Diga seus objetivos"
+          ></textarea>
+        </span>
+
+        <span class="form-field-column"
+          ><label for="justificativa">Justificativa</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            type="text"
+            id="justificativa"
+            name="justificativa"
+            placeholder="Justifique seu projeto"
+          ></textarea>
+        </span>
+
+        <span class="form-field-column">
+          <label for="recursos">Recursos, Materiais e Humanos</label>
+          <input
+            class="input-primary"
+            type="text"
+            id="recursos"
+            name="recursos"
+            placeholder="Sala, Mesa, Caderno..."
+          />
+        </span>
+
+        <span class="form-field-column">
+          <label for="resultado-esperado">Resultado Esperado</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            type="text"
+            id="resultado-esperado"
+            name="resultado-esperado"
+            placeholder="Expectativas de resultado"
+          ></textarea>
+        </span>
+
+        <span class="form-field-column">
+          <label for="metodologia">Metodologia</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            type="text"
+            id="metodologia"
+            name="metodologia"
+            placeholder="Medoto de realização"
+          ></textarea>
+        </span>
+
+        <span class="form-field-column">
+          <label for="cronograma">Cronograma das Atividades</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            id="cronograma"
+            name="cronograma"
+            placeholder="Agosto: Apresentação..."
+          ></textarea>
+        </span>
+
         <button
+          type="submit"
           class="button-primary"
           style="
-            --button-color: var(--fatec-matte-red-500);
-            --button-color-hover: var(--fatec-matte-red-400);
-            padding: 0.5rem 1.5rem;
+            --button-color: var(--fatec-red-700);
+            --button-color-hover: var(--fatec-red-500);
           "
-          type="button"
-          id="addInputButton"
-          onclick="addInput()"
         >
-          +
+          Enviar
         </button>
-        <p class="warn">Duplo no campo click para pagar</p>
-      </span>
-
-      <span class="form-field-column">
-        <label for="metas">Metas</label>
-        <textarea
-        oninput="autoSize(this)"
-          class="textarea-primary"
-          type="text"
-          id="metas"
-          name="metas"
-          placeholder="Diga suas metas"
-        ></textarea>
-      </span>
-
-      <span class="form-field-column"
-        ><label for="objetivos">Objetivos</label>
-        <textarea
-        oninput="autoSize(this)"
-          class="textarea-primary"
-          type="text"
-          id="objetivos"
-          name="objetivos"
-          placeholder="Diga seus objetivos"
-        ></textarea>
-      </span>
-
-      <span class="form-field-column"
-        ><label for="justificativa">Justificativa</label>
-        <textarea
-        oninput="autoSize(this)"
-          class="textarea-primary"
-          type="text"
-          id="justificativa"
-          name="justificativa"
-          placeholder="Justifique seu projeto"
-        ></textarea>
-      </span>
-
-      <span class="form-field-column">
-        <label for="recursos">Recursos, Materiais e Humanos</label>
-        <input
-          class="input-primary"
-          type="text"
-          id="recursos"
-          name="recursos"
-          placeholder="Sala, Mesa, Caderno..."
-        />
-      </span>
-
-      <span class="form-field-column">
-        <label for="resultado-esperado">Resultado Esperado</label>
-        <textarea
-        oninput="autoSize(this)"
-          class="textarea-primary"
-          type="text"
-          id="resultado-esperado"
-          name="resultado-esperado"
-          placeholder="Expectativas de resultado"
-        ></textarea>
-      </span>
-
-      <span class="form-field-column">
-        <label for="metodologia">Metodologia</label>
-        <textarea
-        oninput="autoSize(this)"
-          class="textarea-primary"
-          type="text"
-          id="metodologia"
-          name="metodologia"
-          placeholder="Medoto de realização"
-        ></textarea>
-      </span>
-
-      <span class="form-field-column">
-        <label for="cronograma">Cronograma das Atividades</label>
-        <textarea
-        oninput="autoSize(this)"
-          class="textarea-primary"
-          id="cronograma"
-          name="cronograma"
-          placeholder="Agosto: Apresentação..."
-        ></textarea>
-      </span>
-
-      <button
-        type="submit"
-        class="button-primary"
-        style="
-          --button-color: var(--fatec-red-700);
-          --button-color-hover: var(--fatec-red-500);
-        "
-      >
-        Enviar
-      </button>
-    </form>
+      </form>
+    </section>
   </body>
 </html>

@@ -16,9 +16,17 @@ function addInput() {
 
 function removeInput(input) {
   const container = document.querySelector("#container-inputs");
+  const button = document.querySelector("#addInputButton");
 
   if (input.getAttribute("id") === "dia-execucao1") {
     return;
+  }
+
+  if (
+    container.querySelectorAll("input").length < 4 &&
+    button.hasAttribute("disabled") === true
+  ) {
+    button.removeAttribute("disabled");
   }
 
   container.removeChild(input);
