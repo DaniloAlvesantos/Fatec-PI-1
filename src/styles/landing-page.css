@@ -132,7 +132,7 @@ label {
 }
 
 .container-relative {
-    position: relative;
+  position: relative;
 }
 
 .eye {
@@ -142,7 +142,7 @@ label {
 
   position: absolute;
   bottom: 1.8rem;
-  right: .8rem;
+  right: 0.8rem;
 }
 
 #error {

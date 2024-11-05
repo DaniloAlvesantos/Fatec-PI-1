@@ -1,0 +1,78 @@
+section {
+  padding: 2rem;
+}
+
+.glass-search {
+  width: 1.8rem;
+  height: 1.8rem;
+
+  position: relative;
+  top: 0.5rem;
+  right: 2.6rem;
+
+  cursor: pointer;
+}
+
+.card-hae {
+  display: flex;
+  flex-direction: column;
+
+  width: 22rem;
+
+  gap: 1rem;
+
+  box-shadow: 0 10px 32px 2px #00000035;
+  border-radius: 10px;
+
+  padding: 1rem;
+  font-family: "Roboto", sans-serif;
+}
+
+.card-hae-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    font-size: var(--text-sm-font-size);
+    font-weight: 600;
+    line-height: var(--text-sm-line-height);
+
+    background: #FF4C4D50;
+    color: var(--fatec-red-500);
+    width: 3rem;
+}
+
+.card-hae-title {
+    display: inherit;
+    flex-direction: column;
+    gap: .2rem;
+}
+
+.card-hae-info {
+    font-weight: 500;
+}
+
+.card-hae-date {
+    display: flex;
+    align-items: center;
+    
+    gap: .5rem;
+
+    font-size: var(--text-sm-font-size);
+    font-weight: 500;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    padding: 2rem;
+}
+
+main a, button {
+    width: 100%;
+}
