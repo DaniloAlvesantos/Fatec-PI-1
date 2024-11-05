@@ -149,3 +149,7 @@ form label {
   text-align: center;
   font-family: "Roboto", sans-serif;
 }
+
+form .button-primary {
+  width: 15rem;
+}

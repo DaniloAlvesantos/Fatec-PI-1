@@ -1,0 +1,31 @@
+main {
+  width: 100%;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  main {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 2rem;
+  }
+  .card-primary {
+    width: 20rem;
+  }
+}
+
+.card-primary {
+  gap: 1rem;
+}
+
+.card-primary span > p {
+  color: var(--fatec-gray-500);
+  font-family: "Roboto Slab";
+  font-size: var(--text-sm-font-size);
+  line-height: var(--text-sm-line-height);
+}
+
+.card-primary button {
+  width: 100%;
+}

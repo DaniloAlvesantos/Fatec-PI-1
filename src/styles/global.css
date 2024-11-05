@@ -9,7 +9,7 @@
   --fatec-red-700: #7e0000;
   --fatec-blue-700: #004854;
   --fatec-lightblue-600: #00d8e8;
-  --fatec-matte-red-400: #f95b4d;
+  --fatec-matte-red-400: #ff8378;
   --fatec-matte-red-500: #ff4c4d;
   --fatec-matte-blue-500: #4c7eff;
   --fatec-matte-purple-500: #8a29e6;
@@ -47,6 +47,12 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility !important;
 }
 
 input {

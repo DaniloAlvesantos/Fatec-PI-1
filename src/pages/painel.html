@@ -1,11 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Painel | HAE Fatec Itapira</title>
-</head>
-<body>
-    
-</body>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/components.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="user-container">
+        <div class="user">
+          <img src="../public/icons/user.svg" alt="" />
+        </div>
+        <p>Professor Júnior</p>
+      </div>
+      <a href="../pages/painel.html">
+        <button
+          class="button-primary-outline"
+          style="--button-border: var(--fatec-red-500)"
+        >
+          Sair
+        </button>
+      </a>
+    </header>
+
+    <section>
+      <main>
+        <div class="card-primary">
+          <h2>Inscrições</h2>
+          <p>Visualize HAEs inscritas</p>
+        </div>
+
+        <div class="card-primary">
+            <h2>Relátorios</h2>
+            <p>Visualize relátorios enviados</p>
+          </div>
+
+        <div class="card-primary">
+            <h2>Atualize suas informações</h2>
+            <p>Altere suas informações</p>
+          </div>
+      </main>
+    </section>
+  </body>
 </html>
