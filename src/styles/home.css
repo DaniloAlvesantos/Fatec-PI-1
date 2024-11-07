@@ -8,10 +8,8 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    flex-direction: row !important;
     padding: 2rem;
-  }
-  .card-primary {
-    width: 20rem;
   }
 }
 
@@ -28,4 +26,47 @@ main {
 
 .card-primary button {
   width: 100%;
+}
+
+.cards-container > div {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));
+  padding: 2rem;
+}
+
+.cards-container a {
+  width: 100%;
+  color: var(--fatec-dark-500);
+}
+
+.cards-container .card-secondary {
+  transition: all ease 300ms;
+}
+
+@media(min-width:500px) {
+  main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 2rem;
+  }
+
+  .card-primary {
+    width: 20rem;
+  }
+
+  .cards-container a {
+    width: auto;
+  }
+
+  .cards-container .card-secondary {
+    width: 20rem;
+  } 
+}
+
+.cards-container .card-secondary:hover {
+  scale: 1.1;
+  box-shadow: 1px 10px 5px 1px #00000035;
 }
