@@ -7,31 +7,17 @@
     <link rel="stylesheet" href="../styles/global.css" />
     <link rel="stylesheet" href="../styles/components.css" />
     <link rel="stylesheet" href="../styles/home.css" />
+    <script src="../components/state.js"></script>
   </head>
   <body>
-    <header class="header">
-      <div class="user-container">
-        <div class="user">
-          <img src="../public/icons/user.svg" alt="" />
-        </div>
-        <p>Professor Júnior</p>
-      </div>
-      <a href="#">
-        <button
-          class="button-primary-outline"
-          style="--button-border: var(--fatec-red-500)"
-        >
-          Sair
-        </button>
-      </a>
-    </header>
-
+    <header-fatec data-button-title="Sair" data-button-href="#"></header-fatec>
+  
     <section>
       <main>
         <div class="card-primary">
           <div
             class="card-primary-banner"
-            style="--gradient-1: #005c6d; --gradient-2: #004854"
+            style="--gradient-1: #111111; --gradient-2: #333333"
           >
             <img src="../public/icons/home.svg" alt="" />
           </div>
@@ -45,8 +31,8 @@
             <button
               class="button-secondary"
               style="
-                --button-color: var(--fatec-blue-500);
-                --button-color-hover: var(--fatec-blue-700);
+                --button-color: #222222;
+                --button-color-hover: #333333;
               "
             >
               Visualizar
@@ -57,7 +43,7 @@
         <div class="card-primary">
           <div
             class="card-primary-banner"
-            style="--gradient-1: #db3746; --gradient-2: #ff4c4d"
+            style="--gradient-1: var(--fatec-red-700); --gradient-2: var(--fatec-red-500)"
           >
             <img src="../public/icons/job.svg" alt="" />
           </div>
@@ -71,8 +57,8 @@
             <button
               class="button-secondary"
               style="
-                --button-color: var(--fatec-matte-red-500);
-                --button-color-hover: var(--fatec-matte-red-400);
+                --button-color: var(--fatec-red-500);
+                --button-color-hover: var(--fatec-red-400);
               "
             >
               Visualizar
@@ -89,22 +75,24 @@
               <p>Visualize HAEs inscritas</p>
             </div>
           </a>
-  
+
           <a href="./my/relatorios.html">
             <div class="card-secondary">
               <h2>Relátorios</h2>
-                <p>Visualize relátorios enviados</p>
-              </div>
+              <p>Visualize relátorios enviados</p>
+            </div>
           </a>
-  
+
           <a href="">
             <div class="card-secondary">
               <h2>Atualize suas informações</h2>
               <p>Altere suas informações</p>
             </div>
-          </div>
           </a>
+        </div>
       </div>
     </section>
+    
+    <script src="../components/header.js"></script>
   </body>
 </html>

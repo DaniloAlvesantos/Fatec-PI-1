@@ -19,6 +19,9 @@ function handleSubmit(event) {
   }
 
   errorField.innerHTML = "";
-
+  
+  window.state.user.email = inputs[0].value;
+  window.saveState();
+  
   window.location.href = location.href.replace("index.html", "pages/home.html");
 }

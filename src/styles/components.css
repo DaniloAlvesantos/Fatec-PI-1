@@ -1,32 +1,3 @@
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 1rem;
-}
-
-.user-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-}
-
-.user {
-  padding: 0.5rem;
-  border-radius: 100%;
-  box-shadow: 0 4px 4px 2px #00000035;
-}
-
-@media (min-width: 768px) {
-  .user {
-    padding: 0.8rem;
-  }
-}
-
 .button-primary {
   background: var(--button-color);
   color: var(--fatec-white-500);

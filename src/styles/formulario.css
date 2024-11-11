@@ -19,13 +19,13 @@
 .hae-container-header {
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .hae-container-header-info {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
 
   font-weight: 500;
 }
@@ -49,7 +49,7 @@
 
 hr {
   width: 97%;
-  border-top: 1px solid #DADADA;
+  border-top: 1px solid #dadada;
   border-radius: 5px;
 
   margin: 0 auto;
@@ -76,9 +76,19 @@ form {
   gap: 1rem;
 }
 
-@media (min-width: 768px) {
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (min-width: 770px) {
   form {
-    align-items: start;
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
   }
 
   form input[type="text"],
@@ -90,8 +100,8 @@ form {
   form input[type="checkbox"] {
     width: 2rem;
     height: 2rem;
+    margin-left: 0.6rem;
   }
-  
 }
 
 form input[type="checkbox"] {
@@ -132,13 +142,13 @@ form label {
 }
 
 .form-field-column {
-  display: inherit;
-  flex-direction: inherit;
+  display: flex;
+  flex-direction: column;
   gap: 0.2rem;
 }
 
 .form-field-line {
-  display: inherit;
+  display: flex;
   align-items: center;
   gap: 0.2rem;
 }
@@ -148,6 +158,7 @@ form label {
   line-height: var(--text-xs-line-height);
   text-align: center;
   font-family: "Roboto", sans-serif;
+  width: 15rem;
 }
 
 form .button-primary {

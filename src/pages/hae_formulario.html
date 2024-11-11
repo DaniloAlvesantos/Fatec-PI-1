@@ -7,24 +7,11 @@
     <link rel="stylesheet" href="../styles/components.css" />
     <link rel="stylesheet" href="../styles/formulario.css" />
     <link rel="stylesheet" href="../styles/global.css" />
+    <script src="../components/state.js"></script>
   </head>
   <body>
-    <header class="header">
-      <div class="user-container">
-        <div class="user">
-          <img src="../public/icons/user.svg" alt="" />
-        </div>
-        <p>Professor Júnior</p>
-      </div>
-      <a href="../pages/haes.html">
-        <button
-          class="button-primary-outline"
-          style="--button-border: var(--fatec-red-500)"
-        >
-          Voltar
-        </button>
-      </a>
-    </header>
+    <header-fatec data-button-title="Voltar" data-button-href="../pages/haes.html"></header-fatec>
+    
     <section id="hae-section">
       <div id="hae-container">
         <div>
@@ -63,97 +50,100 @@
     <section id="form-section">
       <h2 class="form-title">Formulario de inscrição</h2>
       <form onsubmit="handleSubmit(event)" id="form-subscription">
-        <span class="checkfield">
-          <input type="checkbox" id="outras-fatecs" name="outras-fatecs" />
-          <label for="outras-fatecs">Possui aulas em outras Fatecs?</label>
-        </span>
-
-        <span class="form-field-line">
-          <input
-            class="input-primary"
-            type="number"
-            id="quantidade-haes"
-            name="quantidade-haes"
-            max="10"
-            value="0"
-          />
-          <label for="quantidade-haes">Quantidade de HAEs</label>
-        </span>
-
-        <span class="form-field-column">
-          <label for="titulo-projeto">Título do Projeto</label>
-          <input
-            class="input-primary"
-            type="text"
-            id="titulo-projeto"
-            name="titulo-projeto"
-            placeholder="Nome do seu projeto"
-          />
-        </span>
-
-        <span class="form-field-column">
-          <label for="data-inicio">Data de Início</label>
-          <input
-            class="input-primary"
-            type="date"
-            id="data-inicio"
-            name="data-inicio"
-          />
-        </span>
-
-        <span class="form-field-column"
-          ><label for="data-finalizacao">Data de Finalização</label>
-          <input
-            class="input-primary"
-            type="date"
-            id="data-finalizacao"
-            name="data-finalizacao"
-        /></span>
-
-        <span class="form-field-column"
-          ><label>Dias de Execução</label>
-          <p class="error"></p>
-          <div id="container-inputs" class="form-field-column">
+        <div class="form-container">
+          <span class="checkfield">
+            <input type="checkbox" id="outras-fatecs" name="outras-fatecs" />
+            <label for="outras-fatecs">Possui aulas em outras Fatecs?</label>
+          </span>
+  
+          <span class="form-field-line">
+            <input
+              class="input-primary"
+              type="number"
+              id="quantidade-haes"
+              name="quantidade-haes"
+              max="10"
+              value="0"
+            />
+            <label for="quantidade-haes">Quantidade de HAEs</label>
+          </span>
+  
+          <span class="form-field-column">
+            <label for="titulo-projeto">Título do Projeto</label>
             <input
               class="input-primary"
               type="text"
-              id="dia-execucao1"
-              name="dia-execucao"
-              autocomplete="off"
-              placeholder="Segunda, Noite, 17-19"
-              ondblclick="removeInput(this)"
-              onblur="verifyExecDay(this)"
+              id="titulo-projeto"
+              name="titulo-projeto"
+              placeholder="Nome do seu projeto"
             />
-          </div>
-          <button
-            class="button-primary"
-            style="
-              --button-color: var(--fatec-matte-red-500);
-              --button-color-hover: var(--fatec-matte-red-400);
-              padding: 0.5rem 1.5rem;
-            "
-            type="button"
-            id="addInputButton"
-            onclick="addInput()"
-          >
-            +
-          </button>
-          <p class="warn">Duplo no campo click para pagar</p>
-        </span>
+          </span>
+  
+          <span class="form-field-column">
+            <label for="data-inicio">Data de Início</label>
+            <input
+              class="input-primary"
+              type="date"
+              id="data-inicio"
+              name="data-inicio"
+            />
+          </span>
+  
+          <span class="form-field-column"
+            ><label for="data-finalizacao">Data de Finalização</label>
+            <input
+              class="input-primary"
+              type="date"
+              id="data-finalizacao"
+              name="data-finalizacao"
+          /></span>
+  
+          <span class="form-field-column"
+            ><label>Dias de Execução</label>
+            <p class="error"></p>
+            <div id="container-inputs" class="form-field-column">
+              <input
+                class="input-primary"
+                type="text"
+                id="dia-execucao1"
+                name="dia-execucao"
+                autocomplete="off"
+                placeholder="Segunda, Noite, 17-19"
+                ondblclick="removeInput(this)"
+                onblur="verifyExecDay(this)"
+              />
+            </div>
+            <button
+              class="button-primary"
+              style="
+                --button-color: var(--fatec-red-700);
+                --button-color-hover: var(--fatec-red-500);
+                padding: 0.5rem 1.5rem;
+              "
+              type="button"
+              id="addInputButton"
+              onclick="addInput()"
+            >
+              +
+            </button>
+            <p class="warn">Duplo click no campo para pagar</p>
+          </span>
+  
+          <span class="form-field-column">
+            <label for="metas">Metas</label>
+            <textarea
+              oninput="autoSize(this)"
+              class="textarea-primary"
+              type="text"
+              id="metas"
+              name="metas"
+              placeholder="Diga suas metas"
+            ></textarea>
+          </span>
+        </div>
 
-        <span class="form-field-column">
-          <label for="metas">Metas</label>
-          <textarea
-            oninput="autoSize(this)"
-            class="textarea-primary"
-            type="text"
-            id="metas"
-            name="metas"
-            placeholder="Diga suas metas"
-          ></textarea>
-        </span>
-
-        <span class="form-field-column"
+        <div class="form-container">
+          <span class="form-field-column"
           ><label for="objetivos">Objetivos</label>
           <textarea
             oninput="autoSize(this)"
@@ -222,13 +212,14 @@
             placeholder="Agosto: Apresentação..."
           ></textarea>
         </span>
-
+        </div>
         <button
           type="submit"
+          id="submitButton"
           class="button-primary"
           style="
-            --button-color: var(--fatec-red-700);
-            --button-color-hover: var(--fatec-red-500);
+            --button-color: var(--fatec-red-500);
+            --button-color-hover: var(--fatec-red-400);
           "
         >
           Enviar
@@ -236,6 +227,7 @@
       </form>
     </section>
     
+    <script src="../components/header.js"></script>
     <script src="../scripts/form-inscricao.js"></script>
   </body>
 </html>
