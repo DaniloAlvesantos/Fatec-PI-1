@@ -56,6 +56,7 @@ class HeaderFatec extends HTMLElement {
 
   logOut() {
     window.deleteState();
+    window.location.href = location.href.replace("pages/home.html", "index.html");
   }
 
   styles() {
