@@ -116,10 +116,15 @@
   resize: none;
   outline: none;
   overflow: hidden;
+
+  color: var(--fatec-dark-500);
+  font-family: "Roboto", sans-serif;
+  line-height: var(--text-sm-line-height);
+  font-size: var(--text-sm-font-size);
 }
 
 .textarea-primary::placeholder {
-  color: var(--fatec-dark-500);
+  color: var(--fatec-gray-500);
   font-family: "Roboto", sans-serif;
 }
 

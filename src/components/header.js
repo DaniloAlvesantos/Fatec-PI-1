@@ -25,11 +25,17 @@ class HeaderFatec extends HTMLElement {
 
     const cargo = window.state.user.cargo;
     const name = window.state.user.name;
+    const path = Array.from(
+      { length: window.location.pathname.split("/").slice(3).length },
+      () => "../"
+    );
+
+    const src = path.join("") + "public/icons/user.svg";
 
     header.classList = "header";
     userContainer.classList = "user-container";
     imageContainer.classList = "user";
-    image.src = "../public/icons/user.svg";
+    image.src = src;
     image.alt = "user icon";
     userName.innerHTML = `${cargo} ${name}`;
 
@@ -56,7 +62,10 @@ class HeaderFatec extends HTMLElement {
 
   logOut() {
     window.deleteState();
-    window.location.href = location.href.replace("pages/home.html", "index.html");
+    window.location.href = location.href.replace(
+      "pages/home.html",
+      "index.html"
+    );
   }
 
   styles() {

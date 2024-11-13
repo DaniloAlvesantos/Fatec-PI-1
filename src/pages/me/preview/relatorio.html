@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario HAE | HAE Fatec Itapira</title>
+    <link rel="stylesheet" href="../styles/components.css" />
+    <link rel="stylesheet" href="../styles/formulario.css" />
+    <link rel="stylesheet" href="../styles/global.css" />
+    <script src="../components/state.js"></script>
+  </head>
+  <body>
+    <header-fatec data-button-title="Voltar" data-button-href="../pages/haes.html"></header-fatec>
+    
+    <section id="hae-section">
+      <div id="hae-container">
+        <div>
+          <h1>Monitoramento de estágio</h1>
+          <p>Curso: DSM</p>
+        </div>
+        <div class="hae-container-header">
+          <span class="hae-container-header-info">
+            <img src="../public/icons/clock.svg" alt="" />
+            <p>2h semanais</p>
+          </span>
+          <span class="hae-container-header-info">
+            <img src="../public/icons/calendar-clock.svg" alt="" />
+            <p>20/10 - 24/12</p>
+          </span>
+        </div>
+      </div>
+
+      <div id="about-container">
+        <h3>Sobre a vaga</h3>
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum. de acordo com o curriculo do curso
+          e com sua carga horaria...
+        </p>
+      </div>
+    </section>
+    <hr />
+    <section id="form-section">
+      <h2 class="form-title">Formulario de inscrição</h2>
+      <form onsubmit="handleSubmit(event)" id="form-subscription">
+        <div class="form-container">
+          <span class="checkfield">
+            <input type="checkbox" id="outras-fatecs" name="outras-fatecs" />
+            <label for="outras-fatecs">Possui aulas em outras Fatecs?</label>
+          </span>
+  
+          <span class="form-field-line">
+            <input
+              class="input-primary"
+              type="number"
+              id="quantidade-haes"
+              name="quantidade-haes"
+              max="10"
+              value="0"
+            />
+            <label for="quantidade-haes">Quantidade de HAEs</label>
+          </span>
+  
+          <span class="form-field-column">
+            <label for="titulo-projeto">Título do Projeto</label>
+            <input
+              class="input-primary"
+              type="text"
+              id="titulo-projeto"
+              name="titulo-projeto"
+              placeholder="Nome do seu projeto"
+            />
+          </span>
+  
+          <span class="form-field-column">
+            <label for="data-inicio">Data de Início</label>
+            <input
+              class="input-primary"
+              type="date"
+              id="data-inicio"
+              name="data-inicio"
+            />
+          </span>
+  
+          <span class="form-field-column"
+            ><label for="data-finalizacao">Data de Finalização</label>
+            <input
+              class="input-primary"
+              type="date"
+              id="data-finalizacao"
+              name="data-finalizacao"
+          /></span>
+  
+          <span class="form-field-column"
+            ><label>Dias de Execução</label>
+            <p class="error"></p>
+            <div id="container-inputs" class="form-field-column">
+              <input
+                class="input-primary"
+                type="text"
+                id="dia-execucao1"
+                name="dia-execucao"
+                autocomplete="off"
+                placeholder="Segunda, Noite, 17-19"
+                ondblclick="removeInput(this)"
+                onblur="verifyExecDay(this)"
+              />
+            </div>
+            <button
+              class="button-primary"
+              style="
+                --button-color: var(--fatec-red-700);
+                --button-color-hover: var(--fatec-red-500);
+                padding: 0.5rem 1.5rem;
+              "
+              type="button"
+              id="addInputButton"
+              onclick="addInput()"
+            >
+              +
+            </button>
+            <p class="warn">Duplo click no campo para pagar</p>
+          </span>
+  
+          <span class="form-field-column">
+            <label for="metas">Metas</label>
+            <textarea
+              oninput="autoSize(this)"
+              class="textarea-primary"
+              type="text"
+              id="metas"
+              name="metas"
+              placeholder="Diga suas metas"
+            ></textarea>
+          </span>
+        </div>
+
+        <div class="form-container">
+          <span class="form-field-column"
+          ><label for="objetivos">Objetivos</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            type="text"
+            id="objetivos"
+            name="objetivos"
+            placeholder="Diga seus objetivos"
+          ></textarea>
+        </span>
+
+        <span class="form-field-column"
+          ><label for="justificativa">Justificativa</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            type="text"
+            id="justificativa"
+            name="justificativa"
+            placeholder="Justifique seu projeto"
+          ></textarea>
+        </span>
+
+        <span class="form-field-column">
+          <label for="recursos">Recursos, Materiais e Humanos</label>
+          <input
+            class="input-primary"
+            type="text"
+            id="recursos"
+            name="recursos"
+            placeholder="Sala, Mesa, Caderno..."
+          />
+        </span>
+
+        <span class="form-field-column">
+          <label for="resultado-esperado">Resultado Esperado</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            type="text"
+            id="resultado-esperado"
+            name="resultado-esperado"
+            placeholder="Expectativas de resultado"
+          ></textarea>
+        </span>
+
+        <span class="form-field-column">
+          <label for="metodologia">Metodologia</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            type="text"
+            id="metodologia"
+            name="metodologia"
+            placeholder="Medoto de realização"
+          ></textarea>
+        </span>
+
+        <span class="form-field-column">
+          <label for="cronograma">Cronograma das Atividades</label>
+          <textarea
+            oninput="autoSize(this)"
+            class="textarea-primary"
+            id="cronograma"
+            name="cronograma"
+            placeholder="Agosto: Apresentação..."
+          ></textarea>
+        </span>
+        </div>
+      </form>
+    </section>
+    
+    <script src="../components/header.js"></script>
+    <script src="../scripts/form-inscricao.js"></script>
+  </body>
+</html>
