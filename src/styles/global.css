@@ -9,6 +9,10 @@
   --fatec-dark-500: #0d0d0d;
   --fatec-gray-500: #666666;
   --fatec-gray-300: #dadada;
+  --fatec-blue-500:#005C6D;
+  --fatec-blue-700:#004854;
+  --fatec-lightblue-500:#00C1CF;
+  --fatec-lightblue-600:#00D8E8;
   /*  Media Query */
   --sm: 640px;
   --md: 768px;

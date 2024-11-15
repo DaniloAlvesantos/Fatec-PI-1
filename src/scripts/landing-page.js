@@ -19,9 +19,12 @@ function handleSubmit(event) {
   }
 
   errorField.innerHTML = "";
-  
+
   window.state.user.email = inputs[0].value;
   window.saveState();
-  
-  window.location.href = location.href.replace("index.html", "pages/home.html");
+
+  window.location.href =
+    window.state.user.cargo.toLocaleLowerCase() !== "professor"
+      ? location.href.replace("index.html", "pages/admin/painel.admin.html")
+      : location.href.replace("index.html", "pages/home.html");
 }

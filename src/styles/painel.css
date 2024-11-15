@@ -1,0 +1,42 @@
+h1 {
+    font-family: "Roboto", sans-serif;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    padding: 2rem;
+}
+
+section .card-secondary {
+    width: 20rem;
+    gap: 1rem;
+}
+
+.card-secondary > span {
+    display: inherit;
+    flex-direction: column;
+    gap: .2rem;
+}
+
+.card-secondary span > p {
+    display: inherit;
+    align-items: center;
+    gap: .5rem;
+
+    font-size: var(--text-sm-font-size);
+    font-weight: bold;
+
+    line-height: var(--text-sm-line-height);
+}
+
+.card-secondary span > h5 {
+    color: var(--fatec-red-500);
+    font-size: var(--text-sm-font-size);
+    line-height: var(--text-sm-line-height);
+}

@@ -101,7 +101,7 @@
 }
 
 .input-primary::placeholder {
-  color: var(--fatec-dark-500);
+  color: var(--fatec-gray-500);
   font-family: "Roboto", sans-serif;
 }
 

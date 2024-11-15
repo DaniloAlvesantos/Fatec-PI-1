@@ -198,6 +198,24 @@ form .button-primary {
   color: var(--fatec-red-500);
 }
 
+.status-comment {
+  position: relative;
+}
+
+.status-comment img {
+  position: absolute;
+  left: -1.7rem;
+  top: .2rem;
+}
+
+@media (min-width: 730px) {
+  .status-comment img {
+    position: absolute;
+    left: -2rem;
+    top: .3rem;
+  }
+}
+
 .status-comment span {
   font-weight: bold;
 }
