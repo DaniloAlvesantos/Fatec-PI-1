@@ -226,3 +226,17 @@ form .button-primary {
   font-size: 1rem;
   font-weight: bold;
 }
+
+.form-obs {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-obs .status-comment {
+  display: inherit;
+  flex-direction: column;
+}
+
+.form-obs .buttons button {
+  width: 7rem;
+}

@@ -1,0 +1,78 @@
+.title {
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  padding: 2rem;
+}
+
+.title h2 {
+  color: var(--fatec-red-500);
+}
+
+.table-container {
+  overflow: scroll;
+  padding: 1rem;
+}
+
+@media (min-width: 625px) {
+  .table-container {
+    overflow: hidden;
+    padding: 2rem;
+  }
+}
+
+.hae-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+  font-family: "Roboto", sans-serif;
+}
+
+.hae-table thead {
+  background-color: #f4f4f4;
+}
+
+.hae-table th,
+.hae-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.hae-table th {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.hae-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.hae-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.hae-table tbody td strong {
+  color: var(--fatec-red-500);
+}
+
+article {
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+}
+
+article h3 {
+  color: var(--fatec-red-500);
+  font-size: var(--text-xl-font-size);
+  line-height: var(--text-xl-line-height);
+}
+
+article p {
+  font-size: var(--text-base-font-size);
+  line-height: var(--text-base-line-height);
+}
+
+article button {
+  margin: 0.5rem 0;
+  width: 8rem;
+}

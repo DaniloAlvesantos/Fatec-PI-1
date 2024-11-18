@@ -40,3 +40,7 @@ section .card-secondary {
     font-size: var(--text-sm-font-size);
     line-height: var(--text-sm-line-height);
 }
+
+.card-secondary a, button {
+    width: 100%;
+}
