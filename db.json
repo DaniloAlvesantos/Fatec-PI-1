@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "001",
+      "name": "Júnior",
+      "cargo": "Professor",
+      "email": "junior.professor@gmail.com",
+      "senha": "1234"
+    },
+    {
+      "id": "002",
+      "name": "Marcia",
+      "cargo": "Coordenadora",
+      "email": "marcia.coordenadora@gmail.com",
+      "senha": "12345"
+    }
+  ]
+}

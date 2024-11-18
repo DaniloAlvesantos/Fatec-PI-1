@@ -9,7 +9,7 @@ function showPassword(checkBox) {
   inp.type = checkBox.checked === true ? "text" : "password";
 }
 
-function handleSubmit(event) {
+async function handleSubmit(event) {
   event.preventDefault();
   const inputs = document.querySelectorAll("input");
   const errorField = document.querySelector("#error");
@@ -20,11 +20,53 @@ function handleSubmit(event) {
 
   errorField.innerHTML = "";
 
-  window.state.user.email = inputs[0].value;
-  window.saveState();
+  const user = await login(inputs[0].value, inputs[1].value);
+  if (!user) return;
+
+  if (!window.state) {
+    window.state = {};
+  }
+
+  window.state.user = {
+    name: user.name,
+    email: user.email,
+    cargo: user.cargo,
+  };
+
+  if (typeof window.saveState === "function") {
+    window.saveState();
+  }
 
   window.location.href =
     window.state.user.cargo.toLocaleLowerCase() !== "professor"
       ? location.href.replace("index.html", "pages/admin/painel.admin.html")
       : location.href.replace("index.html", "pages/home.html");
+}
+
+async function login(email, senha) {
+  const db = await fetch("../../db.json")
+    .then((response) => response.json())
+    .then((data) => data.users);
+  const users = db;
+  let currentUser;
+  const errorField = document.querySelector("#error");
+
+  users.forEach((user) => {
+    if (email === user.email && senha === user.senha) {
+      currentUser = user;
+      return;
+    } else if (email === user.email && senha !== user.senha) {
+      errorField.innerHTML = "Senha incorreta";
+      return;
+    }
+  });
+
+  if (!currentUser) {
+    errorField.innerHTML = "Usuario não encontrado!";
+    return null;
+  }
+
+  errorField.style.display = "none";
+
+  return currentUser;
 }

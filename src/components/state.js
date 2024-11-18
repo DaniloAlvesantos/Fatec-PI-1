@@ -1,18 +1,6 @@
-const savedState = JSON.parse(localStorage.getItem("state")) || {
-  user: {
-    name: "Júnior",
-    cargo: "Professor",
-    email: "",
-  },
-};
+const savedState = JSON.parse(localStorage.getItem("state"));
 
-window.state = JSON.parse(localStorage.getItem("state")) || {
-  user: {
-    name: "Júnior",
-    cargo: "Professor",
-    email: "",
-  },
-};
+window.state = JSON.parse(localStorage.getItem("state"));
 
 const saveState = () => {
   return localStorage.setItem("state", JSON.stringify(window.state));

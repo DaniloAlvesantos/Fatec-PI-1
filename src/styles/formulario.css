@@ -219,3 +219,10 @@ form .button-primary {
 .status-comment span {
   font-weight: bold;
 }
+
+.error-form {
+  color: var(--fatec-red-500);
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+}

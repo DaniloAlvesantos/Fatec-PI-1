@@ -34,10 +34,29 @@ function removeInput(input) {
 
 function handleSubmit(event) {
   event.preventDefault();
+
   const form = document.querySelector("#form-subscription");
   const inputs = form.querySelectorAll("input");
   const execDays = form.querySelectorAll("input[name='dia-execucao']");
   const textareas = form.querySelectorAll("textarea");
+  const fields = [...inputs, ...textareas];
+
+  const warnText = document.querySelector(".error-form");
+  let isError = false;
+
+  fields.forEach((item) => {
+    if (!item.value || item.value === "") {
+      isError = true;
+      return (warnText.innerHTML = "Preenchar os campos vazios");
+    } else {
+      isError = false;
+      return (warnText.innerHTML = "");
+    }
+  });
+
+  if (isError === true) {
+    return;
+  }
 
   let days = [];
 
@@ -47,10 +66,24 @@ function handleSubmit(event) {
 
   const body = {
     id_hae: 0,
-    quant_hae: 0,
-    bdhrs: days,
+    possui_outra_fatec: inputs[0].checked,
+    quant_hae: inputs[1].value,
+    projeto: {
+      titulo: inputs[2].value,
+      start_at: inputs[3].value,
+      end_at: inputs[4].value,
+      bdhrs: days,
+      goals: textareas[0].value,
+      objectives: textareas[1].value,
+      justification: textareas[2].value,
+      mather: inputs[inputs.length - 1].value,
+      outcomes: textareas[3].value,
+      methodology: textareas[4].value,
+      timeline: textareas[5].value,
+    },
   };
-  // console.log(inputs);
+
+  console.log(body);
 }
 
 function verifyExecDay(input) {
@@ -59,8 +92,13 @@ function verifyExecDay(input) {
   const error = document.querySelector(".error");
   const days = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
   const turn = ["M", "T", "N"];
+  let subString = input.value;
 
-  let subString = input.value.replace(/\s/g, "");
+  if (!subString.includes(",")) {
+    subString = subString.replace(/\s/g, ",");
+  }
+
+  subString = subString.replace(/\s/g, "");
   subString = subString.split(",");
 
   subString = `${subString[0].substr(0, 3)},${subString[1].charAt(0)},${
