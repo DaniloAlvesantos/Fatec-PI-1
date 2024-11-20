@@ -19,7 +19,7 @@
   <body>
     <header-fatec
       data-button-title="Voltar"
-      data-button-href="../relatorios.html"
+      data-button-href="../relatorios.admin.html"
     ></header-fatec>
 
     <section id="hae-section">
@@ -60,7 +60,7 @@
     <hr />
 
     <section id="form-section">
-      <h2 class="form-title">Visualização relatório</h2>
+      <h2 class="form-title">Formulário de relatório</h2>
       <form onsubmit="handleSubmit(event)" id="form-subscription">
         <div class="form-container">
           <span class="form-field-column">
@@ -71,6 +71,7 @@
               id="aprov"
               name="aprov"
               placeholder="Diga o Aproveitamento do projeto"
+              disabled
             >
 Todos os alunos conseguiram pelos menos 2 estágios</textarea
             >
@@ -84,6 +85,7 @@ Todos os alunos conseguiram pelos menos 2 estágios</textarea
               id="resultado"
               name="resultado"
               placeholder="Diga os resultados atingidos"
+              disabled
             >
 Total de 200 estágios</textarea
             >
@@ -99,6 +101,7 @@ Total de 200 estágios</textarea
               id="anotacoes"
               name="anotacoes"
               placeholder="Suas anotações"
+              disabled
             >
 Aluno Lucas 0% de presença</textarea
             >
@@ -125,38 +128,48 @@ Aluno Lucas 0% de presença</textarea
           </span>
           <p id="file-message">relatório.pdf</p>
         </div>
-
-        <button
-          type="submit"
-          id="submitButton"
-          class="button-primary"
-          style="
-            --button-color: var(--fatec-red-500);
-            --button-color-hover: var(--fatec-red-400);
-          "
-        >
-          Enviar
-        </button>
-        <p class="error-form"></p>
       </form>
     </section>
 
     <hr />
 
     <article class="status-container">
-      <span class="status-header">
-        <h2>Status: Indeferido &#128533;</h2>
-      </span>
-
-      <main>
+      <form class="form-obs">
         <h3>Observações:</h3>
 
         <div class="status-comment">
           <img src="../../../public/icons/user.svg" alt="" />
           <span>Coordenadora Marcia:</span>
-          <p>Arquivo PDF não está no padrão CPS</p>
+          <textarea
+            name="observacao"
+            id="observacao"
+            class="textarea-primary"
+            oninput="autoSize(this)"
+            placeholder="Digite sua observação"
+          ></textarea>
         </div>
-      </main>
+
+        <div class="buttons">
+          <button
+            class="button-primary"
+            style="
+              --button-color: var(--fatec-blue-500);
+              --button-color-hover: var(--fatec-blue-700);
+            "
+          >
+            Aprovar
+          </button>
+          <button
+            class="button-primary"
+            style="
+              --button-color: var(--fatec-red-500);
+              --button-color-hover: var(--fatec-red-400);
+            "
+          >
+            Reprovar
+          </button>
+        </div>
+      </form>
     </article>
 
     <script src="../../../scripts/form-relatorio.js" defer></script>

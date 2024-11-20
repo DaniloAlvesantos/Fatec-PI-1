@@ -49,6 +49,9 @@ function handleSubmit(event) {
       isError = true;
       return (warnText.innerHTML = "Preenchar os campos vazios");
     } else {
+      if (isError === true) {
+        return (warnText.innerHTML = "Preenchar os campos vazios");
+      }
       isError = false;
       return (warnText.innerHTML = "");
     }

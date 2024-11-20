@@ -156,6 +156,10 @@
   height: 4.5rem;
 }
 
+.card-primary strong {
+  color: var(--fatec-red-500);
+}
+
 .card-secondary {
   display: flex;
   flex-direction: column;
@@ -166,4 +170,59 @@
   padding: 1rem;
 
   font-family: "Roboto", sans-serif; 
+}
+
+.add-button-primary {
+  background: var(--add-button-color);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 100%;
+  border: none;
+
+  box-shadow: 2px 2px 1px 1px #00000055;
+
+  width: 3rem;
+  height:3rem;
+
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+
+  cursor: pointer;
+  transition: background ease 450ms;
+}
+
+.add-button-primary:hover {
+  background: var(--add-button-color-hover);
+}
+
+@media (min-width:720px) {
+  .add-button-primary {
+    bottom: 2rem;
+    right: 2rem;
+  }
+}
+
+.input-arq {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+
+  border: 2px solid var(--fatec-red-500);
+  border-radius: 12px;
+
+  padding:1rem;
+  width: 15rem;
+
+  cursor: pointer;
+  transition: background ease 350ms;
+}
+
+.input-arq:hover {
+  background:#d3271920 ;
 }

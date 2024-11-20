@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Formulario HAE | HAE Fatec Itapira</title>
-    <link rel="stylesheet" href="../../../styles/components.css" />
-    <link rel="stylesheet" href="../../../styles/formulario.css" />
-    <link rel="stylesheet" href="../../../styles/global.css" />
-    <script src="../../../components/state.js" defer></script>
+    <link rel="stylesheet" href="../../styles/components.css" />
+    <link rel="stylesheet" href="../../styles/formulario.css" />
+    <link rel="stylesheet" href="../../styles/global.css" />
+    <script src="../../components/state.js" defer></script>
     <style>
       .form-field-column p {
         font-family: "Roboto", sans-serif;
@@ -19,7 +19,7 @@
   <body>
     <header-fatec
       data-button-title="Voltar"
-      data-button-href="../relatorios.html"
+      data-button-href="./relatorios.html"
     ></header-fatec>
 
     <section id="hae-section">
@@ -30,7 +30,7 @@
         </div>
         <span class="hae-container-header-info">
           <img
-            src="../../../public/icons/calendar-clock.svg"
+            src="../../public/icons/calendar-clock.svg"
             alt="Ícone de calendário com relógio"
           />
           <p>05/08 - 20/12</p>
@@ -60,7 +60,7 @@
     <hr />
 
     <section id="form-section">
-      <h2 class="form-title">Visualização relatório</h2>
+      <h2 class="form-title">Formulário de relatório</h2>
       <form onsubmit="handleSubmit(event)" id="form-subscription">
         <div class="form-container">
           <span class="form-field-column">
@@ -71,9 +71,7 @@
               id="aprov"
               name="aprov"
               placeholder="Diga o Aproveitamento do projeto"
-            >
-Todos os alunos conseguiram pelos menos 2 estágios</textarea
-            >
+            ></textarea>
           </span>
 
           <span class="form-field-column">
@@ -84,9 +82,7 @@ Todos os alunos conseguiram pelos menos 2 estágios</textarea
               id="resultado"
               name="resultado"
               placeholder="Diga os resultados atingidos"
-            >
-Total de 200 estágios</textarea
-            >
+            ></textarea>
           </span>
         </div>
 
@@ -99,31 +95,24 @@ Total de 200 estágios</textarea
               id="anotacoes"
               name="anotacoes"
               placeholder="Suas anotações"
-            >
-Aluno Lucas 0% de presença</textarea
-            >
+            ></textarea>
           </span>
 
           <span class="form-field-column" id="fileField">
             <p>Documento PDF</p>
-            <label
-              for="documento"
-              class="input-arq"
-              id="file-container"
-              onclick="handleDownload('blob:http://127.0.0.1:5500/3e7b0565-c775-4e46-ad2b-c771f44781e7')"
-            >
-              <img src="../../../public/icons/file.svg" alt="" id="icon-file" />
+            <label for="documento" class="input-arq" id="file-container">
+              <img src="../../public/icons/upload.svg" alt="" id="icon-file" />
               <input
                 hidden
                 type="file"
                 name="documento"
                 id="documento"
-                disabled
+                onchange="handleFile(this)"
               />
-              Download
+              Upload
             </label>
           </span>
-          <p id="file-message">relatório.pdf</p>
+          <p id="file-message"></p>
         </div>
 
         <button
@@ -141,25 +130,7 @@ Aluno Lucas 0% de presença</textarea
       </form>
     </section>
 
-    <hr />
-
-    <article class="status-container">
-      <span class="status-header">
-        <h2>Status: Indeferido &#128533;</h2>
-      </span>
-
-      <main>
-        <h3>Observações:</h3>
-
-        <div class="status-comment">
-          <img src="../../../public/icons/user.svg" alt="" />
-          <span>Coordenadora Marcia:</span>
-          <p>Arquivo PDF não está no padrão CPS</p>
-        </div>
-      </main>
-    </article>
-
-    <script src="../../../scripts/form-relatorio.js" defer></script>
-    <script src="../../../components/header.js" defer></script>
+    <script src="../../scripts/form-relatorio.js" defer></script>
+    <script src="../../components/header.js" defer></script>
   </body>
 </html>
