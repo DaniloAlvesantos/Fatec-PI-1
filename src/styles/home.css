@@ -30,6 +30,7 @@ main {
 
 .card-primary {
   gap: 1rem;
+  width: 20rem;
 }
 
 .card-primary span > p {
