@@ -44,29 +44,28 @@ async function handleSubmit(event) {
 }
 
 async function login(email, senha) {
-  const db = await fetch("../../db.json")
-    .then((response) => response.json())
-    .then((data) => data.users);
-  const users = db;
-  let currentUser;
   const errorField = document.querySelector("#error");
 
-  users.forEach((user) => {
-    if (email === user.email && senha === user.senha) {
-      currentUser = user;
-      return;
-    } else if (email === user.email && senha !== user.senha) {
-      errorField.innerHTML = "Senha incorreta";
-      return;
-    }
-  });
+  try {
+    const response = await fetch("./server/login.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, senha }),
+    });
 
-  if (!currentUser) {
-    errorField.innerHTML = "Usuario não encontrado!";
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      errorField.innerHTML = result.message || "Erro desconhecido";
+      return null;
+    }
+
+    errorField.style.display = "none";
+    return result.user;
+  } catch (error) {
+    errorField.innerHTML = "Erro no servidor!";
     return null;
   }
-
-  errorField.style.display = "none";
-
-  return currentUser;
 }
