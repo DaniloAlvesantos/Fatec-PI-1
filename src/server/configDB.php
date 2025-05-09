@@ -79,3 +79,27 @@ function returnSQLTables() {
     );
     ";
 }
+
+enum TablesEnum {
+    case docente;
+    case hae;
+    case chamada;
+    case inscricao;
+    case banco_de_horas;
+    case projeto;
+    case relatorio;
+    case feedback;
+}
+
+function returnTable($table) {
+    echo math($table) {
+        TablesEnum::docente => "tb_docente",
+        TablesEnum::hae => "tb_hae",
+        TablesEnum::chamada => "tb_chamada",
+        TablesEnum::inscricao => "tb_inscricao",
+        TablesEnum::banco_de_horas => "tb_banco_de_horas",
+        TablesEnum::projeto => "tb_projeto",
+        TablesEnum::relatorio => "tb_relatorio",
+        TablesEnum::feedback => "tb_feedback",
+    }
+}

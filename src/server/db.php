@@ -20,8 +20,6 @@ class Database {
         } catch (PDOException $e) {
             die("❌ Connection failed: " . $e->getMessage());
         }
-
-        $this->execAddTables();
     }
 
     public function isConnected() {
@@ -40,7 +38,26 @@ class Database {
             echo "❌ No database connection or empty SQL.";
         }
     }
-}
 
-new Database();
+    public function add($table, $data) {
+        $table = returnTable(TablesEnum::$table);
+        $formated_data = implode(", ", $data);
+        $query = "INSERT INTO $table VALUES ($formated_data)";
+        $search_query = "SELECT id_docente, nome FROM $table WHERE email = $data['email']"
+
+        if($this->isConnected()) {
+            try {
+                $search = $this->pdo->exec($search_query);
+                if($search) {
+                   return $search; 
+                }
+
+                return $this->pdo->exec($query);
+            } catch (PDOException $e) {
+                echo "❌ Error executing query: " . $e->getMessage();
+            }
+        }
+
+    }
+}
 ?>
