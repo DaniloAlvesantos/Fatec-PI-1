@@ -28,9 +28,15 @@ async function handleSubmit(event) {
   }
 
   window.state.user = {
-    name: user.name,
+    id: user.id_docente,
+    name: user.nome,
     email: user.email,
+    rg: user.RG,
+    matricula: user.matricula,
+    turno: user.turno,
     cargo: user.cargo,
+    curso: user.curso,
+    outrasFatecs: Boolean(user.outras_fatecs),
   };
 
   if (typeof window.saveState === "function") {
@@ -47,7 +53,7 @@ async function login(email, senha) {
   const errorField = document.querySelector("#error");
 
   try {
-    const response = await fetch("./server/login.php", {
+    const response = await fetch("./server/controller/login.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -66,6 +72,7 @@ async function login(email, senha) {
     return result.user;
   } catch (error) {
     errorField.innerHTML = "Erro no servidor!";
+    console.log(error);
     return null;
   }
 }

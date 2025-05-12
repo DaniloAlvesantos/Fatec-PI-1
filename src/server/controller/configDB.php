@@ -8,7 +8,7 @@ function returnSQLTables() {
         RG VARCHAR(10) UNIQUE NOT NULL,
         email VARCHAR(100) UNIQUE NOT NULL,
         matricula INT UNIQUE NOT NULL,
-        DTH VARCHAR(8) NOT NULL,
+        turno VARCHAR(8) NOT NULL,
         senha VARCHAR(25) NOT NULL,
         cargo ENUM('Professor', 'Coordenador', 'Secretaria') NOT NULL,
         outras_fatecs INT,
@@ -80,26 +80,18 @@ function returnSQLTables() {
     ";
 }
 
-enum TablesEnum {
-    case docente;
-    case hae;
-    case chamada;
-    case inscricao;
-    case banco_de_horas;
-    case projeto;
-    case relatorio;
-    case feedback;
-}
-
-function returnTable($table) {
-    echo math($table) {
-        TablesEnum::docente => "tb_docente",
-        TablesEnum::hae => "tb_hae",
-        TablesEnum::chamada => "tb_chamada",
-        TablesEnum::inscricao => "tb_inscricao",
-        TablesEnum::banco_de_horas => "tb_banco_de_horas",
-        TablesEnum::projeto => "tb_projeto",
-        TablesEnum::relatorio => "tb_relatorio",
-        TablesEnum::feedback => "tb_feedback",
+enum TablesEnum: string {
+    case docente = "tb_docente";
+    case hae = "tb_hae";
+    case chamada = "tb_chamada";
+    case inscricao = "tb_inscricao";
+    case banco_de_horas = "tb_banco_de_horas";
+    case projeto = "tb_projeto";
+    case relatorio = "tb_relatorio";
+    case feedback = "tb_feedback";
+ 
+    public function get_enum($enum): TablesEnum {
+        return $this[$enum];
     }
 }
+ 

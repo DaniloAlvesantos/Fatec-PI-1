@@ -24,7 +24,7 @@ class HeaderFatec extends HTMLElement {
     const userName = document.createElement("p");
 
     const cargo = window.state.user.cargo;
-    const name = window.state.user.name;
+    const name = window.state.user.name.split(" ")[0];
     const path = Array.from(
       { length: window.location.pathname.split("/").slice(3).length },
       () => "../"
