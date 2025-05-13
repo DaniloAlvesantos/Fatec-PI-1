@@ -4,7 +4,7 @@ include("../controller/configDB.php");
 class Database
 {
     private string $host = 'localhost';
-    private string $db   = 'PI-fatec';
+    private string $db   = 'pi_fatec';
     private string $user = 'root';
     private string $pass = 'root';
     private string $charset = 'utf8mb4';

@@ -5,12 +5,12 @@ function returnSQLTables() {
     CREATE TABLE tb_docente (
         id_docente INT AUTO_INCREMENT PRIMARY KEY,
         nome VARCHAR(60) NOT NULL,
-        RG VARCHAR(10) UNIQUE NOT NULL,
+        RG VARCHAR(11) UNIQUE NOT NULL,
         email VARCHAR(100) UNIQUE NOT NULL,
         matricula INT UNIQUE NOT NULL,
         turno VARCHAR(8) NOT NULL,
         senha VARCHAR(25) NOT NULL,
-        cargo ENUM('Professor', 'Coordenador', 'Secretaria') NOT NULL,
+        cargo ENUM('Professor', 'Coordenador', 'Secretaria', 'Diretor') NOT NULL,
         outras_fatecs INT,
         curso VARCHAR(4)
     );
@@ -21,14 +21,18 @@ function returnSQLTables() {
         tip_hae VARCHAR(30) NOT NULL,
         quant_hae INT NOT NULL,
         descricao VARCHAR(255) NOT NULL,
-        id_inscricao INT
+        data_inicio DATE NOT NULL,
+        data_final DATE NOT NULL
     );
 
-    CREATE TABLE tb_chamada (
-        id_chamada INT AUTO_INCREMENT PRIMARY KEY,
+    CREATE TABLE tb_projeto (
+        id_projeto INT AUTO_INCREMENT PRIMARY KEY,
+        data_inicio DATE NOT NULL,
+        data_final DATE NOT NULL,
+        titulo VARCHAR(40) NOT NULL,
         id_hae INT,
-        id_inscricao INT,
-        data_envio DATETIME NOT NULL
+        descricoes JSON,
+        FOREIGN KEY (id_hae) REFERENCES tb_hae(id_hae)
     );
 
     CREATE TABLE tb_inscricao (
@@ -39,24 +43,39 @@ function returnSQLTables() {
         quant_hae INT,
         outras_fatecs INT,
         id_projeto INT,
-        id_bdhrs INT
+        FOREIGN KEY (id_docente) REFERENCES tb_docente(id_docente),
+        FOREIGN KEY (id_hae) REFERENCES tb_hae(id_hae),
+        FOREIGN KEY (id_projeto) REFERENCES tb_projeto(id_projeto)
     );
 
     CREATE TABLE tb_banco_de_horas (
         id_bdhrs INT AUTO_INCREMENT PRIMARY KEY,
-        dias JSON,
-        turno JSON,
-        horas JSON,
-        id_inscricao INT
+        dias VARCHAR(4),
+        turno VARCHAR(8),
+        horas VARCHAR(6),
+        id_inscricao INT,
+        FOREIGN KEY (id_inscricao) REFERENCES tb_inscricao(id_inscricao)
     );
 
-    CREATE TABLE tb_projeto (
-        id_projeto INT AUTO_INCREMENT PRIMARY KEY,
-        data_inicio DATE NOT NULL,
-        data_final DATE NOT NULL,
-        titulo VARCHAR(40) NOT NULL,
+    CREATE TABLE tb_chamada (
+        id_chamada INT AUTO_INCREMENT PRIMARY KEY,
         id_hae INT,
-        descricoes JSON
+        id_inscricao INT,
+        data_envio DATETIME NOT NULL,
+        FOREIGN KEY (id_hae) REFERENCES tb_hae(id_hae),
+        FOREIGN KEY (id_inscricao) REFERENCES tb_inscricao(id_inscricao)
+    );
+
+    CREATE TABLE tb_feedback (
+        id_feedback INT AUTO_INCREMENT PRIMARY KEY,
+        id_inscricao INT,
+        data_envio DATETIME,
+        descricao VARCHAR(255),
+        id_coor INT,
+        id_diretor INT,
+        observacao VARCHAR(255),
+        resultado ENUM('Aprovado', 'Reprovado'),
+        FOREIGN KEY (id_inscricao) REFERENCES tb_inscricao(id_inscricao)
     );
 
     CREATE TABLE tb_relatorio (
@@ -64,21 +83,13 @@ function returnSQLTables() {
         id_projeto INT,
         data_entrega DATETIME,
         pdf_url TEXT,
-        id_feedback INT
-    );
-
-    CREATE TABLE tb_feedback (
-        id_feedback INT AUTO_INCREMENT PRIMARY KEY,
-        id_inscricao INT,
-        date_envio DATETIME,
-        descricao VARCHAR(255),
-        id_coor INT,
-        id_diretor INT,
-        observacao VARCHAR(255),
-        resultado ENUM('Aprovado', 'Reprovado')
+        id_feedback INT,
+        FOREIGN KEY (id_projeto) REFERENCES tb_projeto(id_projeto),
+        FOREIGN KEY (id_feedback) REFERENCES tb_feedback(id_feedback)
     );
     ";
 }
+
 
 enum TablesEnum: string {
     case docente = "tb_docente";

@@ -4,7 +4,7 @@ require_once __DIR__ . "/Database.php";
 
 class Login
 {
-    private Database $db;
+    public Database $db;
 
     public function __construct()
     {
