@@ -1,14 +1,22 @@
-<!DOCTYPE html>
+<?php
+session_start();
+require __DIR__ . "/../../../server/controller/state.php";
+
+if(!isset($_SESSION["user"])) {
+  header("Location: ../index.php");
+  exit();
+}
+
+?><!DOCTYPE html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Preencha o formulário de ralatório">
-    <title>Formulario HAE | HAE Fatec Itapira</title>
-    <link rel="stylesheet" href="../../styles/components.css" />
-    <link rel="stylesheet" href="../../styles/formulario.css" />
-    <link rel="stylesheet" href="../../styles/global.css" />
-    <script src="../../components/state.js" defer></script>
+    <meta name="description" content="Realtoório enviados">
+    <title>Relatório Admin | HAE Fatec Itapira</title>
+    <link rel="stylesheet" href="../../../styles/components.css" />
+    <link rel="stylesheet" href="../../../styles/formulario.css" />
+    <link rel="stylesheet" href="../../../styles/global.css" />
     <style>
       .form-field-column p {
         font-family: "Roboto", sans-serif;
@@ -20,7 +28,7 @@
   <body>
     <header-fatec
       data-button-title="Voltar"
-      data-button-href="./relatorios.html"
+      data-button-href="../relatorios.admin.php"
     ></header-fatec>
 
     <section id="hae-section">
@@ -31,7 +39,7 @@
         </div>
         <span class="hae-container-header-info">
           <img
-            src="../../public/icons/calendar-clock.svg"
+            src="../../../public/icons/calendar-clock.svg"
             alt="Ícone de calendário com relógio"
           />
           <p>05/08 - 20/12</p>
@@ -72,7 +80,10 @@
               id="aprov"
               name="aprov"
               placeholder="Diga o Aproveitamento do projeto"
-            ></textarea>
+              disabled
+            >
+Todos os alunos conseguiram pelos menos 2 estágios</textarea
+            >
           </span>
 
           <span class="form-field-column">
@@ -83,7 +94,10 @@
               id="resultado"
               name="resultado"
               placeholder="Diga os resultados atingidos"
-            ></textarea>
+              disabled
+            >
+Total de 200 estágios</textarea
+            >
           </span>
         </div>
 
@@ -96,42 +110,78 @@
               id="anotacoes"
               name="anotacoes"
               placeholder="Suas anotações"
-            ></textarea>
+              disabled
+            >
+Aluno Lucas 0% de presença</textarea
+            >
           </span>
 
           <span class="form-field-column" id="fileField">
             <p>Documento PDF</p>
-            <label for="documento" class="input-arq" id="file-container">
-              <img src="../../public/icons/upload.svg" alt="" id="icon-file" />
+            <label
+              for="documento"
+              class="input-arq"
+              id="file-container"
+              onclick="handleDownload('blob:http://127.0.0.1:5500/3e7b0565-c775-4e46-ad2b-c771f44781e7')"
+            >
+              <img src="../../../public/icons/file.svg" alt="" id="icon-file" />
               <input
                 hidden
                 type="file"
                 name="documento"
                 id="documento"
-                onchange="handleFile(this)"
+                disabled
               />
-              Upload
+              Download
             </label>
           </span>
-          <p id="file-message"></p>
+          <p id="file-message">relatório.pdf</p>
         </div>
-
-        <button
-          type="submit"
-          id="submitButton"
-          class="button-primary"
-          style="
-            --button-color: var(--fatec-red-500);
-            --button-color-hover: var(--fatec-red-400);
-          "
-        >
-          Enviar
-        </button>
-        <p class="error-form"></p>
       </form>
     </section>
 
-    <script src="../../scripts/form-relatorio.js" defer></script>
-    <script src="../../components/header.js" defer></script>
+    <hr />
+
+    <article class="status-container">
+      <form class="form-obs">
+        <h3>Observações:</h3>
+
+        <div class="status-comment">
+          <img src="../../../public/icons/user.svg" alt="" />
+          <span>Coordenadora Marcia:</span>
+          <textarea
+            name="observacao"
+            id="observacao"
+            class="textarea-primary"
+            oninput="autoSize(this)"
+            placeholder="Digite sua observação"
+          ></textarea>
+        </div>
+
+        <div class="buttons">
+          <button
+            class="button-primary"
+            style="
+              --button-color: var(--fatec-blue-500);
+              --button-color-hover: var(--fatec-blue-700);
+            "
+          >
+            Aprovar
+          </button>
+          <button
+            class="button-primary"
+            style="
+              --button-color: var(--fatec-red-500);
+              --button-color-hover: var(--fatec-red-400);
+            "
+          >
+            Reprovar
+          </button>
+        </div>
+      </form>
+    </article>
+
+    <script src="../../../scripts/form-relatorio.js" defer></script>
+    <script src="../../../components/header.js" defer></script>
   </body>
 </html>

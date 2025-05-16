@@ -1,5 +1,6 @@
 <?php
-include("../controller/configDB.php");
+
+include __DIR__ . "/../controller/configDB.php";
 
 class Database
 {

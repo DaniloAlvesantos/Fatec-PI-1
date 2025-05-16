@@ -55,17 +55,21 @@ class HeaderFatec extends HTMLElement {
     button.setAttribute("style", "--button-border: var(--fatec-red-500)");
     button.innerHTML = this.dataset.buttonTitle;
 
+    if(this.dataset.buttonTitle === "Sair") {
+      button.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await this.logOut();
+      });
+    }
+
     link.appendChild(button);
 
     return link;
   }
 
-  logOut() {
-    window.deleteState();
-    window.location.href = location.href.replace(
-      "pages/home.html",
-      "index.html"
-    );
+  async logOut() {
+    await fetch(location.origin + "/src/server/controller/logout.php");
+    window.location.href = location.origin + "/src/index.php";
   }
 
   styles() {

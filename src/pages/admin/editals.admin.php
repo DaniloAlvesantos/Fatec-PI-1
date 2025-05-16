@@ -1,3 +1,13 @@
+<?php
+session_start();
+require __DIR__ . "/../../server/controller/state.php";
+
+if(!isset($_SESSION["user"])) {
+  header("Location: ../index.php");
+  exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
@@ -8,12 +18,11 @@
     <link rel="stylesheet" href="../../styles/global.css" />
     <link rel="stylesheet" href="../../styles/components.css" />
     <link rel="stylesheet" href="../../styles/edital.css" />
-    <script src="../../components/state.js"> defer</script>
   </head>
   <body>
     <header-fatec
       data-button-title="Voltar"
-      data-button-href="./painel.admin.html"
+      data-button-href="./painel.admin.php"
     ></header-fatec>
 
     <h1>Resultados das inscrições</h1>
@@ -30,7 +39,7 @@
             />15/02/2025
           </p>
         </span>
-        <a href="./preview/edital.resultado.admin.html">
+        <a href="./preview/edital.resultado.admin.php">
           <button
             class="button-primary"
             style="
@@ -44,7 +53,7 @@
       </div>
     </section>
 
-    <a href="./add/resultado_form.html">
+    <a href="./add/resultado_form.php">
       <button
         class="add-button-primary"
         style="

@@ -23,6 +23,7 @@ function handleSubmit(event) {
   const select = document.querySelector("select");
   const textarea = document.querySelector("textarea");
   const warnText = document.querySelector(".error-form");
+  const form = document.querySelector("form");
   let isError = false;
   const fields = [...inputs, select, textarea];
 
@@ -43,12 +44,5 @@ function handleSubmit(event) {
     return;
   }
 
-  const body = {
-    title: inputs[0].value,
-    course: select.value,
-    hae_quantity: inputs[1].value,
-    starts_at: new Date(inputs[2].value).toISOString(),
-    ends_at: new Date(inputs[3].value).toISOString(),
-    about: textarea.value,
-  };
+  form.submit();
 }

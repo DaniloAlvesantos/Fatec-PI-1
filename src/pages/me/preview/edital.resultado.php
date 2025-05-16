@@ -1,19 +1,28 @@
+<?php
+session_start();
+require __DIR__ . "/../../../server/controller/state.php";
+
+if(!isset($_SESSION["user"])) {
+  header("Location: ../index.php");
+  exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Edital Preview">
-    <title>Edital Admin | HAE Fatec Itapira</title>
+    <meta name="description" content="Resultados">
+    <title>Painel | HAE Fatec Itapira</title>
     <link rel="stylesheet" href="../../../styles/global.css" />
     <link rel="stylesheet" href="../../../styles/components.css" />
     <link rel="stylesheet" href="../../../styles/edital.resultado.css" />
-    <script src="../../../components/state.js" defer></script>
   </head>
   <body>
     <header-fatec
       data-button-title="Voltar"
-      data-button-href="../editals.admin.html"
+      data-button-href="../../edital.php"
     ></header-fatec>
 
     <span class="title">
@@ -62,6 +71,22 @@
           </tbody>
         </table>
       </div>
+
+      <article>
+        <h3>Para mais informações</h3>
+        <p>Confira no seu E-mail</p>
+        <a href="https://outlook.office.com/mail/" target="_blank">
+          <button
+            class="button-secondary"
+            style="
+              --button-color: var(--fatec-red-500);
+              --button-color-hover: var(--fatec-red-400);
+            "
+          >
+            Conferir
+          </button>
+        </a>
+      </article>
     </section>
 
     <script src="../../../components/header.js" defer></script>

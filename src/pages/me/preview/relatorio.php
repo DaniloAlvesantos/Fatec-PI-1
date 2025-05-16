@@ -1,3 +1,14 @@
+<?php
+session_start();
+require __DIR__ . "/../../../server/controller/state.php";
+
+if(!isset($_SESSION["user"])) {
+  header("Location: ../index.php");
+  exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
@@ -8,7 +19,6 @@
     <link rel="stylesheet" href="../../../styles/components.css" />
     <link rel="stylesheet" href="../../../styles/formulario.css" />
     <link rel="stylesheet" href="../../../styles/global.css" />
-    <script src="../../../components/state.js" defer></script>
     <style>
       .form-field-column p {
         font-family: "Roboto", sans-serif;
@@ -20,7 +30,7 @@
   <body>
     <header-fatec
       data-button-title="Voltar"
-      data-button-href="../relatorios.html"
+      data-button-href="../relatorios.php"
     ></header-fatec>
 
     <section id="hae-section">

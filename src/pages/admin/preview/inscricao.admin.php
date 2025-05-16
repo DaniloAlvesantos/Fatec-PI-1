@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+<?php
+session_start();
+require __DIR__ . "/../../../server/controller/state.php";
+
+if(!isset($_SESSION["user"])) {
+  header("Location: ../index.php");
+  exit();
+}
+
+?><!DOCTYPE html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
@@ -8,12 +17,11 @@
     <link rel="stylesheet" href="../../../styles/global.css" />
     <link rel="stylesheet" href="../../../styles/components.css" />
     <link rel="stylesheet" href="../../../styles/formulario.css" />
-    <script src="../../../components/state.js" defer></script>
   </head>
   <body>
     <header-fatec
       data-button-title="Voltar"
-      data-button-href="../painel.admin.html"
+      data-button-href="../inscricoes.admin.php"
     ></header-fatec>
 
     <section id="hae-section">

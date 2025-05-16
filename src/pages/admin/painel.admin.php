@@ -1,3 +1,13 @@
+<?php
+session_start();
+require __DIR__ . "/../../server/controller/state.php";
+
+if(!isset($_SESSION["user"])) {
+  header("Location: ../index.php");
+  exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
@@ -8,7 +18,6 @@
     <link rel="stylesheet" href="../../styles/global.css" />
     <link rel="stylesheet" href="../../styles/components.css" />
     <link rel="stylesheet" href="../../styles/home.css" />
-    <script src="../../components/state.js" defer></script>
   </head>
   <body>
     <header-fatec data-button-title="Sair" data-button-href="#"></header-fatec>
@@ -30,7 +39,7 @@
             <p>Lance as inscrições aprovadas aqui</p>
           </span>
 
-          <a href="./editals.admin.html">
+          <a href="./editals.admin.php">
             <button
               class="button-secondary"
               style="
@@ -59,7 +68,7 @@
             <p>Cadastre HAEs aqui</p>
           </span>
 
-          <a href="./haes.admin.html">
+          <a href="./haes.admin.php">
             <button
               class="button-secondary"
               style="
@@ -75,14 +84,14 @@
 
       <div class="cards-container">
         <div>
-          <a href="./inscricoes.admin.html">
+          <a href="./inscricoes.admin.php">
             <div class="card-secondary">
               <h2>Inscrições</h2>
               <p>Visualize todas as inscrições</p>
             </div>
           </a>
 
-          <a href="./relatorios.admin.html">
+          <a href="./relatorios.admin.php">
             <div class="card-secondary">
               <h2>Relátorios</h2>
               <p>Visualize relátorios enviados</p>

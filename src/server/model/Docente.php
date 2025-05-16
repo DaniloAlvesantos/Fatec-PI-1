@@ -1,6 +1,6 @@
 <?php
 
-include "./Database.php";
+include_once __DIR__ . "/Database.php";
 
 class Docente
 {
@@ -16,10 +16,64 @@ class Docente
     public string $curso;
     public Database $db;
 
-    public function __construct()
+    public function __construct($id_docente = null, $nome = '', $RG = '', $email = '', $matricula = 0, $turno = '', $senha = '', $cargo = '', $outras_fatecs = false, $curso = '')
     {
         $this->db = new Database();
         $this->db->connect_to();
+
+        if ($id_docente !== null) {
+            $this->id_docente = $id_docente;
+            $this->nome = $nome;
+            $this->RG = $RG;
+            $this->email = $email;
+            $this->matricula = $matricula;
+            $this->turno = $turno;
+            $this->senha = $senha;
+            $this->cargo = $cargo;
+            $this->outras_fatecs = $outras_fatecs;
+            $this->curso = $curso;
+        }
+    }
+
+    public static function fromArray(array $data): Docente
+    {
+        $docente = new self();
+
+        foreach ($data as $key => $value) {
+            if (property_exists($docente, $key)) {
+                $docente->$key = $value;
+            }
+        }
+
+        return $docente;
+    }
+
+    public function login($email, $senha)
+    {
+        if (empty($email) || empty($senha)) {
+            return false;
+        }
+
+        if (!$this->db->is_connected() || !$this->db->get_PDO()) {
+            return false;
+        }
+
+        try {
+            $query = "SELECT * FROM tb_docente WHERE email = :email";
+            $stmt = $this->db->get_PDO()->prepare($query);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user && $senha == $user['senha']) {
+                return $user;
+            }
+
+            return false;
+        } catch (PDOException $e) {
+            error_log("Login error: " . $e->getMessage());
+            return false;
+        }
     }
 
     public function setDocenteInfo(int $id_docente, string $nome, string $RG, string $email, int $matricula, string $turno, string $senha, string $cargo, bool $outras_fatecs, string $curso)
@@ -60,7 +114,8 @@ class Docente
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($result) {
-            return new Docente()->setDocenteInfo(
+            $docente = new Docente();
+            $docente->setDocenteInfo(
                 $result['id_docente'],
                 $result['nome'],
                 $result['RG'],
@@ -69,9 +124,10 @@ class Docente
                 $result['turno'],
                 $result['senha'],
                 $result['cargo'],
-                (bool)$result['outras_fatecs'],
+                $result['outras_fatecs'],
                 $result['curso']
             );
+            return $docente;
         }
         return null;
     }

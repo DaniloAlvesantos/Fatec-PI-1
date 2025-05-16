@@ -1,3 +1,13 @@
+<?php
+session_start();
+require __DIR__ . "/../../server/controller/state.php";
+
+if(!isset($_SESSION["user"])) {
+  header("Location: ../index.php");
+  exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
@@ -8,12 +18,11 @@
     <link rel="stylesheet" href="../../styles/global.css" />
     <link rel="stylesheet" href="../../styles/components.css" />
     <link rel="stylesheet" href="../../styles/haes.css" />
-    <script src="../../components/state.js" defer></script>
   </head>
   <body>
     <header-fatec
       data-button-title="Voltar"
-      data-button-href="./painel.admin.html"
+      data-button-href="./painel.admin.php"
     ></header-fatec>
 
     <section>
@@ -52,7 +61,7 @@
             <p>25/10/2024</p>
           </span>
 
-          <a href="./preview/inscricao.admin.html">
+          <a href="./preview/inscricao.admin.php">
             <button
               class="button-primary"
               style="
@@ -83,7 +92,7 @@
             <p>24/10/2024</p>
           </span>
 
-          <a href="./preview/inscricao.admin.html">
+          <a href="./preview/inscricao.admin.php">
             <button
               class="button-primary"
               style="

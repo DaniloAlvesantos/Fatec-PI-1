@@ -20,7 +20,7 @@ function returnSQLTables() {
         titulo VARCHAR(60) NOT NULL,
         tip_hae VARCHAR(30) NOT NULL,
         quant_hae INT NOT NULL,
-        descricao VARCHAR(255) NOT NULL,
+        descricao VARCHAR(500) NOT NULL,
         data_inicio DATE NOT NULL,
         data_final DATE NOT NULL
     );

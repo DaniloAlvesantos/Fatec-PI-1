@@ -5,7 +5,7 @@ section {
 section h1 {
   font-family: "Roboto";
   text-align: center;
-  margin: .5rem 0;
+  margin: 0.5rem 0;
 }
 
 .glass-search {
@@ -17,6 +17,38 @@ section h1 {
   right: 2.6rem;
 
   cursor: pointer;
+}
+
+select {
+  background: none;
+  border: 2px solid var(--fatec-red-500);
+  border-radius: 8px;
+  padding: 0.5rem;
+  outline: none;
+  font-family: "Roboto", sans-serif;
+  width: 15rem;
+  background: url("data:image/svg+xml,<svg height='10px' width='10px' viewBox='0 0 16 16' fill='%23000000' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>")
+    no-repeat;
+  background-position: calc(100% - 0.75rem) center !important;
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  padding-right: 2rem !important;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  gap: 0.5rem;
+}
+
+.no-hae {
+  font-family: "Roboto";
+  text-align: center;
+  margin: 0.5rem 0;
 }
 
 .card-hae {

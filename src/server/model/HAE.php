@@ -13,10 +13,20 @@ class HAE
     public string $tip_hae;
     public Database $db;
 
-    public function __construct()
+    public function __construct($id_hae = null, $titulo = '', $descricao = '', $data_inicio = '', $data_final = '', $quant_hae = 0, $tip_hae = '')
     {
         $this->db = new Database();
         $this->db->connect_to();
+
+        if ($id_hae !== null) {
+            $this->id_hae = $id_hae;
+            $this->titulo = $titulo;
+            $this->descricao = $descricao;
+            $this->data_inicio = $data_inicio;
+            $this->data_final = $data_final;
+            $this->quant_hae = $quant_hae;
+            $this->tip_hae = $tip_hae;
+        }
     }
 
     public function getIdHAE(): int
@@ -41,7 +51,7 @@ class HAE
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($result) {
-            return new HAE(
+            return new self(
                 $result['id_hae'],
                 $result['titulo'],
                 $result['descricao'],
@@ -60,23 +70,20 @@ class HAE
         $stmt = $this->db->get_PDO()->prepare($query);
         $stmt->bindParam(':tip_hae', $tip_hae);
         $stmt->execute();
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-        if (!$results) {
-            return null;
-        }
-        $haes = [];
-        foreach ($results as $result) {
-            $haes[] = new HAE(
-                $result['id_hae'],
-                $result['titulo'],
-                $result['descricao'],
-                $result['data_inicio'],
-                $result['data_final'],
-                $result['quant_hae'],
-                $result['tip_hae']
-            );
-        }
-        return $haes;
+    public function createHAE($titulo, $descricao, $data_inicio, $data_final, $quant_hae, $tip_hae)
+    {
+        $query = "INSERT INTO tb_hae (titulo, descricao, data_inicio, data_final, quant_hae, tip_hae) VALUES (:titulo, :descricao, :data_inicio, :data_final, :quant_hae, :tip_hae)";
+        $stmt = $this->db->get_PDO()->prepare($query);
+        $stmt->bindParam(':titulo', $titulo);
+        $stmt->bindParam(':descricao', $descricao);
+        $stmt->bindParam(':data_inicio', $data_inicio);
+        $stmt->bindParam(':data_final', $data_final);
+        $stmt->bindParam(':quant_hae', $quant_hae);
+        $stmt->bindParam(':tip_hae', $tip_hae);
+
+        return $stmt->execute();
     }
 }
