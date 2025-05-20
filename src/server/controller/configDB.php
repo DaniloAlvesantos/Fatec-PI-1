@@ -39,7 +39,7 @@ function returnSQLTables() {
         id_inscricao INT AUTO_INCREMENT PRIMARY KEY,
         id_docente INT,
         id_hae INT,
-        date_envio DATETIME NOT NULL,
+        data_envio DATETIME NOT NULL,
         quant_hae INT,
         outras_fatecs INT,
         id_projeto INT,

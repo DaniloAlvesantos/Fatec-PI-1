@@ -1,51 +1,62 @@
-<?php 
+<?php
 
 include_once __DIR__ . "/Database.php";
 
-class Inscricao {
+class Inscricao
+{
     private int $id_inscricao;
     private int $id_docente;
     private int $id_hae;
+    private int $id_projeto;
     public string $data_envio;
     public int $quant_hae;
     public int $outras_fatecs;
-    private int $id_projeto;
+    public Database $db;
 
-    public function __construct(int $id_inscricao, int $id_docente, int $id_hae, string $data_envio, int $quant_hae, int $outras_fatecs, int $id_projeto) {
-        $this->id_inscricao = $id_inscricao;
-        $this->id_docente = $id_docente;
-        $this->id_hae = $id_hae;
-        $this->data_envio = $data_envio;
-        $this->quant_hae = $quant_hae;
-        $this->outras_fatecs = $outras_fatecs;
-        $this->id_projeto = $id_projeto;
+    public function __construct($id_inscricao = null, $id_docente = null, $id_hae = null, $id_projeto = null, $data_envio = '', $quant_hae = 0, $outras_fatecs = 0)
+    {
+        $this->db = new Database();
+        $this->db->connect_to();
+
+        if ($id_inscricao !== null) {
+            $this->id_inscricao = $id_inscricao;
+            $this->id_docente = $id_docente;
+            $this->id_hae = $id_hae;
+            $this->id_projeto = $id_projeto;
+            $this->data_envio = $data_envio;
+            $this->quant_hae = $quant_hae;
+            $this->outras_fatecs = $outras_fatecs;
+        }
     }
 
-    public function getIdInscricao(): int {
+    public function createSubscription($id_docente, $id_hae, $id_projeto, $data_envio, $quant_hae, $outras_fatecs)
+    {
+        try {
+            $query = "INSERT INTO tb_inscricao (id_docente, id_hae, id_projeto, data_envio, quant_hae, outras_fatecs)
+                      VALUES (:id_docente, :id_hae, :id_projeto, :data_envio, :quant_hae, :outras_fatecs)";
+            $stmt = $this->db->get_PDO()->prepare($query);
+            $stmt->bindParam(':id_docente', $id_docente);
+            $stmt->bindParam(':id_hae', $id_hae);
+            $stmt->bindParam(':id_projeto', $id_projeto);
+            $stmt->bindParam(':data_envio', $data_envio);
+            $stmt->bindParam(':quant_hae', $quant_hae);
+            $stmt->bindParam(':outras_fatecs', $outras_fatecs);
+            $stmt->execute();
+            $this->id_inscricao = $this->db->get_PDO()->lastInsertId();
+            return $this->id_inscricao;
+        } catch (PDOException $e) {
+            error_log("Error in createSubscription: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getIdInscricao()
+    {
         return $this->id_inscricao;
     }
 
-    public function getIdDocente(): int {
-        return $this->id_docente;
-    }
-
-    public function getIdHAE(): int {
-        return $this->id_hae;
-    }
-
-    public function getDataEnvio(): string {
-        return $this->data_envio;
-    }
-
-    public function getQuantHAE(): int {
-        return $this->quant_hae;
-    }
-
-    public function getOutrasFatecs(): int {
-        return $this->outras_fatecs;
-    }
-
-    public function getIdProjeto(): int {
-        return $this->id_projeto;
+    public function setIdProjeto($id_projeto)
+    {
+        $this->id_projeto = $id_projeto;
     }
 }

@@ -3,7 +3,8 @@ session_start();
 require __DIR__ . "/../server/controller/state.php";
 require_once __DIR__ . "/../server/model/HAE.php";
 require_once __DIR__ . "/../server/model/Docente.php";
-
+require_once __DIR__ . "/../server/model/Inscricao.php";
+require_once __DIR__ . "/../server/model/Projeto.php";
 
 if (!isset($_SESSION["user"])) {
   header("Location: ../index.php");
@@ -25,16 +26,65 @@ if (isset($_GET['id'])) {
   }
 }
 
+// Handle AJAX form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // echo "<h2>POST Data:</h2>";
-  // echo "<pre>" . print_r($_POST, true) . "</pre>";
+  $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+    strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
-  // // For AJAX/JSON submissions add:
-  // $json_input = file_get_contents('php://input');
-  // echo "<h2>Raw JSON Input:</h2>";
-  // echo "<pre>" . htmlspecialchars($json_input) . "</pre>";
+  try {
+    $outrasHaes = isset($_POST['outras-fatecs']) ? true : false;
+    $quantidadeHaes = isset($_POST['quantidade-haes']) ? intval($_POST['quantidade-haes']) : 0;
+    $tituloProjeto = isset($_POST['titulo-projeto']) ? $_POST['titulo-projeto'] : '';
+    $dataInicio = isset($_POST['data-inicio']) ? $_POST['data-inicio'] : '';
+    $dataFinalizacao = isset($_POST['data-finalizacao']) ? $_POST['data-finalizacao'] : '';
+    $diasExecucao = isset($_POST['dias_execucao']) ? json_decode($_POST['dias_execucao']) : [];
+    $metas = isset($_POST['metas']) ? $_POST['metas'] : '';
+    $objetivos = isset($_POST['objetivos']) ? $_POST['objetivos'] : '';
+    $justificativa = isset($_POST['justificativa']) ? $_POST['justificativa'] : '';
+    $recursos = isset($_POST['recursos']) ? $_POST['recursos'] : '';
+    $resultadoEsperado = isset($_POST['resultado-esperado']) ? $_POST['resultado-esperado'] : '';
+    $metodologia = isset($_POST['metodologia']) ? $_POST['metodologia'] : '';
+    $cronograma = isset($_POST['cronograma']) ? $_POST['cronograma'] : '';
+
+    $projeto = new Projeto();
+    $inscricao = new Inscricao();
+    $projeto->createProjeto($tituloProjeto, $dataInicio, $dataFinalizacao, $hae->getIdHAE(), json_encode([
+      'metas' => $metas,
+      'objetivos' => $objetivos,
+      'justificativa' => $justificativa,
+      'recursos' => $recursos,
+      'resultado_esperado' => $resultadoEsperado,
+      'metodologia' => $metodologia,
+      'cronograma' => $cronograma
+    ]));
+
+    $inscricao->createSubscription($docente->getIdDocente(), $hae->getIdHAE(), $projeto->getIdProjeto(), date("Y-m-d H:i:s"), $quantidadeHaes, $outrasHaes);
+    echo "<script>console.log('ID da inscrição: " . $inscricao->getIdInscricao() . "');</script>";
+
+    if ($inscricao->getIdInscricao() !== null) {
+      echo json_encode(['success' => true, 'message' => 'Inscrição realizada com sucesso']);
+    };
+
+    if ($isAjax) {
+      header('Content-Type: application/json');
+      echo json_encode(['success' => true, 'message' => 'Inscrição realizada com sucesso']);
+      exit;
+    } else {
+      echo json_encode(['success' => false, 'message' => 'Erro ao realizar a inscrição']);
+      exit;
+    }
+  } catch (Exception $e) {
+    if ($isAjax) {
+      header('Content-Type: application/json');
+      http_response_code(500);
+      echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
+      exit;
+    } else {
+      echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
+      exit;
+    }
+  }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <hr />
   <section id="form-section">
     <h2 class="form-title">Formulario de inscrição</h2>
-    <form onsubmit="handleSubmit(event)" id="form-subscription" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>">
+    <form onsubmit="handleSubmit(event)" id="form-subscription" method="post">
       <div class="form-container">
         <span class="checkfield">
           <input type="checkbox" id="outras-fatecs" name="outras-fatecs" <?php echo $docente->outras_fatecs == true ? htmlspecialchars("checked") : "" ?> />

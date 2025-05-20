@@ -37,14 +37,16 @@ async function handleSubmit(event) {
   event.preventDefault();
 
   const form = document.querySelector("#form-subscription");
+  const formData = new FormData(form);
   const inputs = form.querySelectorAll("input");
-  const execDays = form.querySelectorAll("input[name='dia-execucao']");
+  const execDays = document.querySelectorAll('input[id^="dia-execucao"]');
   const textareas = form.querySelectorAll("textarea");
   const fields = [...inputs, ...textareas];
 
   const warnText = document.querySelector(".error-form");
   let isError = false;
 
+  // Validation
   fields.forEach((item) => {
     if (!item.value || item.value === "") {
       isError = true;
@@ -62,14 +64,48 @@ async function handleSubmit(event) {
     return;
   }
 
+  // Collect execution days
   let days = [];
-
   execDays.forEach((input) => {
     days.push(input.value);
   });
+  formData.append('dias_execucao', JSON.stringify(days));
 
-  form.submit();
+  // Get current URL with parameters
+  const currentUrl = window.location.href;
+
+  try {
+    // Set button to loading state
+    const submitButton = document.getElementById('submitButton');
+    const originalButtonText = submitButton.textContent;
+    submitButton.textContent = 'Enviando...';
+    submitButton.disabled = true;
+
+    // Submit the form via AJAX
+    const response = await fetch(currentUrl, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const result = await response.text();
+    
+    warnText.innerHTML = "Formulário enviado com sucesso!";
+    warnText.style.color = "green";
+    
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    warnText.innerHTML = "Erro ao enviar o formulário. Tente novamente.";
+    warnText.style.color = "red";
+  } finally {
+    submitButton.textContent = originalButtonText;
+    submitButton.disabled = false;
+  }
 }
+
 
 function verifyExecDay(input) {
   if (input.value.length < 15) return;
