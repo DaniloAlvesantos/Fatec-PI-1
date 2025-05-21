@@ -33,79 +33,55 @@ function removeInput(input) {
   container.removeChild(input);
 }
 
-async function handleSubmit(event) {
-  event.preventDefault();
+function handleSubmit(e) {
+  e.preventDefault();
 
-  const form = document.querySelector("#form-subscription");
-  const formData = new FormData(form);
-  const inputs = form.querySelectorAll("input");
-  const execDays = document.querySelectorAll('input[id^="dia-execucao"]');
-  const textareas = form.querySelectorAll("textarea");
-  const fields = [...inputs, ...textareas];
+  // Get all dias execucao inputs
+  const diasExecucaoInputs = document.querySelectorAll("[id^=dia-execucao]");
+  const diasExecucao = [];
 
-  const warnText = document.querySelector(".error-form");
-  let isError = false;
+  diasExecucaoInputs.forEach((input) => {
+    if (input.value.trim() !== "") {
+      diasExecucao.push(input.value.trim());
+    }
+  });
 
-  // Validation
-  fields.forEach((item) => {
-    if (!item.value || item.value === "") {
-      isError = true;
-      return (warnText.innerHTML = "Preenchar os campos vazios");
-    } else {
-      if (isError === true) {
-        return (warnText.innerHTML = "Preenchar os campos vazios");
+  // Collect form data
+  const formData = new FormData(document.getElementById("form-subscription"));
+  formData.append("dias_execucao", JSON.stringify(diasExecucao));
+
+  // Show loading or disable submit button
+  const submitButton = document.getElementById("submitButton");
+  submitButton.disabled = true;
+  submitButton.textContent = "Enviando...";
+
+  // Send AJAX request
+  fetch(window.location.href, {
+    method: "POST",
+    body: formData,
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      isError = false;
-      return (warnText.innerHTML = "");
-    }
-  });
-
-  if (isError === true) {
-    return;
-  }
-
-  // Collect execution days
-  let days = [];
-  execDays.forEach((input) => {
-    days.push(input.value);
-  });
-  formData.append('dias_execucao', JSON.stringify(days));
-
-  // Get current URL with parameters
-  const currentUrl = window.location.href;
-
-  try {
-    // Set button to loading state
-    const submitButton = document.getElementById('submitButton');
-    const originalButtonText = submitButton.textContent;
-    submitButton.textContent = 'Enviando...';
-    submitButton.disabled = true;
-
-    // Submit the form via AJAX
-    const response = await fetch(currentUrl, {
-      method: 'POST',
-      body: formData
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        document.querySelector(".error-form").textContent = data.message;
+        document.querySelector(".error-form").style.color = "green";
+      } else {
+        // Show error message
+        document.querySelector(".error-form").textContent = data.message;
+        document.querySelector(".error-form").style.color = "red";
+        submitButton.disabled = false;
+        submitButton.textContent = "Enviar";
+      }
     });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const result = await response.text();
-    
-    warnText.innerHTML = "Formulário enviado com sucesso!";
-    warnText.style.color = "green";
-    
-  } catch (error) {
-    console.error('Error submitting form:', error);
-    warnText.innerHTML = "Erro ao enviar o formulário. Tente novamente.";
-    warnText.style.color = "red";
-  } finally {
-    submitButton.textContent = originalButtonText;
-    submitButton.disabled = false;
-  }
 }
-
 
 function verifyExecDay(input) {
   if (input.value.length < 15) return;

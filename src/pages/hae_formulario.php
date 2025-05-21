@@ -1,15 +1,103 @@
 <?php
 session_start();
-require __DIR__ . "/../server/controller/state.php";
 require_once __DIR__ . "/../server/model/HAE.php";
 require_once __DIR__ . "/../server/model/Docente.php";
 require_once __DIR__ . "/../server/model/Inscricao.php";
 require_once __DIR__ . "/../server/model/Projeto.php";
 
+// Handle AJAX form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+    strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+
+  if ($isAjax) {
+    if (!isset($_SESSION["user"])) {
+      header('Content-Type: application/json');
+      echo json_encode(['success' => false, 'message' => 'User session expired']);
+      exit();
+    }
+
+    $docente = new Docente();
+    $docente = $docente->fromArray($_SESSION["user"]);
+
+    try {
+      $outrasHaes = isset($_POST['outras-fatecs']) ? true : false;
+      $quantidadeHaes = isset($_POST['quantidade-haes']) ? intval($_POST['quantidade-haes']) : 0;
+      $tituloProjeto = isset($_POST['titulo-projeto']) ? $_POST['titulo-projeto'] : '';
+      $dataInicio = isset($_POST['data-inicio']) ? $_POST['data-inicio'] : '';
+      $dataFinalizacao = isset($_POST['data-finalizacao']) ? $_POST['data-finalizacao'] : '';
+      $diasExecucao = isset($_POST['dias_execucao']) ? json_decode($_POST['dias_execucao']) : [];
+      $metas = isset($_POST['metas']) ? $_POST['metas'] : '';
+      $objetivos = isset($_POST['objetivos']) ? $_POST['objetivos'] : '';
+      $justificativa = isset($_POST['justificativa']) ? $_POST['justificativa'] : '';
+      $recursos = isset($_POST['recursos']) ? $_POST['recursos'] : '';
+      $resultadoEsperado = isset($_POST['resultado-esperado']) ? $_POST['resultado-esperado'] : '';
+      $metodologia = isset($_POST['metodologia']) ? $_POST['metodologia'] : '';
+      $cronograma = isset($_POST['cronograma']) ? $_POST['cronograma'] : '';
+
+      // Get HAE from GET parameter
+      $id = $_GET['id'] ?? 0;
+      $id = intval($id);
+      $hae = new HAE();
+      $hae = $hae->getHAEById($id);
+
+      if (!$hae) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => 'HAE not found']);
+        exit();
+      }
+
+      $projeto = new Projeto();
+      $inscricao = new Inscricao();
+
+      // Create the project
+      $projetoId = $projeto->createProjeto($tituloProjeto, $dataInicio, $dataFinalizacao, $hae->getIdHAE(), json_encode([
+        'metas' => $metas,
+        'objetivos' => $objetivos,
+        'justificativa' => $justificativa,
+        'recursos' => $recursos,
+        'resultado_esperado' => $resultadoEsperado,
+        'metodologia' => $metodologia,
+        'cronograma' => $cronograma
+      ]));
+
+      if (!$projetoId) {
+        throw new Exception('Failed to create project');
+      }
+
+      // Create the subscription
+      $inscricaoId = $inscricao->createSubscription(
+        $docente->getIdDocente(),
+        $hae->getIdHAE(),
+        $projetoId,
+        date("Y-m-d H:i:s"),
+        $quantidadeHaes,
+        $outrasHaes ? 1 : 0
+      );
+
+      if ($inscricaoId) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'message' => 'Inscrição realizada com sucesso']);
+        exit();
+      } else {
+        throw new Exception('Failed to create subscription');
+      }
+    } catch (Exception $e) {
+      header('Content-Type: application/json');
+      http_response_code(500);
+      echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
+      exit();
+    }
+    exit(); // Make sure to exit after handling AJAX
+  }
+}
+
 if (!isset($_SESSION["user"])) {
   header("Location: ../index.php");
   exit();
 }
+
+require __DIR__ . "/../server/controller/state.php";
 
 $docente = new Docente();
 $docente = $docente->fromArray($_SESSION["user"]);
@@ -23,66 +111,6 @@ if (isset($_GET['id'])) {
   if (!$hae) {
     header("Location: ./haes.php");
     exit();
-  }
-}
-
-// Handle AJAX form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-    strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
-
-  try {
-    $outrasHaes = isset($_POST['outras-fatecs']) ? true : false;
-    $quantidadeHaes = isset($_POST['quantidade-haes']) ? intval($_POST['quantidade-haes']) : 0;
-    $tituloProjeto = isset($_POST['titulo-projeto']) ? $_POST['titulo-projeto'] : '';
-    $dataInicio = isset($_POST['data-inicio']) ? $_POST['data-inicio'] : '';
-    $dataFinalizacao = isset($_POST['data-finalizacao']) ? $_POST['data-finalizacao'] : '';
-    $diasExecucao = isset($_POST['dias_execucao']) ? json_decode($_POST['dias_execucao']) : [];
-    $metas = isset($_POST['metas']) ? $_POST['metas'] : '';
-    $objetivos = isset($_POST['objetivos']) ? $_POST['objetivos'] : '';
-    $justificativa = isset($_POST['justificativa']) ? $_POST['justificativa'] : '';
-    $recursos = isset($_POST['recursos']) ? $_POST['recursos'] : '';
-    $resultadoEsperado = isset($_POST['resultado-esperado']) ? $_POST['resultado-esperado'] : '';
-    $metodologia = isset($_POST['metodologia']) ? $_POST['metodologia'] : '';
-    $cronograma = isset($_POST['cronograma']) ? $_POST['cronograma'] : '';
-
-    $projeto = new Projeto();
-    $inscricao = new Inscricao();
-    $projeto->createProjeto($tituloProjeto, $dataInicio, $dataFinalizacao, $hae->getIdHAE(), json_encode([
-      'metas' => $metas,
-      'objetivos' => $objetivos,
-      'justificativa' => $justificativa,
-      'recursos' => $recursos,
-      'resultado_esperado' => $resultadoEsperado,
-      'metodologia' => $metodologia,
-      'cronograma' => $cronograma
-    ]));
-
-    $inscricao->createSubscription($docente->getIdDocente(), $hae->getIdHAE(), $projeto->getIdProjeto(), date("Y-m-d H:i:s"), $quantidadeHaes, $outrasHaes);
-    echo "<script>console.log('ID da inscrição: " . $inscricao->getIdInscricao() . "');</script>";
-
-    if ($inscricao->getIdInscricao() !== null) {
-      echo json_encode(['success' => true, 'message' => 'Inscrição realizada com sucesso']);
-    };
-
-    if ($isAjax) {
-      header('Content-Type: application/json');
-      echo json_encode(['success' => true, 'message' => 'Inscrição realizada com sucesso']);
-      exit;
-    } else {
-      echo json_encode(['success' => false, 'message' => 'Erro ao realizar a inscrição']);
-      exit;
-    }
-  } catch (Exception $e) {
-    if ($isAjax) {
-      header('Content-Type: application/json');
-      http_response_code(500);
-      echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
-      exit;
-    } else {
-      echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
-      exit;
-    }
   }
 }
 ?>

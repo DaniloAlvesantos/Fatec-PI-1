@@ -59,4 +59,34 @@ class Inscricao
     {
         $this->id_projeto = $id_projeto;
     }
+    public function getMySubscriptions($id_docente){ 
+        $query = "SELECT i.id_inscricao, i.id_docente, i.id_hae, i.id_projeto, i.data_envio, i.quant_hae, i.outras_fatecs, p.titulo
+                  FROM tb_inscricao i
+                  JOIN tb_projeto p ON i.id_projeto = p.id_projeto
+                  WHERE i.id_docente = :id_docente";
+        $stmt = $this->db->get_PDO()->prepare($query);
+        $stmt->bindParam(':id_docente', $id_docente);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result;
+        } else {
+            return [];
+        }
+    }
+    public function getMySubscriptionsById($id_inscricao) {
+        $query = "SELECT i.id_inscricao, i.id_docente, i.id_hae, i.id_projeto, i.data_envio, i.quant_hae, i.outras_fatecs, p.titulo
+                  FROM tb_inscricao i
+                  JOIN tb_projeto p ON i.id_projeto = p.id_projeto
+                  WHERE i.id_inscricao = :id_inscricao";
+        $stmt = $this->db->get_PDO()->prepare($query);
+        $stmt->bindParam(':id_inscricao', $id_inscricao);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result;
+        } else {
+            return [];
+        }
+    }
 }

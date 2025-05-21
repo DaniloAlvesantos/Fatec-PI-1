@@ -30,7 +30,7 @@ class HeaderFatec extends HTMLElement {
       () => "../"
     );
 
-    const src = path.join("") + "public/icons/user.svg";
+    const src = path.join("") + "/src/public/icons/user.svg";
 
     header.classList = "header";
     userContainer.classList = "user-container";
@@ -55,7 +55,7 @@ class HeaderFatec extends HTMLElement {
     button.setAttribute("style", "--button-border: var(--fatec-red-500)");
     button.innerHTML = this.dataset.buttonTitle;
 
-    if(this.dataset.buttonTitle === "Sair") {
+    if (this.dataset.buttonTitle === "Sair") {
       button.addEventListener("click", async (e) => {
         e.preventDefault();
         await this.logOut();
@@ -68,8 +68,22 @@ class HeaderFatec extends HTMLElement {
   }
 
   async logOut() {
-    await fetch(location.origin + "/src/server/controller/logout.php");
-    window.location.href = location.origin + "/src/index.php";
+    const basePath = window.location.pathname
+      .split("/")
+      .slice(0, window.location.pathname.split("/").indexOf("src") + 1)
+      .join("/");
+
+    const route = `${basePath}/server/controller/logout.php`;
+
+    try {
+      await fetch(route, {
+        method: "GET",
+      });
+
+      window.location.href = `${basePath}/index.php`;
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
   }
 
   styles() {

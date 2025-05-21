@@ -3,10 +3,10 @@ session_start();
 
 if (isset($_SESSION['user'])) {
   if ($_SESSION["user"]["cargo"] !== "Professor") {
-    header("Location: /src/pages/admin/painel.admin.php");
+    header("Location:" . dirname($_SERVER['PHP_SELF'], 2) . "/src/pages/admin/painel.admin.php");
     exit();
   }
-  header("Location: /src/pages/home.php");
+  header("Location:" . dirname($_SERVER['PHP_SELF'], 2) . "/src/pages/home.php");
   exit();
 }
 
@@ -23,11 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($user) {
     $_SESSION["user"] = $user;
     if ($user["cargo"] !== "Professor") {
-      header("Location: /src/pages/admin/painel.admin.php");
+      header("Location:" . dirname($_SERVER['PHP_SELF'], 2) . "/src/pages/admin/painel.admin.php");
       exit();
     }
 
-    header("Location: /src/pages/home.php");
+    header("Location:" . dirname($_SERVER['PHP_SELF'], 2) . "/src/pages/home.php");
     exit();
   } else {
     $errorMessage = "Email ou senha inválidos.";
