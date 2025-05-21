@@ -39,10 +39,11 @@ function returnSQLTables() {
         id_inscricao INT AUTO_INCREMENT PRIMARY KEY,
         id_docente INT,
         id_hae INT,
-        data_envio DATETIME NOT NULL,
+        data_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
         quant_hae INT,
         outras_fatecs INT,
         id_projeto INT,
+        status ENUM('Pendente', 'Em análise', 'Aprovada', 'Reprovada') NOT NULL DEFAULT 'Pendente',
         FOREIGN KEY (id_docente) REFERENCES tb_docente(id_docente),
         FOREIGN KEY (id_hae) REFERENCES tb_hae(id_hae),
         FOREIGN KEY (id_projeto) REFERENCES tb_projeto(id_projeto)

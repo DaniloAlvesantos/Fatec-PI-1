@@ -11,6 +11,7 @@ class Inscricao
     public string $data_envio;
     public int $quant_hae;
     public int $outras_fatecs;
+    public string $status;
     public Database $db;
 
     public function __construct($id_inscricao = null, $id_docente = null, $id_hae = null, $id_projeto = null, $data_envio = '', $quant_hae = 0, $outras_fatecs = 0)
