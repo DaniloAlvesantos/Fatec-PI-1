@@ -59,6 +59,13 @@ form {
   margin: 1rem 0;
 }
 
+.card-hae-desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%; /* Or any fixed width */
+}
+
 .card-hae-tag {
   display: flex;
   align-items: center;

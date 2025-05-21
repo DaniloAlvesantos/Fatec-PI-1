@@ -51,79 +51,50 @@ $docente = $docente->fromArray($_SESSION["user"]);
 
     <main>
       <?php
-        $inscricao = new Inscricao();
-        $all_inscricoes = $inscricao->getMySubscriptions($docente->getIdDocente());
-        if (count($all_inscricoes) == 0 || !isset($all_inscricoes)) {
-          echo "<h2 class='no-hae'>Nenhuma inscrição encontrada &#128533;</h2>";
-        }
+      $inscricao = new Inscricao();
+      $all_inscricoes = $inscricao->getMySubscriptions($docente->getIdDocente());
+      if (count($all_inscricoes) == 0 || !isset($all_inscricoes)) {
+        echo "<h2 class='no-hae'>Nenhuma inscrição encontrada &#128533;</h2>";
+      }
 
-        foreach ($all_inscricoes as $inscricao) {
-          echo $inscricao['id_hae'];
-          // $hae = new HAE();
-          // $hae = $hae->getHAEById($inscricao['id_hae']);
-          // $data_envio = date('d/m', strtotime($inscricao['data_envio']));
+      foreach ($all_inscricoes as $inscricao) {
+        $hae = new HAE();
+        $hae = $hae->getHAEById($inscricao['id_hae']);
+        $data_envio = date('d/m/y', strtotime($inscricao['data_envio']));
 
-          // echo "
-          //   <div class='card-hae card-primary'>
-          //       <span class='card-hae-title'>
-          //         <p class='card-hae-tag'>H.A.E</p>
-          //         <h3 class=''>{$hae['titulo']}</h3>
-          //       </span>
 
-          //       <span class='card-hae-info'>
-          //         <p>{$hae['descricao']}</p>
-          //         <p>Quantidade HAE: {$inscricao['quant_hae']}</p>
-          //         <p>Curso: {$hae['tip_hae']}</p>
-          //         <p>Status: <strong>Indeferido</strong></p>
-          //       </span>
+        echo "
+          <div class='card-hae card-primary'>
+              <span class='card-hae-title'>
+                <p class='card-hae-tag'>H.A.E</p>
+                <h3 class=''>{$hae->titulo}</h3>
+              </span>
 
-          //       <span class='card-hae-date'>
-          //         <img src='../../public/icons/calendar-clock.svg' alt='calendario' />
-          //         <p>{$data_envio}</p>
-          //       </span>
+              <span class='card-hae-info'>
+                <p class='card-hae-desc'>{$hae->descricao}</p>
+                <p>Quantidade HAE: {$inscricao['quant_hae']}</p>
+                <p>Curso: {$hae->tip_hae}</p>
+                <p>Status: <strong>{$inscricao['status']}</strong></p>
+              </span>
 
-          //       <a href='./preview/inscricao.php'>
-          //         <button
-          //           class='button-primary'
-          //           style='
-          //               --button-color: var(--fatec-red-500);
-          //               --button-color-hover: var(--fatec-red-400);
-          //             '>
-          //           Visualizar
-          //         </button>
-          //       </a>
-          //     </div>";
-        }
+              <span class='card-hae-date'>
+                <img src='../../public/icons/calendar-clock.svg' alt='calendario' />
+                <p>{$data_envio}</p>
+              </span>
+
+              <a href='./preview/inscricao.php?id={$inscricao['id_inscricao']}'>
+                <button
+                  class='button-primary'
+                  style='
+                      --button-color: var(--fatec-red-500);
+                      --button-color-hover: var(--fatec-red-400);
+                    '>
+                  Visualizar
+                </button>
+              </a>
+            </div>";
+      }
       ?>
-      <div class="card-hae card-primary">
-        <span class="card-hae-title">
-          <p class="card-hae-tag">H.A.E</p>
-          <h3 class="">Fatec Itapira</h3>
-        </span>
-
-        <span class="card-hae-info">
-          <p>Monitoramento de estágio</p>
-          <p>Quantidade HAE: 6</p>
-          <p>Curso: DSM</p>
-          <p>Status: <strong>Indeferido</strong></p>
-        </span>
-
-        <span class="card-hae-date">
-          <img src="../../public/icons/calendar-clock.svg" alt="calendario" />
-          <p>25/10/2024</p>
-        </span>
-
-        <a href="./preview/inscricao.php">
-          <button
-            class="button-primary"
-            style="
-                --button-color: var(--fatec-red-500);
-                --button-color-hover: var(--fatec-red-400);
-              ">
-            Visualizar
-          </button>
-        </a>
-      </div>
     </main>
   </section>
 

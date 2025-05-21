@@ -60,8 +60,9 @@ class Inscricao
     {
         $this->id_projeto = $id_projeto;
     }
-    public function getMySubscriptions($id_docente){ 
-        $query = "SELECT i.id_inscricao, i.id_docente, i.id_hae, i.id_projeto, i.data_envio, i.quant_hae, i.outras_fatecs, p.titulo
+    public function getMySubscriptions($id_docente)
+    {
+        $query = "SELECT i.id_inscricao, i.id_docente, i.id_hae, i.id_projeto, i.data_envio, i.quant_hae, i.outras_fatecs, p.titulo, i.status
                   FROM tb_inscricao i
                   JOIN tb_projeto p ON i.id_projeto = p.id_projeto
                   WHERE i.id_docente = :id_docente";
@@ -75,19 +76,38 @@ class Inscricao
             return [];
         }
     }
-    public function getMySubscriptionsById($id_inscricao) {
-        $query = "SELECT i.id_inscricao, i.id_docente, i.id_hae, i.id_projeto, i.data_envio, i.quant_hae, i.outras_fatecs, p.titulo
-                  FROM tb_inscricao i
-                  JOIN tb_projeto p ON i.id_projeto = p.id_projeto
-                  WHERE i.id_inscricao = :id_inscricao";
+    public function getMySubscriptionsById($id_inscricao)
+    {
+        $query = "SELECT i.*, p.*, h.* FROM tb_inscricao i JOIN tb_projeto p ON i.id_projeto = p.id_projeto JOIN tb_hae h ON i.id_hae = h.id_hae WHERE i.id_inscricao = :id_inscricao";
         $stmt = $this->db->get_PDO()->prepare($query);
         $stmt->bindParam(':id_inscricao', $id_inscricao);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($result) {
-            return $result;
+            return new self(
+                $result['id_inscricao'],
+                $result['id_docente'],
+                $result['id_hae'],
+                $result['id_projeto'],
+                $result['data_envio'],
+                $result['quant_hae'],
+                $result['outras_fatecs']
+            );
         } else {
             return [];
         }
+    }
+
+    public function getIdDocente()
+    {
+        return $this->id_docente;
+    }
+    public function getIdHae()
+    {
+        return $this->id_hae;
+    }
+    public function getIdProjeto()
+    {
+        return $this->id_projeto;
     }
 }

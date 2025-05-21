@@ -32,6 +32,7 @@ function returnSQLTables() {
         titulo VARCHAR(40) NOT NULL,
         id_hae INT,
         descricoes JSON,
+        dias_exec JSON
         FOREIGN KEY (id_hae) REFERENCES tb_hae(id_hae)
     );
 
@@ -47,6 +48,7 @@ function returnSQLTables() {
         FOREIGN KEY (id_docente) REFERENCES tb_docente(id_docente),
         FOREIGN KEY (id_hae) REFERENCES tb_hae(id_hae),
         FOREIGN KEY (id_projeto) REFERENCES tb_projeto(id_projeto)
+        CONSTRAINT uq_docente_hae UNIQUE (id_docente, id_hae)
     );
 
     CREATE TABLE tb_banco_de_horas (

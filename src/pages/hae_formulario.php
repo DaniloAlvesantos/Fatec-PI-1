@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $tituloProjeto = isset($_POST['titulo-projeto']) ? $_POST['titulo-projeto'] : '';
       $dataInicio = isset($_POST['data-inicio']) ? $_POST['data-inicio'] : '';
       $dataFinalizacao = isset($_POST['data-finalizacao']) ? $_POST['data-finalizacao'] : '';
-      $diasExecucao = isset($_POST['dias_execucao']) ? json_decode($_POST['dias_execucao']) : [];
+      $diasExecucao = isset($_POST['dias_execucao']) ? json_encode(json_decode($_POST['dias_execucao'])) : json_encode([]);
       $metas = isset($_POST['metas']) ? $_POST['metas'] : '';
       $objetivos = isset($_POST['objetivos']) ? $_POST['objetivos'] : '';
       $justificativa = isset($_POST['justificativa']) ? $_POST['justificativa'] : '';
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'resultado_esperado' => $resultadoEsperado,
         'metodologia' => $metodologia,
         'cronograma' => $cronograma
-      ]));
+      ]), $diasExecucao);
 
       if (!$projetoId) {
         throw new Exception('Failed to create project');
@@ -144,7 +144,7 @@ if (isset($_GET['id'])) {
         </span>
         <span class="hae-container-header-info">
           <img src="../public/icons/calendar-clock.svg" alt="" />
-          <p><?php echo date("d/m", strtotime($hae->data_inicio)); ?> - <?php echo date("d/m", strtotime($hae->data_inicio)); ?></p>
+          <p><?php echo date("d/m", strtotime($hae->data_inicio)); ?> - <?php echo date("d/m", strtotime($hae->data_final)); ?></p>
         </span>
       </div>
     </div>
