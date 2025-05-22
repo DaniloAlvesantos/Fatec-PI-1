@@ -1,6 +1,7 @@
 <?php
 
-function returnSQLTables() {
+function returnSQLTables()
+{
     return "
     CREATE TABLE tb_docente (
         id_docente INT AUTO_INCREMENT PRIMARY KEY,
@@ -71,14 +72,20 @@ function returnSQLTables() {
 
     CREATE TABLE tb_feedback (
         id_feedback INT AUTO_INCREMENT PRIMARY KEY,
-        id_inscricao INT,
-        data_envio DATETIME,
-        descricao VARCHAR(255),
-        id_coor INT,
-        id_diretor INT,
-        observacao VARCHAR(255),
-        resultado ENUM('Aprovado', 'Reprovado'),
+        id_inscricao INT NOT NULL,
+        data_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
+        resultado ENUM('Aprovada', 'Reprovada'),
         FOREIGN KEY (id_inscricao) REFERENCES tb_inscricao(id_inscricao)
+    );
+
+    CREATE TABLE tb_feedback_comentario (
+        id_comentario INT AUTO_INCREMENT PRIMARY KEY,
+        id_feedback INT NOT NULL,
+        cargo ENUM('Coordenador', 'Diretor') NOT NULL,
+        id_docente INT NOT NULL,
+        comentario TEXT NOT NULL,
+        FOREIGN KEY (id_feedback) REFERENCES tb_feedback(id_feedback),
+        FOREIGN KEY (id_docente) REFERENCES tb_docente(id_docente)
     );
 
     CREATE TABLE tb_relatorio (
@@ -87,6 +94,7 @@ function returnSQLTables() {
         data_entrega DATETIME,
         pdf_url TEXT,
         id_feedback INT,
+        descricoes JSON,
         FOREIGN KEY (id_projeto) REFERENCES tb_projeto(id_projeto),
         FOREIGN KEY (id_feedback) REFERENCES tb_feedback(id_feedback)
     );
@@ -94,7 +102,8 @@ function returnSQLTables() {
 }
 
 
-enum TablesEnum: string {
+enum TablesEnum: string
+{
     case docente = "tb_docente";
     case hae = "tb_hae";
     case chamada = "tb_chamada";
@@ -103,9 +112,9 @@ enum TablesEnum: string {
     case projeto = "tb_projeto";
     case relatorio = "tb_relatorio";
     case feedback = "tb_feedback";
- 
-    public function get_enum($enum): TablesEnum {
+
+    public function get_enum($enum): TablesEnum
+    {
         return $this[$enum];
     }
 }
- 

@@ -23,7 +23,7 @@ if (isset($_GET['id'])) {
   $inscricao = $inscricao->getMySubscriptionsById($id);
   $hae = $hae->getHAEById($inscricao->getIdHae());
   $projeto = $projeto->getProjetoById($inscricao->getIdProjeto());
-  $descricoes = json_decode($projeto->descricoes,true);
+  $descricoes = json_decode($projeto->descricoes, true);
 
   if (!$inscricao || !isset($_GET["id"])) {
     header("Location: ../inscricoes.php");
@@ -163,7 +163,7 @@ if (isset($_GET['id'])) {
             id="metas"
             name="metas"
             placeholder="Diga suas metas"
-            disabled><?php echo $descricoes["metas"];?>
+            disabled><?php echo $descricoes["metas"]; ?>
           </textarea>
         </span>
       </div>
@@ -176,7 +176,7 @@ if (isset($_GET['id'])) {
             id="objetivos"
             name="objetivos"
             placeholder="Diga seus objetivos"
-            disabled><?php echo $descricoes["objetivos"];?></textarea>
+            disabled><?php echo $descricoes["objetivos"]; ?></textarea>
         </span>
 
         <span class="form-field-column"><label for="justificativa">Justificativa</label>
@@ -186,7 +186,7 @@ if (isset($_GET['id'])) {
             id="justificativa"
             name="justificativa"
             placeholder="Justifique seu projeto"
-            disabled><?php echo $descricoes["justificativa"];?></textarea>
+            disabled><?php echo $descricoes["justificativa"]; ?></textarea>
         </span>
 
         <span class="form-field-column">
@@ -197,7 +197,7 @@ if (isset($_GET['id'])) {
             id="recursos"
             name="recursos"
             placeholder="Sala, Mesa, Caderno..."
-            value="<?php echo $descricoes["recursos"];?>"
+            value="<?php echo $descricoes["recursos"]; ?>"
             disabled />
         </span>
 
@@ -209,7 +209,7 @@ if (isset($_GET['id'])) {
             id="resultado-esperado"
             name="resultado-esperado"
             placeholder="Expectativas de resultado"
-            disabled><?php echo $descricoes["resultado_esperado"];?></textarea>
+            disabled><?php echo $descricoes["resultado_esperado"]; ?></textarea>
         </span>
 
         <span class="form-field-column">
@@ -220,7 +220,7 @@ if (isset($_GET['id'])) {
             id="metodologia"
             name="metodologia"
             placeholder="Medoto de realização"
-            disabled><?php echo $descricoes["metodologia"];?></textarea>
+            disabled><?php echo $descricoes["metodologia"]; ?></textarea>
         </span>
 
         <span class="form-field-column">
@@ -230,7 +230,7 @@ if (isset($_GET['id'])) {
             id="cronograma"
             name="cronograma"
             placeholder="Agosto: Apresentação..."
-            disabled><?php echo $descricoes["cronograma"];?></textarea>
+            disabled><?php echo $descricoes["cronograma"]; ?></textarea>
         </span>
       </div>
     </form>

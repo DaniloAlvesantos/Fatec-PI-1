@@ -52,7 +52,8 @@ class Projeto
         }
     }
 
-    public function getProjetoById($id_projeto) {
+    public function getProjetoById($id_projeto)
+    {
         try {
             $query = "SELECT * FROM tb_projeto WHERE id_projeto = ?";
             $stmt = $this->db->get_PDO()->prepare($query);
@@ -60,7 +61,7 @@ class Projeto
             $stmt->execute();
             $results = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($results) {
+            if ($results) {
                 return new self(
                     $results['id_projeto'],
                     $results['titulo'],
@@ -72,7 +73,6 @@ class Projeto
                 );
             }
             return null;
-
         } catch (PDOException $e) {
             error_log("Error in getProjetoById: " . $e->getMessage());
             return false;

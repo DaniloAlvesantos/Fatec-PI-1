@@ -1,306 +1,313 @@
 <?php
 session_start();
 require __DIR__ . "/../../../server/controller/state.php";
+require_once __DIR__ . "/../../../server/model/HAE.php";
+require_once __DIR__ . "/../../../server/model/Inscricao.php";
+require_once __DIR__ . "/../../../server/model/Docente.php";
+require_once __DIR__ . "/../../../server/model/Projeto.php";
+require_once __DIR__ . "/../../../server/model/Feedback.php";
 
-if(!isset($_SESSION["user"])) {
+if (!isset($_SESSION["user"])) {
   header("Location: ../index.php");
   exit();
 }
 
-?><!DOCTYPE html>
+// if(!isset($_SESSION["user"]["cargo"]) || $_SESSION["user"]["cargo"] != "Coordenador") {
+//   header("Location: ../index.php");
+//   exit();
+// }
+
+if (isset($_GET['id'])) {
+  $id = $_GET['id'];
+  $id = intval($id);
+
+  $hae = new HAE();
+  $inscricao = new Inscricao();
+  $projeto = new Projeto();
+  $docente = new Docente();
+
+
+  $inscricao = $inscricao->getMySubscriptionsById($id);
+  $hae = $hae->getHAEById($inscricao->getIdHae());
+  $projeto = $projeto->getProjetoById($inscricao->getIdProjeto());
+  $docente = $docente->getDocenteById($inscricao->getIdDocente());
+  $descricoes = json_decode($projeto->descricoes, true);
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  $observacao = $_POST["observacao"];
+  $status = $_POST["status"];
+
+
+  $inscricao->setStatus($status);
+
+  // $inscricao->setObservacao($observacao);
+  // $inscricao->updateInscricao();
+}
+
+?>
+<!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Inscrição enviada">
-    <title>Inscrição Admin | HAE Fatec Itapira</title>
-    <link rel="stylesheet" href="../../../styles/global.css" />
-    <link rel="stylesheet" href="../../../styles/components.css" />
-    <link rel="stylesheet" href="../../../styles/formulario.css" />
-  </head>
-  <body>
-    <header-fatec
-      data-button-title="Voltar"
-      data-button-href="../inscricoes.admin.php"
-    ></header-fatec>
 
-    <section id="hae-section">
-      <div id="hae-container">
-        <div>
-          <h1>Monitoramento de estágio</h1>
-          <p>Curso: DSM</p>
-        </div>
-        <div class="hae-container-header">
-          <span class="hae-container-header-info">
-            <img src="../../../public/icons/hourglass.svg" alt="" />
-            <p>Quantidade HAE: 6</p>
-          </span>
-          <span class="hae-container-header-info">
-            <img src="../../../public/icons/calendar-clock.svg" alt="" />
-            <p>20/10 - 24/12</p>
-          </span>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Inscrição enviada">
+  <title>Inscrição Admin | HAE Fatec Itapira</title>
+  <link rel="stylesheet" href="../../../styles/global.css" />
+  <link rel="stylesheet" href="../../../styles/components.css" />
+  <link rel="stylesheet" href="../../../styles/formulario.css" />
+</head>
+
+<body>
+  <header-fatec
+    data-button-title="Voltar"
+    data-button-href="../inscricoes.admin.php"></header-fatec>
+
+  <section id="hae-section">
+    <div id="hae-container">
+      <div>
+        <h1><?php echo $hae->titulo ?></h1>
+        <p>Curso: <?php echo $hae->tip_hae ?></p>
       </div>
-
-      <div id="about-container">
-        <h3>Sobre a vaga</h3>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum. de acordo com o curriculo do curso
-          e com sua carga horaria...
-        </p>
+      <div class="hae-container-header">
+        <span class="hae-container-header-info">
+          <img src="../../../public/icons/hourglass.svg" alt="" />
+          <p>Quantidade HAE: <?php echo $hae->quant_hae ?></p>
+        </span>
+        <span class="hae-container-header-info">
+          <img src="../../../public/icons/calendar-clock.svg" alt="" />
+          <p><?php echo date("d/m", strtotime($hae->data_inicio)); ?> - <?php echo date("d/m", strtotime($hae->data_final)); ?></p>
+        </span>
       </div>
-    </section>
-    <hr />
-    <section id="form-section">
-      <h2 class="form-title">Formulario de inscrição</h2>
-      <form id="form-subscription">
-        <div class="form-container">
-          <span class="checkfield">
-            <input
-              type="checkbox"
-              id="outras-fatecs"
-              name="outras-fatecs"
-              checked
-              disabled
-            />
-            <label for="outras-fatecs">Possui aulas em outras Fatecs?</label>
-          </span>
+    </div>
 
-          <span class="form-field-line">
-            <input
-              class="input-primary"
-              type="number"
-              id="quantidade-haes"
-              name="quantidade-haes"
-              max="10"
-              value="4"
-              disabled
-            />
-            <label for="quantidade-haes">Quantidade de HAEs</label>
-          </span>
+    <div id="about-container">
+      <h3>Sobre a vaga</h3>
+      <p><?php echo $hae->descricao ?></p>
+    </div>
+  </section>
+  <hr />
+  <section id="form-section">
+    <h2 class="form-title">Formulario do docente</h2>
+    <form id="form-subscription">
+      <div class="form-container">
+        <span class="checkfield">
+          <input
+            type="checkbox"
+            id="outras-fatecs"
+            name="outras-fatecs"
+            <?php echo intval($inscricao->outras_fatecs) === 1 ? htmlspecialchars("checked") : null; ?>
+            disabled />
+          <label for="outras-fatecs">Possui aulas em outras Fatecs?</label>
+        </span>
 
-          <span class="form-field-column">
-            <label for="titulo-projeto">Título do Projeto</label>
-            <input
-              class="input-primary"
-              type="text"
-              id="titulo-projeto"
-              name="titulo-projeto"
-              placeholder="Nome do seu projeto"
-              value="Meu estágio minha vida"
-              disabled
-            />
-          </span>
+        <span class="form-field-line">
+          <input
+            class="input-primary"
+            type="number"
+            id="quantidade-haes"
+            name="quantidade-haes"
+            value="<?php echo $inscricao->quant_hae ?>"
+            disabled />
+          <label for="quantidade-haes">Quantidade de HAEs</label>
+        </span>
 
-          <span class="form-field-column">
-            <label for="data-inicio">Data de Início</label>
-            <input
-              class="input-primary"
-              type="text"
-              id="data-inicio"
-              name="data-inicio"
-              value="05/02/2025"
-              disabled
-            />
-          </span>
+        <span class="form-field-column">
+          <label for="titulo-projeto">Título do Projeto</label>
+          <input
+            class="input-primary"
+            type="text"
+            id="titulo-projeto"
+            name="titulo-projeto"
+            placeholder="Nome do seu projeto"
+            value="<?php echo $projeto->titulo ?>"
+            disabled />
+        </span>
 
-          <span class="form-field-column"
-            ><label for="data-finalizacao">Data de Finalização</label>
-            <input
-              class="input-primary"
-              type="text"
-              id="data-finalizacao"
-              name="data-finalizacao"
-              value="03/06/2025"
-              disabled
-          /></span>
+        <span class="form-field-column">
+          <label for="data-inicio">Data de Início</label>
+          <input
+            class="input-primary"
+            type="text"
+            id="data-inicio"
+            name="data-inicio"
+            value="<?php echo date("d/m/Y", strtotime($projeto->data_inicio)) ?>"
+            disabled />
+        </span>
 
-          <span class="form-field-column"
-            ><label>Dias de Execução</label>
-            <p class="error"></p>
-            <div id="container-inputs" class="form-field-column">
-              <input
-                class="input-primary"
-                type="text"
-                id="dia-execucao1"
-                name="dia-execucao"
-                autocomplete="off"
-                placeholder="Segunda, Noite, 17-19"
-                value="S,N,18-20"
-                disabled
-              />
-              <input
-                class="input-primary"
-                type="text"
-                id="dia-execucao2"
-                name="dia-execucao"
-                autocomplete="off"
-                placeholder="Segunda, Noite, 17-19"
-                value="T,N,15-18"
-                disabled
-              />
-            </div>
-          </span>
+        <span class="form-field-column"><label for="data-finalizacao">Data de Finalização</label>
+          <input
+            class="input-primary"
+            type="text"
+            id="data-finalizacao"
+            name="data-finalizacao"
+            value="<?php echo date("d/m/Y", strtotime($projeto->data_final)) ?>"
+            disabled /></span>
 
-          <span class="form-field-column">
-            <label for="metas">Metas</label>
-            <textarea
-              class="textarea-primary"
-              type="text"
-              id="metas"
-              name="metas"
-              placeholder="Diga suas metas"
-              disabled
-            >
-Minha meta é fazer que todos os aluno consigam sua primeira vaga de estágio durante o primeiro semestre do ano de 2025
-          </textarea
-            >
-          </span>
-        </div>
+        <span class="form-field-column"><label>Dias de Execução</label>
+          <p class="error"></p>
+          <div id="container-inputs" class="form-field-column">
+            <?php
+            $p = json_decode($projeto->dias_exec);
+            foreach ($p as $key => $value) {
+              echo '<input
+                  class="input-primary"
+                  type="text"
+                  id="dia-execucao'
+                . ($key + 1) . '"
+                  name="dia-execucao"
+                  autocomplete="off"
+                  placeholder="Segunda, Noite, 17-19"
+                  value="' . htmlspecialchars($value) . '"
+                  disabled />';
+            }
+            ?>
+          </div>
+        </span>
 
-        <div class="form-container">
-          <span class="form-field-column"
-            ><label for="objetivos">Objetivos</label>
-            <textarea
-              class="textarea-primary"
-              type="text"
-              id="objetivos"
-              name="objetivos"
-              placeholder="Diga seus objetivos"
-              disabled
-            >
-Objetivos do projeto é fazer que a unidade seja reconhecida pelas empresa, qual os alunos tenham o melhor desempenho da região</textarea
-            >
-          </span>
-
-          <span class="form-field-column"
-            ><label for="justificativa">Justificativa</label>
-            <textarea
-              class="textarea-primary"
-              type="text"
-              id="justificativa"
-              name="justificativa"
-              placeholder="Justifique seu projeto"
-              disabled
-            >
-Os alunos não conseguem ter uma margem de ação para conquistar um estágio</textarea
-            >
-          </span>
-
-          <span class="form-field-column">
-            <label for="recursos">Recursos, Materiais e Humanos</label>
-            <input
-              class="input-primary"
-              type="text"
-              id="recursos"
-              name="recursos"
-              placeholder="Sala, Mesa, Caderno..."
-              value="Sala B2, Ar condicionado, Internet"
-              disabled
-            />
-          </span>
-
-          <span class="form-field-column">
-            <label for="resultado-esperado">Resultado Esperado</label>
-            <textarea
-              class="textarea-primary"
-              type="text"
-              id="resultado-esperado"
-              name="resultado-esperado"
-              placeholder="Expectativas de resultado"
-              disabled
-            >
-Ter pelo menos 60% dos alunos fazendo estágio</textarea
-            >
-          </span>
-
-          <span class="form-field-column">
-            <label for="metodologia">Metodologia</label>
-            <textarea
-              class="textarea-primary"
-              type="text"
-              id="metodologia"
-              name="metodologia"
-              placeholder="Medoto de realização"
-              disabled
-            >
-Orientar e instruir os alunos a necessidade do estágio</textarea
-            >
-          </span>
-
-          <span class="form-field-column">
-            <label for="cronograma">Cronograma das Atividades</label>
-            <textarea
-              class="textarea-primary"
-              id="cronograma"
-              name="cronograma"
-              placeholder="Agosto: Apresentação..."
-              disabled
-            >
-Fev: Inicio
-Mar: Instruções
-...</textarea
-            >
-          </span>
-        </div>
-      </form>
-    </section>
-
-    <hr />
-
-    <article class="status-container">
-      <form class="form-obs">
-        <h3>Observações:</h3>
-
-        <div class="status-comment">
-          <img src="../../../public/icons/user.svg" alt="" />
-          <span>Coordenadora Marcia:</span>
+        <span class="form-field-column">
+          <label for="metas">Metas</label>
           <textarea
-            name="observacao"
-            id="observacao"
             class="textarea-primary"
-            oninput="autoSize(this)"
-            placeholder="Digite sua observação"
-          ></textarea>
-        </div>
+            type="text"
+            id="metas"
+            name="metas"
+            placeholder="Diga suas metas"
+            disabled><?php echo $descricoes["metas"] ?></textarea>
+        </span>
+      </div>
 
-        <div class="buttons">
-          <button
-            class="button-primary"
-            style="
+      <div class="form-container">
+        <span class="form-field-column"><label for="objetivos">Objetivos</label>
+          <textarea
+            class="textarea-primary"
+            type="text"
+            id="objetivos"
+            name="objetivos"
+            placeholder="Diga seus objetivos"
+            disabled><?php echo $descricoes["objetivos"] ?></textarea>
+        </span>
+
+        <span class="form-field-column"><label for="justificativa">Justificativa</label>
+          <textarea
+            class="textarea-primary"
+            type="text"
+            id="justificativa"
+            name="justificativa"
+            placeholder="Justifique seu projeto"
+            disabled><?php echo $descricoes["justificativa"] ?></textarea>
+        </span>
+
+        <span class="form-field-column">
+          <label for="recursos">Recursos, Materiais e Humanos</label>
+          <input
+            class="input-primary"
+            type="text"
+            id="recursos"
+            name="recursos"
+            placeholder="Sala, Mesa, Caderno..."
+            value="<?php echo $descricoes["recursos"] ?>"
+            disabled />
+        </span>
+
+        <span class="form-field-column">
+          <label for="resultado-esperado">Resultado Esperado</label>
+          <textarea
+            class="textarea-primary"
+            type="text"
+            id="resultado-esperado"
+            name="resultado-esperado"
+            placeholder="Expectativas de resultado"
+            disabled><?php echo $descricoes["resultado_esperado"] ?></textarea>
+        </span>
+
+        <span class="form-field-column">
+          <label for="metodologia">Metodologia</label>
+          <textarea
+            class="textarea-primary"
+            type="text"
+            id="metodologia"
+            name="metodologia"
+            placeholder="Medoto de realização"
+            disabled><?php echo $descricoes["metodologia"] ?></textarea>
+        </span>
+
+        <span class="form-field-column">
+          <label for="cronograma">Cronograma das Atividades</label>
+          <textarea
+            class="textarea-primary"
+            id="cronograma"
+            name="cronograma"
+            placeholder="Agosto: Apresentação..."
+            disabled><?php echo $descricoes["cronograma"] ?></textarea>
+        </span>
+      </div>
+    </form>
+  </section>
+
+  <hr />
+
+  <article class="status-container">
+    <?php
+    if ($inscricao->status !== "Pendente") {
+      $class = "status-" . strtolower($inscricao->status);
+      echo '
+        <div class="status-result status-result-' . strtolower($inscricao->status) . '">
+          <span class="status-label ' . $class . '">Status: ' . $inscricao->status . '</span>
+
+        </div>';
+    }
+    ?>
+    <form class="form-obs" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=$id" ?>" method="post">
+      <h3>Observações:</h3>
+
+      <div class="status-comment">
+        <img src="../../../public/icons/user.svg" alt="" />
+        <span><?php echo $_SESSION["user"]["cargo"] . " " . explode(" ", $_SESSION["user"]["nome"])[0] ?>:</span>
+        <textarea
+          name="observacao"
+          id="observacao"
+          class="textarea-primary"
+          oninput="autoSize(this)"
+          placeholder="Digite sua observação"
+          required></textarea>
+      </div>
+
+      <div class="buttons">
+        <button
+          class="button-primary"
+          style="
               --button-color: var(--fatec-blue-500);
               --button-color-hover: var(--fatec-blue-700);
             "
-          >
-            Aprovar
-          </button>
-          <button
-            class="button-primary"
-            style="
+          type="submit"
+          name="status"
+          value="Aprovada">
+          Aprovar
+        </button>
+        <button
+          class="button-primary"
+          style="
               --button-color: var(--fatec-red-500);
               --button-color-hover: var(--fatec-red-400);
             "
-          >
-            Reprovar
-          </button>
-        </div>
-      </form>
-    </article>
+          type="submit"
+          name="status"
+          value="Reprovada">
+          Reprovar
+        </button>
+      </div>
+    </form>
+  </article>
 
-    <script src="../../../components/header.js" defer></script>
-    <script src="../../../scripts/form-inscricao.js" defer></script>
-    <script defer>
-      document.querySelectorAll("textarea[disabled]").forEach((element) => {
-        element.style.height = element.scrollHeight + "px";
-      });
-    </script>
-  </body>
+  <script src="../../../components/header.js" defer></script>
+  <script src="../../../scripts/form-inscricao.js" defer></script>
+  <script defer>
+    document.querySelectorAll("textarea[disabled]").forEach((element) => {
+      element.style.height = element.scrollHeight + "px";
+    });
+  </script>
+</body>
+
 </html>

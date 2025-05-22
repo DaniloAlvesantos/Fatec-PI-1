@@ -2,6 +2,7 @@
 session_start();
 require __DIR__ . "/../../../server/controller/state.php";
 require_once __DIR__ . "/../../../server/model/HAE.php";
+require_once __DIR__ . "/../../../server/model/Inscricao.php";
 
 if (!isset($_SESSION["user"])) {
   header("Location: ../index.php");
@@ -13,6 +14,8 @@ if (isset($_GET['id'])) {
   $id = intval($id);
   $hae = new HAE();
   $hae = $hae->getHAEById($id);
+  $inscricao = new Inscricao();
+  $inscricao = $inscricao->countSubscriptions($id);
 
   if (!$hae) {
     header("Location: ../haes.admin.php");
@@ -33,6 +36,7 @@ if (isset($_GET['id'])) {
   <link rel="stylesheet" href="../../../styles/components.css" />
   <link rel="stylesheet" href="../../../styles/formulario.css" />
   <link rel="stylesheet" href="../../../styles/global.css" />
+  <link rel="stylesheet" href="../../../styles/edital.resultado.css" />
 </head>
 
 <body>
@@ -62,6 +66,38 @@ if (isset($_GET['id'])) {
     </div>
   </section>
   <hr />
+
+  <main>
+
+    <div class="table-container">
+      <div id="hae-container">
+        <h2>Inscrições</h2>
+        <p>Quantidade de inscrições: <?php echo $inscricao; ?></p>
+      </div>
+      <table class="hae-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Data de envio</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $inscricao = new Inscricao();
+          $inscricao = $inscricao->getMySubscriptionsByHae($id);
+          foreach ($inscricao as $i) {
+            echo "<tr>";
+            echo "<td>" . $i['nome'] . "</td>";
+            echo "<td>" . date("d/m/Y", strtotime($i['data_envio'])) . "</td>";
+            echo "<td>" . $i['status'] . "</td>";
+            echo "</tr>";
+          }
+          ?>
+        </tbody>
+      </table>
+    </div>
+  </main>
 
   <script src="../../../scripts/form-inscricao.js"></script>
   <script src="../../../components/header.js"></script>

@@ -76,20 +76,6 @@ class Docente
         }
     }
 
-    public function setDocenteInfo(int $id_docente, string $nome, string $RG, string $email, int $matricula, string $turno, string $senha, string $cargo, bool $outras_fatecs, string $curso)
-    {
-        $this->id_docente = $id_docente;
-        $this->nome = $nome;
-        $this->RG = $RG;
-        $this->email = $email;
-        $this->matricula = $matricula;
-        $this->turno = $turno;
-        $this->senha = $senha;
-        $this->cargo = $cargo;
-        $this->outras_fatecs = $outras_fatecs;
-        $this->curso = $curso;
-    }
-
     public function getIdDocente(): int
     {
         return $this->id_docente;
@@ -107,15 +93,14 @@ class Docente
 
     public function getDocenteById(int $id_docente): ?Docente
     {
-        $query = "SELECT * FROM docentes WHERE id_docente = :id_docente";
+        $query = "SELECT * FROM tb_docente WHERE id_docente = :id_docente";
         $stmt = $this->db->get_PDO()->prepare($query);
         $stmt->bindParam(':id_docente', $id_docente);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($result) {
-            $docente = new Docente();
-            $docente->setDocenteInfo(
+            $docente = new self(
                 $result['id_docente'],
                 $result['nome'],
                 $result['RG'],
