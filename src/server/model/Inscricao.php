@@ -14,7 +14,7 @@ class Inscricao
     public string $status;
     public Database $db;
 
-    public function __construct($id_inscricao = null, $id_docente = null, $id_hae = null, $id_projeto = null, $data_envio = '', $quant_hae = 0, $outras_fatecs = 0)
+    public function __construct($id_inscricao = null, $id_docente = null, $id_hae = null, $id_projeto = null, $data_envio = '', $quant_hae = 0, $outras_fatecs = 0, $status = 'Pendente')
     {
         $this->db = new Database();
         $this->db->connect_to();
@@ -27,6 +27,10 @@ class Inscricao
             $this->data_envio = $data_envio;
             $this->quant_hae = $quant_hae;
             $this->outras_fatecs = $outras_fatecs;
+            $this->status = $status;
+        } else {
+            // Initialize with default values when no parameters are provided
+            $this->status = $status;
         }
     }
 
@@ -93,10 +97,11 @@ class Inscricao
                 $result['id_projeto'],
                 $result['data_envio'],
                 $result['quant_hae'],
-                $result['outras_fatecs']
+                $result['outras_fatecs'],
+                $result['status'] ?? 'Pendente' // Include status from database result
             );
         } else {
-            return [];
+            return null; // Return null instead of empty array for consistency
         }
     }
 

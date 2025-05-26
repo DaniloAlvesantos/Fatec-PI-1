@@ -5,17 +5,12 @@ require_once __DIR__ . "/../../../server/model/HAE.php";
 require_once __DIR__ . "/../../../server/model/Inscricao.php";
 require_once __DIR__ . "/../../../server/model/Docente.php";
 require_once __DIR__ . "/../../../server/model/Projeto.php";
-require_once __DIR__ . "/../../../server/model/Feedback.php";
+require_once __DIR__ . "/../../../server/model/Feedback.php"; 
 
 if (!isset($_SESSION["user"])) {
   header("Location: ../index.php");
   exit();
 }
-
-// if(!isset($_SESSION["user"]["cargo"]) || $_SESSION["user"]["cargo"] != "Coordenador") {
-//   header("Location: ../index.php");
-//   exit();
-// }
 
 if (isset($_GET['id'])) {
   $id = $_GET['id'];
@@ -25,24 +20,38 @@ if (isset($_GET['id'])) {
   $inscricao = new Inscricao();
   $projeto = new Projeto();
   $docente = new Docente();
-
+  $feedback = new Feedback(); // Instantiate the Feedback class
 
   $inscricao = $inscricao->getMySubscriptionsById($id);
   $hae = $hae->getHAEById($inscricao->getIdHae());
   $projeto = $projeto->getProjetoById($inscricao->getIdProjeto());
   $docente = $docente->getDocenteById($inscricao->getIdDocente());
   $descricoes = json_decode($projeto->descricoes, true);
+
+  // Fetch ALL feedback objects as an array
+  $allFeedbacks = [];
+  $latestFeedback = null;
+  $feedbackCount = 0;
+  
+  if ($inscricao->status !== "Pendente") {
+    $allFeedbacks = $feedback->getAllFeedbacksByInscricao($id);
+    $latestFeedback = $feedback->getLatestFeedbackByInscricao($id);
+    $feedbackCount = $feedback->countFeedbacksByInscricao($id);
+  }
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $observacao = $_POST["observacao"];
   $status = $_POST["status"];
 
+  // Re-instantiate feedback to create a new one, as this is a POST request
+  $newFeedback = new Feedback();
+  $newFeedback->createFeedback($id, $status, $_SESSION["user"]["cargo"], $_SESSION["user"]["id_docente"], $observacao);
 
-  $inscricao->setStatus($status);
-
-  // $inscricao->setObservacao($observacao);
-  // $inscricao->updateInscricao();
+  $inscricao->setStatus($status); // Assuming setStatus updates the database for the inscription status
+  // After updating the status, you might want to redirect or refresh to show the new feedback
+  header("Location: " . $_SERVER['PHP_SELF'] . "?id=$id");
+  exit();
 }
 
 ?>
@@ -250,17 +259,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   <article class="status-container">
     <?php
-    if ($inscricao->status !== "Pendente") {
-      $class = "status-" . strtolower($inscricao->status);
-      echo '
-        <div class="status-result status-result-' . strtolower($inscricao->status) . '">
-          <span class="status-label ' . $class . '">Status: ' . $inscricao->status . '</span>
+    // Display feedback count if there are multiple feedbacks
+    if ($feedbackCount > 0) {
+        echo '<div class="feedback-summary">';
+        echo '<h3>Histórico de Avaliações (' . $feedbackCount . ' avaliação' . ($feedbackCount > 1 ? 'ões' : '') . ')</h3>';
+        echo '</div>';
+    }
 
-        </div>';
+    // Display all feedbacks in chronological order
+    if (!empty($allFeedbacks) && $inscricao->status !== "Pendente") {
+      foreach ($allFeedbacks as $index => $feedbackData) {
+        $class = "status-" . strtolower($feedbackData->resultado);
+        $feedbackNumber = $index + 1;
+        
+        echo '
+          <div class="feedback-item" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+            <div class="feedback-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <h4>Avaliação #' . $feedbackNumber . '</h4>
+              <div class="status-result status-result-' . strtolower($feedbackData->resultado) . '">
+                <span class="status-label ' . $class . '">Status: ' . htmlspecialchars($feedbackData->resultado) . '</span>
+                <span class="status-date">Data: ' . date("d/m/Y H:i", strtotime($feedbackData->data_envio)) . '</span>
+              </div>
+            </div>
+            
+            <div class="feedback-comments">
+              <h5>Comentários:</h5>';
+        
+        // Loop through each comment associated with this feedback
+        foreach ($feedbackData->comentarios as $comment) {
+          echo '
+              <div class="status-comment" style="margin-bottom: 10px;">
+                  <img src="../../../public/icons/user.svg" alt="" />
+                  <span>' . htmlspecialchars($comment->cargo) . " " . htmlspecialchars(explode(" ", $comment->docente_info->nome)[0]) . ':</span>
+                  <textarea
+                      class="textarea-primary"
+                      disabled
+                      oninput="autoSize(this)">' . htmlspecialchars($comment->comentario_text) . '</textarea>
+              </div>';
+        }
+        
+        echo '
+            </div>
+          </div>';
+      }
     }
     ?>
+    
+    <!-- Form for new feedback -->
     <form class="form-obs" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=$id" ?>" method="post">
-      <h3>Observações:</h3>
+      <h3><?php echo $feedbackCount > 0 ? 'Nova Avaliação:' : 'Observações:'; ?></h3>
 
       <div class="status-comment">
         <img src="../../../public/icons/user.svg" alt="" />
