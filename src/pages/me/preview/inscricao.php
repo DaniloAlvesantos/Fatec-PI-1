@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__ . "/../../../server/model/HAE.php";
 require_once __DIR__ . "/../../../server/model/Inscricao.php";
 require_once __DIR__ . "/../../../server/model/Projeto.php";
-
+require_once __DIR__ . "/../../../server/model/Feedback.php";
 
 if (!isset($_SESSION["user"])) {
   header("Location: ../index.php");
@@ -19,11 +19,20 @@ if (isset($_GET['id'])) {
   $inscricao = new Inscricao();
   $projeto = new Projeto();
   $hae = new HAE();
+  $feedback = new Feedback();
 
   $inscricao = $inscricao->getMySubscriptionsById($id);
   $hae = $hae->getHAEById($inscricao->getIdHae());
   $projeto = $projeto->getProjetoById($inscricao->getIdProjeto());
   $descricoes = json_decode($projeto->descricoes, true);
+
+  $allFeedbacks = [];
+  $feedbackCount = 0;
+
+  if ($inscricao->status !== "Pendente") {
+    $feedbacks = $feedback->calcStatusByFeedbacks($id);
+  }
+
 
   if (!$inscricao || !isset($_GET["id"])) {
     header("Location: ../inscricoes.php");
@@ -47,6 +56,7 @@ if (isset($_GET['id'])) {
   <link rel="stylesheet" href="../../../styles/global.css" />
   <link rel="stylesheet" href="../../../styles/components.css" />
   <link rel="stylesheet" href="../../../styles/formulario.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
 </head>
 
 <body>
@@ -236,28 +246,63 @@ if (isset($_GET['id'])) {
     </form>
   </section>
 
-  <hr />
+  <?php
+  echo "<hr />";
+  if (isset($feedbacks)) {
+    $emoji = $feedbacks["feedbackMessage"] === "Reprovada" ? "&#128533;" : "&#128578;";
 
-  <article class="status-container">
-    <span class="status-header">
-      <h2>Status: Indeferido &#128533;</h2>
-      <p>Desta vez, você não conseguiu. Desta vez, tá!?</p>
-    </span>
+    echo '<article class="status-container">
+        <span class="status-header">
+          <h2>Status: ' . $feedbacks["feedbackMessage"] . ' ' . $emoji . '</h2>
+          <p>' . $feedbacks["plusMessage"] . '</p>
+        </span>';
 
-    <main>
-      <h3>Observações:</h3>
+    echo '
+        <main class="status-main">
+          <h3>Observações:</h3>';
 
-      <div class="status-comment">
-        <img src="../../../public/icons/user.svg" alt="" />
-        <span>Coordenadora Marcia:</span>
-        <p>
-          Quantidade de HAEs solicitadas não encaixam com à quantidade de
-          horas de aulas.
-        </p>
-      </div>
-    </main>
-  </article>
+    foreach ($feedbacks["feedbacks"] as $feedback) {
+      foreach ($feedback->comentarios as $comentario) {
+        echo '<div class="status-comment" style="margin:1.5rem 0;
+  max-width: 55%; min-width:15rem; border: 1px solid #ddd; border-radius: 8px; padding:1rem;">
+            <img src="../../../public/icons/user.svg" alt="" />
+            <span>' . $comentario->docente_info->cargo . " " . explode(" ", $comentario->docente_info->nome)[0] . ':</span>
+            <p class="status-message">' . $comentario->comentario_text . '</p>
+            <span class="status-footer">
+            <p class="status-' . $feedback->resultado . '">' . $feedback->resultado . '</p> ' . ' - ' . '
+            <p class="status-date">' . date("d/m/Y", strtotime($feedback->data_envio)) . '</p>
+            </span>
+          </div>';
+      }
+    }
 
+    echo '
+        </main>
+      </article>';
+  } else {
+    echo '<article class="status-container">
+        <span class="status-header">
+          <h2>Status: ' . $inscricao->status . '</h2>
+        </span>
+        <main class="status-main">
+          <p>Aguardando avaliação...</p>
+        </main>
+      </article>';
+  }
+
+  if ($feedbacks["feedbackMessage"] === "Aprovada") {
+    echo '
+      <script>
+        confetti({
+          particleCount: 150,
+          spread: 90,
+          origin: { y: 0.6 }
+        });
+      </script>
+    ';
+  }
+
+  ?>
   <script src="../../../components/header.js" defer></script>
   <script defer>
     document.querySelectorAll("textarea").forEach((element) => {

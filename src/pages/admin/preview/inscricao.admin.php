@@ -30,12 +30,10 @@ if (isset($_GET['id'])) {
 
   // Fetch ALL feedback objects as an array
   $allFeedbacks = [];
-  $latestFeedback = null;
   $feedbackCount = 0;
   
   if ($inscricao->status !== "Pendente") {
     $allFeedbacks = $feedback->getAllFeedbacksByInscricao($id);
-    $latestFeedback = $feedback->getLatestFeedbackByInscricao($id);
     $feedbackCount = $feedback->countFeedbacksByInscricao($id);
   }
 }
@@ -288,7 +286,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Loop through each comment associated with this feedback
         foreach ($feedbackData->comentarios as $comment) {
           echo '
-              <div class="status-comment" style="margin-bottom: 10px;">
+              <div class="status-comment" style="margin-bottom: 10px; margin-left:1.5rem; margin-top: 1rem;">
                   <img src="../../../public/icons/user.svg" alt="" />
                   <span>' . htmlspecialchars($comment->cargo) . " " . htmlspecialchars(explode(" ", $comment->docente_info->nome)[0]) . ':</span>
                   <textarea

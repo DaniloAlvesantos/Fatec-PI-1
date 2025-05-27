@@ -93,6 +93,7 @@ function returnSQLTables()
         id_projeto INT,
         data_entrega DATETIME,
         pdf_url TEXT,
+        pdf_nome VARCHAR(100),
         id_feedback INT,
         descricoes JSON,
         FOREIGN KEY (id_projeto) REFERENCES tb_projeto(id_projeto),

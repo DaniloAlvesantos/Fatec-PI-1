@@ -3,16 +3,18 @@
 include_once __DIR__ . "/Database.php";
 include_once __DIR__ . "/Docente.php";
 
-// Define a Comentario class for better structure
-class Comentario {
+
+class Comentario
+{
     public ?int $id_comentario = null;
     public ?int $id_feedback = null;
     public ?string $cargo = null;
     public ?int $id_docente = null;
-    public ?string $comentario_text = null; // Renamed to avoid conflict with Feedback's 'comentario'
-    public ?Docente $docente_info = null; // To hold the Docente object
+    public ?string $comentario_text = null;
+    public ?Docente $docente_info = null;
 
-    public function __construct($id_comentario, $id_feedback, $cargo, $id_docente, $comentario_text, $docente_info = null) { // Made docente_info nullable in constructor
+    public function __construct($id_comentario, $id_feedback, $cargo, $id_docente, $comentario_text, $docente_info = null)
+    {
         $this->id_comentario = $id_comentario;
         $this->id_feedback = $id_feedback;
         $this->cargo = $cargo;
@@ -27,9 +29,9 @@ class Feedback
     public Database $db;
     public ?int $id_feedback = null;
     public ?int $id_inscricao = null;
-    public ?string $resultado = null; // Aprovada, Reprovada
+    public ?string $resultado = null;
     public string $data_envio;
-    public array $comentarios = []; // This will now hold an array of Comentario objects
+    public array $comentarios = [];
 
     public function __construct($id_feedback = null, $id_inscricao = null, $resultado = null, $data_envio = '')
     {
@@ -44,7 +46,7 @@ class Feedback
         }
     }
 
-    // This method is for initial feedback creation (setting status and first comment)
+
     public function createFeedback($id_inscricao, $resultado, $cargo, $id_docente, $comentario_text): ?int
     {
         $pdo = $this->db->get_PDO();
@@ -65,12 +67,12 @@ class Feedback
             return $id_feedback;
         } catch (PDOException $e) {
             $pdo->rollBack();
-            error_log("❌ Error creating feedback: " . $e->getMessage()); // Use error_log for server-side errors
+            error_log("❌ Error creating feedback: " . $e->getMessage());
             return null;
         }
     }
 
-    // New method to add a comment to an existing feedback record
+
     public function addCommentToExistingFeedback(int $id_feedback, string $cargo, int $id_docente, string $comentario_text): bool
     {
         $pdo = $this->db->get_PDO();
@@ -86,26 +88,26 @@ class Feedback
         }
     }
 
-    // NEW METHOD: Get all feedbacks for an inscription as an array
+
     public function getAllFeedbacksByInscricao(int $id_inscricao): array
     {
         $pdo = $this->db->get_PDO();
         if (!$pdo) return [];
 
         try {
-            // Get all feedback records for this inscription
+
             $stmt_feedbacks = $pdo->prepare("SELECT * FROM tb_feedback WHERE id_inscricao = ? ORDER BY data_envio ASC");
             $stmt_feedbacks->execute([$id_inscricao]);
             $feedbacks_data = $stmt_feedbacks->fetchAll(PDO::FETCH_ASSOC);
 
             if (!$feedbacks_data) {
-                return []; // No feedbacks found for this inscription
+                return [];
             }
 
             $feedbacks = [];
 
             foreach ($feedbacks_data as $feedback_data) {
-                // Create the Feedback object
+
                 $feedback = new self(
                     $feedback_data['id_feedback'],
                     $feedback_data['id_inscricao'],
@@ -113,7 +115,7 @@ class Feedback
                     $feedback_data['data_envio']
                 );
 
-                // Get all comments for this specific feedback ID
+
                 $stmt_comments = $pdo->prepare("
                     SELECT 
                         fc.id_comentario,
@@ -136,7 +138,7 @@ class Feedback
                     WHERE fc.id_feedback = ?
                     ORDER BY fc.id_comentario ASC
                 ");
-                
+
                 $stmt_comments->execute([$feedback->id_feedback]);
                 $comments_data = $stmt_comments->fetchAll(PDO::FETCH_ASSOC);
 
@@ -170,37 +172,34 @@ class Feedback
             }
 
             return $feedbacks;
-
         } catch (PDOException $e) {
             error_log("Error in getAllFeedbacksByInscricao: " . $e->getMessage());
             return [];
         }
     }
 
-    // MODIFIED METHOD: Keep this for backward compatibility but now returns the latest feedback
+
     public function getFeedbackByInscricao(int $id_inscricao): ?Feedback
     {
         $allFeedbacks = $this->getAllFeedbacksByInscricao($id_inscricao);
-        
+
         if (empty($allFeedbacks)) {
             return null;
         }
 
-        // Return the latest feedback (last one in the array since we ordered by data_envio ASC)
+
         return end($allFeedbacks);
     }
 
-    // NEW METHOD: Get the latest feedback for an inscription
     public function getLatestFeedbackByInscricao(int $id_inscricao): ?Feedback
     {
         return $this->getFeedbackByInscricao($id_inscricao);
     }
 
-    // NEW METHOD: Get the first feedback for an inscription
     public function getFirstFeedbackByInscricao(int $id_inscricao): ?Feedback
     {
         $allFeedbacks = $this->getAllFeedbacksByInscricao($id_inscricao);
-        
+
         if (empty($allFeedbacks)) {
             return null;
         }
@@ -208,7 +207,6 @@ class Feedback
         return $allFeedbacks[0];
     }
 
-    // NEW METHOD: Count total feedbacks for an inscription
     public function countFeedbacksByInscricao(int $id_inscricao): int
     {
         $pdo = $this->db->get_PDO();
@@ -223,5 +221,54 @@ class Feedback
             error_log("Error in countFeedbacksByInscricao: " . $e->getMessage());
             return 0;
         }
+    }
+
+    public function calcStatusByFeedbacks(int $id_inscricao)
+    {
+        $feedbackMessage = "";
+        $feedbackCount = $this->countFeedbacksByInscricao($id_inscricao);
+
+        if ($feedbackCount === 0) {
+            $feedbackMessage = "Pendente";
+        }
+
+        $query = "SELECT * FROm tb_feedback WHERE id_inscricao = ? ORDER BY data_envio DESC";
+        $pdo = $this->db->get_PDO();
+        $smt = $pdo->prepare($query);
+        $smt->execute([$id_inscricao]);
+        $feedbacks = $smt->fetchAll(PDO::FETCH_ASSOC);
+
+        $countApro = 0;
+        $countRepro = 0;
+
+        foreach ($feedbacks as $feedback) {
+            if ($feedback['resultado'] === "Aprovada") {
+                $countApro++;
+            } else {
+                $countRepro++;
+            }
+        }
+
+        $plusMessage = "";
+        if ($countApro === 0 || $countRepro > $countApro) {
+            $feedbackMessage = "Reprovada";
+            $plusMessage = "Desta vez, você não conseguiu. Desta vez, tá!?";
+        } elseif ($countApro > $countRepro) {
+            $feedbackMessage = "Aprovada";
+            $plusMessage = "Parabéns! Você foi aprovada!";
+        } else {
+            $feedbackMessage = "Pendente";
+            $plusMessage = "Ainda não temos uma decisão final sobre sua inscrição.";
+        }
+
+
+        $feedbacks = $this->getAllFeedbacksByInscricao($id_inscricao);
+        
+        return [
+            'feedbackMessage' => $feedbackMessage,
+            'feedbackCount' => $feedbackCount,
+            'feedbacks' => $feedbacks,
+            'plusMessage' => $plusMessage,
+        ];
     }
 }
