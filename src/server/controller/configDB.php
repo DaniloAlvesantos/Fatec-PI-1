@@ -52,20 +52,17 @@ function returnSQLTables()
         CONSTRAINT uq_docente_hae UNIQUE (id_docente, id_hae)
     );
 
-    CREATE TABLE tb_banco_de_horas (
-        id_bdhrs INT AUTO_INCREMENT PRIMARY KEY,
-        dias VARCHAR(4),
-        turno VARCHAR(8),
-        horas VARCHAR(6),
-        id_inscricao INT,
-        FOREIGN KEY (id_inscricao) REFERENCES tb_inscricao(id_inscricao)
-    );
-
     CREATE TABLE tb_chamada (
         id_chamada INT AUTO_INCREMENT PRIMARY KEY,
         id_hae INT,
         id_inscricao INT,
         data_envio DATETIME NOT NULL,
+        quant_hae INT NOT NULL,
+        status ENUM('Deferido', 'Indeferido') NOT NULL DEFAULT 'Deferido',
+        justificativa TEXT,
+        num_chamada INT NOT NULL,
+        semestre ENUM('1', '2') NOT NULL,
+        CONSTRAINT uq_hae_inscricao UNIQUE (id_hae, id_inscricao),
         FOREIGN KEY (id_hae) REFERENCES tb_hae(id_hae),
         FOREIGN KEY (id_inscricao) REFERENCES tb_inscricao(id_inscricao)
     );
@@ -94,9 +91,17 @@ function returnSQLTables()
         data_entrega DATETIME,
         pdf_url TEXT,
         pdf_nome VARCHAR(100),
+        pdf_original_nome VARCHAR(100),
         id_feedback INT,
         descricoes JSON,
         FOREIGN KEY (id_projeto) REFERENCES tb_projeto(id_projeto),
+        FOREIGN KEY (id_feedback) REFERENCES tb_feedback(id_feedback)
+    );
+    CREATE TABLE tb_relatorio_feedback (
+        id_relatorio_feedback INT AUTO_INCREMENT PRIMARY KEY,
+        id_relatorio INT NOT NULL,
+        id_feedback INT NOT NULL,
+        FOREIGN KEY (id_relatorio) REFERENCES tb_relatorio(id_relatorio),
         FOREIGN KEY (id_feedback) REFERENCES tb_feedback(id_feedback)
     );
     ";

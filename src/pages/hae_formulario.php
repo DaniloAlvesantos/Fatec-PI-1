@@ -5,7 +5,6 @@ require_once __DIR__ . "/../server/model/Docente.php";
 require_once __DIR__ . "/../server/model/Inscricao.php";
 require_once __DIR__ . "/../server/model/Projeto.php";
 
-// Handle AJAX form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
     strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
@@ -35,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $metodologia = isset($_POST['metodologia']) ? $_POST['metodologia'] : '';
       $cronograma = isset($_POST['cronograma']) ? $_POST['cronograma'] : '';
 
-      // Get HAE from GET parameter
       $id = $_GET['id'] ?? 0;
       $id = intval($id);
       $hae = new HAE();
@@ -50,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $projeto = new Projeto();
       $inscricao = new Inscricao();
 
-      // Create the project
       $projetoId = $projeto->createProjeto($tituloProjeto, $dataInicio, $dataFinalizacao, $hae->getIdHAE(), json_encode([
         'metas' => $metas,
         'objetivos' => $objetivos,
@@ -65,7 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         throw new Exception('Failed to create project');
       }
 
-      // Create the subscription
       $inscricaoId = $inscricao->createSubscription(
         $docente->getIdDocente(),
         $hae->getIdHAE(),
@@ -88,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
       exit();
     }
-    exit(); // Make sure to exit after handling AJAX
+    exit();
   }
 }
 

@@ -1,94 +1,201 @@
 <?php
 session_start();
 require __DIR__ . "/../../../server/controller/state.php";
+require_once __DIR__ . "/../../../server/model/Chamada.php";
+require_once __DIR__ . "/../../../server/model/HAE.php";
 
-if(!isset($_SESSION["user"])) {
-  header("Location: ../index.php");
+if (!isset($_SESSION["user"])) {
+  header("Location: ../../index.php");
   exit();
 }
+
+$id_hae = isset($_GET["id_hae"]) ? intval($_GET["id_hae"]) : null;
+$num_chamada = isset($_GET["num_chamada"]) ? intval($_GET["num_chamada"]) : null;
+$semestre = isset($_GET["semestre"]) ? $_GET["semestre"] : null;
+
+if (!$id_hae || !$num_chamada || !$semestre) {
+  header("Location: ../editals.admin.php");
+  exit();
+}
+
+$chamada = new Chamada();
+$hae = new HAE();
+
+$resultados = $chamada->getDetalhesResultadoChamada($id_hae, $num_chamada, $semestre);
+$haeData = $hae->getHAEById($id_hae);
+
+if (empty($resultados) || !$haeData) {
+  header("Location: ../editals.admin.php");
+  exit();
+}
+
+$totalInscricoes = count($resultados);
+$totalDeferidos = array_sum(array_map(fn($r) => $r['status'] === 'Deferido' ? 1 : 0, $resultados));
+$totalIndeferidos = $totalInscricoes - $totalDeferidos;
+$totalHorasDeferidas = array_sum(array_map(fn($r) => $r['status'] === 'Deferido' ? $r['quant_hae'] : 0, $resultados));
 
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Resultados">
-    <title>Painel | HAE Fatec Itapira</title>
-    <link rel="stylesheet" href="../../../styles/global.css" />
-    <link rel="stylesheet" href="../../../styles/components.css" />
-    <link rel="stylesheet" href="../../../styles/edital.resultado.css" />
-  </head>
-  <body>
-    <header-fatec
-      data-button-title="Voltar"
-      data-button-href="../../edital.php"
-    ></header-fatec>
 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Resultado do Edital">
+  <title>Resultado do Edital | HAE Fatec Itapira</title>
+  <link rel="stylesheet" href="../../../styles/global.css" />
+  <link rel="stylesheet" href="../../../styles/components.css" />
+  <link rel="stylesheet" href="../../../styles/edital.resultado.css" />
+  <link rel="stylesheet" href="../../../styles/formulario.css" />
+  <style>
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--gray-200);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      font-family: "Roboto", sans-serif;
+      color: var(--fatec-red-500);
+    }
+
+    .stat-label {
+      color: var(--gray-600);
+      font-size: 0.9rem;
+      font-family: "Roboto", sans-serif;
+    }
+
+    .status-deferido {
+      color: var(--green-600);
+      font-weight: 500;
+    }
+
+    .status-indeferido {
+      color: var(--red-600);
+      font-weight: 500;
+    }
+
+    h3 {
+      font-family: "Roboto", sans-serif;
+      font-weight: 500;
+      font-size: 1.3rem;
+    }
+
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+
+      body {
+        font-family: 'Arial', sans-serif;
+        color: black;
+        background: white;
+        -webkit-print-color-adjust: exact;
+        /* Ensures background/text color prints accurately */
+        print-color-adjust: exact;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #000;
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+
+      .hae-table th {
+        background-color: #eee !important;
+      }
+    }
+
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 1cm;
+    }
+  </style>
+</head>
+
+<body>
+  <header-fatec
+    data-button-title="Voltar"
+    data-button-href="../../edital.php" class="no-print"></header-fatec>
+
+  <section id="form-section">
     <span class="title">
-      <h1>Resultado: 1° Semestre de 2025</h1>
+      <h1>Resultado: <?php echo $num_chamada; ?>° Chamada - <?php echo $semestre; ?>° Semestre</h1>
       <h2>Primeira Chamada</h2>
     </span>
 
-    <section>
-      <div class="table-container">
-        <table class="hae-table">
-          <thead>
+    <div class="table-container">
+      <table class="hae-table">
+        <thead>
+          <tr>
+            <th>Nome do Professor</th>
+            <th>Data de Processamento</th>
+            <th>Quantidade Solicitada</th>
+            <th>Quantidade Deferida</th>
+            <th>Status</th>
+            <th>Justificativa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($resultados as $resultado): ?>
             <tr>
-              <th>HAE</th>
-              <th>Projeto</th>
-              <th>Professor</th>
-              <th>C.H Solicitada</th>
-              <th>C.H Deferidas</th>
-              <th>Status</th>
+              <td><?php echo htmlspecialchars($resultado['nomeDocente']); ?></td>
+              <td><?php echo date("d/m/Y H:i", strtotime($resultado['data_envio'])); ?></td>
+              <td>
+                <center><?php echo htmlspecialchars($resultado['quantSolicitada']); ?>h</center>
+              </td>
+              <td>
+                <center><?php echo htmlspecialchars($resultado['quant_hae']); ?>h</center>
+              </td>
+              <td class="<?php echo $resultado['status'] === 'Deferido' ? 'status-deferido' : 'status-indeferido'; ?>">
+                <?php echo htmlspecialchars($resultado['status']); ?>
+              </td>
+              <td><?php echo htmlspecialchars($resultado['justificativa'] ?: '-'); ?></td>
             </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Estágio Supervisionado</td>
-              <td>Meu Estágio</td>
-              <td>Júnior</td>
-              <td>4</td>
-              <td>3</td>
-              <td><strong>Deferido</strong></td>
-            </tr>
-            <tr>
-              <td>Pesquisa Científica</td>
-              <td>Projeto de IA</td>
-              <td>Maria</td>
-              <td>6</td>
-              <td>5</td>
-              <td><strong>Indeferido</strong></td>
-            </tr>
-            <tr>
-              <td>Trabalho de Graduação</td>
-              <td>Meu TCC 100%</td>
-              <td>João</td>
-              <td>5</td>
-              <td>5</td>
-              <td><strong>Indeferido</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
 
-      <article>
-        <h3>Para mais informações</h3>
-        <p>Confira no seu E-mail</p>
-        <a href="https://outlook.office.com/mail/" target="_blank">
-          <button
-            class="button-secondary"
-            style="
-              --button-color: var(--fatec-red-500);
-              --button-color-hover: var(--fatec-red-400);
-            "
-          >
-            Conferir
-          </button>
-        </a>
-      </article>
-    </section>
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: 1rem; justify-content: center; margin: 2rem 0;">
+      <button
+        onclick="window.print()"
+        class="button-primary no-print"
+        style="
+          --button-color: #cccccc;
+          --button-color-hover: #dddddd;
+        ">
+        Imprimir
+      </button>
+    </div>
+  </section>
 
-    <script src="../../../components/header.js" defer></script>
-  </body>
+  <script src="../../../components/header.js" defer></script>
+</body>
+
 </html>

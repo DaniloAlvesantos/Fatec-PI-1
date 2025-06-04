@@ -290,7 +290,7 @@ if (isset($_GET['id'])) {
       </article>';
   }
 
-  if ($feedbacks["feedbackMessage"] === "Aprovada") {
+  if (isset($feedbacks["feedbackMessage"]) && $feedbacks["feedbackMessage"] === "Aprovada") {
     echo '
       <script>
         confetti({

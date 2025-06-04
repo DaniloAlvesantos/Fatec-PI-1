@@ -4,8 +4,8 @@ include_once __DIR__ . "/Database.php";
 
 class Projeto
 {
-    private $id_projeto; // Changed to allow NULL initially
-    public string $titulo; // Fixed typo from 'titlulo' to 'titulo'
+    private $id_projeto;
+    public string $titulo;
     public string $data_inicio;
     public string $data_final;
     public string $id_hae;
@@ -20,7 +20,7 @@ class Projeto
 
         if ($id_projeto !== null) {
             $this->id_projeto = $id_projeto;
-            $this->titulo = $titulo; // Fixed typo
+            $this->titulo = $titulo;
             $this->data_inicio = $data_inicio;
             $this->data_final = $data_final;
             $this->id_hae = $id_hae;

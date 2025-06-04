@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: May 26, 2025 at 08:45 PM
+-- Generation Time: Jun 03, 2025 at 12:19 AM
 -- Server version: 8.0.40
 -- PHP Version: 8.3.14
 
@@ -94,7 +94,8 @@ CREATE TABLE `tb_feedback` (
 
 INSERT INTO `tb_feedback` (`id_feedback`, `id_inscricao`, `data_envio`, `resultado`) VALUES
 (1, 13, '2025-05-26 16:19:40', 'Reprovada'),
-(2, 13, '2025-05-26 16:40:31', 'Reprovada');
+(2, 13, '2025-05-26 16:40:31', 'Reprovada'),
+(3, 14, '2025-05-27 14:41:57', 'Aprovada');
 
 -- --------------------------------------------------------
 
@@ -115,8 +116,9 @@ CREATE TABLE `tb_feedback_comentario` (
 --
 
 INSERT INTO `tb_feedback_comentario` (`id_comentario`, `id_feedback`, `cargo`, `id_docente`, `comentario`) VALUES
-(1, 1, 'Diretor', 1, 'Lixo!!!!'),
-(2, 2, 'Diretor', 1, 'Muito ruim');
+(1, 1, 'Diretor', 1, 'Infelizmente, sua solicitação foi reprovada.\nApós análise criteriosa, identificamos que as informações ou a carga horária apresentada não atendem aos critérios estabelecidos.\n\nCaso tenha dúvidas ou deseje ajustar sua solicitação, estamos à disposição para ajudar. Não desanime — novas oportunidades virão!'),
+(2, 2, 'Diretor', 1, 'Muito ruim'),
+(3, 3, 'Diretor', 1, 'Aprovado com exito');
 
 -- --------------------------------------------------------
 
@@ -164,7 +166,9 @@ CREATE TABLE `tb_inscricao` (
 --
 
 INSERT INTO `tb_inscricao` (`id_inscricao`, `id_docente`, `id_hae`, `data_envio`, `quant_hae`, `outras_fatecs`, `id_projeto`, `status`) VALUES
-(13, 2, 1, '2025-05-21 17:32:14', 2, 1, 15, 'Reprovada');
+(13, 2, 1, '2025-05-21 17:32:14', 2, 1, 15, 'Reprovada'),
+(14, 2, 2, '2025-05-27 16:59:22', 5, 0, 16, 'Aprovada'),
+(15, 2, 1, '2025-06-02 20:58:49', 2, 1, 17, 'Pendente');
 
 -- --------------------------------------------------------
 
@@ -187,7 +191,9 @@ CREATE TABLE `tb_projeto` (
 --
 
 INSERT INTO `tb_projeto` (`id_projeto`, `data_inicio`, `data_final`, `titulo`, `id_hae`, `descricoes`, `dias_exec`) VALUES
-(15, '2025-08-05', '2025-12-08', 'Projeto meu tcc', 1, '{\"metas\": \"metas metas\", \"recursos\": \"Sala, Mesa, Ar Condicionado\", \"objetivos\": \"objetivos e objetivos\", \"cronograma\": \"Agosto:....\\r\\nsetembro: amarelo\", \"metodologia\": \"metodologias a serem\", \"justificativa\": \"justificando\", \"resultado_esperado\": \"esperando ....\"}', '[\"SEX,N,18-22\"]');
+(15, '2025-08-05', '2025-12-08', 'Projeto meu tcc', 1, '{\"metas\": \"metas metas\", \"recursos\": \"Sala, Mesa, Ar Condicionado\", \"objetivos\": \"objetivos e objetivos\", \"cronograma\": \"Agosto:....\\r\\nsetembro: amarelo\", \"metodologia\": \"metodologias a serem\", \"justificativa\": \"justificando\", \"resultado_esperado\": \"esperando ....\"}', '[\"SEX,N,18-22\"]'),
+(16, '2025-06-27', '2025-12-31', 'Proejto TCC MAX', 2, '{\"metas\": \"Metas e metas. sdasdk jlsasdhaskljdah s\", \"recursos\": \"Sala, Mesa, Ar Condicionado, computador bom\", \"objetivos\": \"dsaldkj sahdakjs hsadlkjas h\", \"cronograma\": \"lkjsdhasd lsakdjahs asldk jsadh aslkdjash daskjdh \", \"metodologia\": \"kljshdaskl asjdhas dklsadjh as\", \"justificativa\": \"lkjalkdjhasdasldk jash aslkdjash\", \"resultado_esperado\": \"asdas kdaskj ash daskjh\"}', '[\"TER,N,18-22\"]'),
+(17, '2025-06-28', '2025-07-12', 'Projeto Senac', 1, '{\"metas\": \"dasd sad6 5as4\", \"recursos\": \"d65as6d as4da65s4\", \"objetivos\": \"5sa6d54as65 d4as65d4\", \"cronograma\": \"6d54as6d4as65d4a \", \"metodologia\": \"654sa65d4as6d 4as64\", \"justificativa\": \"654sa6d54as6d as465\", \"resultado_esperado\": \"sd64as6d5sa4d6asd54\"}', '[\"SEG,N,18-22\"]');
 
 -- --------------------------------------------------------
 
@@ -201,8 +207,17 @@ CREATE TABLE `tb_relatorio` (
   `data_entrega` datetime DEFAULT NULL,
   `pdf_url` text,
   `id_feedback` int DEFAULT NULL,
-  `descricoes` json DEFAULT NULL
+  `descricoes` json DEFAULT NULL,
+  `pdf_nome` varchar(100) DEFAULT NULL,
+  `pdf_original_nome` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tb_relatorio`
+--
+
+INSERT INTO `tb_relatorio` (`id_relatorio`, `id_projeto`, `data_entrega`, `pdf_url`, `id_feedback`, `descricoes`, `pdf_nome`, `pdf_original_nome`) VALUES
+(14, 16, '2025-06-02 11:37:03', '/Applications/MAMP/htdocs/Fatec-pi-1/src/server/assets/uploads/relatorios/2/relatorio_683db70f6a0a74.47331155_1748875023.pdf', NULL, '{\"metas\": \"Metas e metas. sdasdk jlsasdhaskljdah s\", \"recursos\": \"Sala, Mesa, Ar Condicionado, computador bom\", \"anotacoes\": \"das dkaskdjashjk hdasjkl\", \"objetivos\": \"dsaldkj sahdakjs hsadlkjas h\", \"cronograma\": \"lkjsdhasd lsakdjahs asldk jsadh aslkdjash daskjdh \", \"resultados\": \"dsadjs kjdh sakjdh aksjh\", \"metodologia\": \"kljshdaskl asjdhas dklsadjh as\", \"justificativa\": \"lkjalkdjhasdasldk jash aslkdjash\", \"aproveitamento\": \"dsa dasd sadksajhkjsa dh\", \"resultado_esperado\": \"asdas kdaskj ash daskjh\"}', 'relatorio_683db70f6a0a74.47331155_1748875023.pdf', 'Danilo-resume-EN');
 
 --
 -- Indexes for dumped tables
@@ -303,13 +318,13 @@ ALTER TABLE `tb_docente`
 -- AUTO_INCREMENT for table `tb_feedback`
 --
 ALTER TABLE `tb_feedback`
-  MODIFY `id_feedback` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_feedback` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tb_feedback_comentario`
 --
 ALTER TABLE `tb_feedback_comentario`
-  MODIFY `id_comentario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_comentario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tb_hae`
@@ -321,19 +336,19 @@ ALTER TABLE `tb_hae`
 -- AUTO_INCREMENT for table `tb_inscricao`
 --
 ALTER TABLE `tb_inscricao`
-  MODIFY `id_inscricao` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_inscricao` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tb_projeto`
 --
 ALTER TABLE `tb_projeto`
-  MODIFY `id_projeto` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_projeto` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tb_relatorio`
 --
 ALTER TABLE `tb_relatorio`
-  MODIFY `id_relatorio` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_relatorio` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables

@@ -29,7 +29,6 @@ class Inscricao
             $this->outras_fatecs = $outras_fatecs;
             $this->status = $status;
         } else {
-            // Initialize with default values when no parameters are provided
             $this->status = $status;
         }
     }
@@ -98,10 +97,10 @@ class Inscricao
                 $result['data_envio'],
                 $result['quant_hae'],
                 $result['outras_fatecs'],
-                $result['status'] ?? 'Pendente' // Include status from database result
+                $result['status'] ?? 'Pendente'
             );
         } else {
-            return null; // Return null instead of empty array for consistency
+            return null;
         }
     }
 

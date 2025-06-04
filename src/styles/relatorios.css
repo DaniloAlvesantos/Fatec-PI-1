@@ -58,3 +58,15 @@ section h2 {
 .card-rel button {
   width: 100%;
 }
+
+.no-relatorio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 2rem;
+
+  font-size: var(--text-xl-font-size);
+  font-weight: 500;
+  font-family: "Roboto", sans-serif;
+}

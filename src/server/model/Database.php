@@ -40,10 +40,10 @@ class Database
 
     public function execAddTables()
     {
-        $tablesSQL = returnSQLTables(); // Get the SQL string
+        $tablesSQL = returnSQLTables();
         if ($this->is_connected() && !empty($tablesSQL)) {
             try {
-                $this->pdo->exec($tablesSQL); // Execute the SQL string
+                $this->pdo->exec($tablesSQL);
                 echo "✅ Tables created successfully!";
             } catch (PDOException $e) {
                 echo "❌ Error creating tables: " . $e->getMessage();

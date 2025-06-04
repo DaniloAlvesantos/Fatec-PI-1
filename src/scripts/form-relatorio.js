@@ -38,6 +38,7 @@ function handleSubmit(event) {
   const fileInput = document.querySelector("#documento");
   const textareas = document.querySelectorAll("textarea");
   const warnText = document.querySelector(".error-form");
+  const form = document.querySelector("form");
   let isError = false;
   let fields = [...textareas, fileInput];
 
@@ -58,12 +59,7 @@ function handleSubmit(event) {
     return;
   }
 
-  const formData = new FormData();
-
-  formData.append("aproveitamento", textareas[0].value);
-  formData.append("resultados", textareas[1].value);
-  formData.append("anotacoes", textareas[2].value);
-  formData.append("arquivo", fileInput.files[0]);
+  form.submit();
 }
 
 function handleDownload(url) {

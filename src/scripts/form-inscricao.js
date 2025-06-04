@@ -36,7 +36,6 @@ function removeInput(input) {
 function handleSubmit(e) {
   e.preventDefault();
 
-  // Get all dias execucao inputs
   const diasExecucaoInputs = document.querySelectorAll("[id^=dia-execucao]");
   const diasExecucao = [];
 
@@ -46,16 +45,13 @@ function handleSubmit(e) {
     }
   });
 
-  // Collect form data
   const formData = new FormData(document.getElementById("form-subscription"));
   formData.append("dias_execucao", JSON.stringify(diasExecucao));
 
-  // Show loading or disable submit button
   const submitButton = document.getElementById("submitButton");
   submitButton.disabled = true;
   submitButton.textContent = "Enviando...";
 
-  // Send AJAX request
   fetch(window.location.href, {
     method: "POST",
     body: formData,
@@ -74,7 +70,6 @@ function handleSubmit(e) {
         document.querySelector(".error-form").textContent = data.message;
         document.querySelector(".error-form").style.color = "green";
       } else {
-        // Show error message
         document.querySelector(".error-form").textContent = data.message;
         document.querySelector(".error-form").style.color = "red";
         submitButton.disabled = false;
