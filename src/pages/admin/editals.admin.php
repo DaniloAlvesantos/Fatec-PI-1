@@ -114,7 +114,7 @@ $chamadasData = $chamada->getAllChamadasGrouped();
     <?php endif; ?>
   </section>
 
-  <a href="./add/resultado_form.php">
+  <a href="./add/editais.admin.php">
     <button
       class="add-button-primary"
       style="
