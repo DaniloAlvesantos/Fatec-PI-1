@@ -56,6 +56,20 @@ $chamadasData = $chamada->getAllChamadasGrouped();
     .stat-indeferido {
       color: var(--red-600);
     }
+
+    section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      justify-items: center;
+      gap: 1rem;
+    }
+
+    .ellipsis-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 17rem;
+    }
   </style>
 </head>
 
@@ -66,7 +80,7 @@ $chamadasData = $chamada->getAllChamadasGrouped();
 
   <h1>Resultados das inscrições</h1>
 
-  <section>
+  <section id="form-section">
     <?php if (empty($chamadasData)): ?>
       <div class="no-chamadas">
         <p>Nenhuma chamada foi processada ainda.</p>
@@ -75,7 +89,7 @@ $chamadasData = $chamada->getAllChamadasGrouped();
       <?php foreach ($chamadasData as $chamadaInfo): ?>
         <div class="card-secondary">
           <span>
-            <h4><?php echo htmlspecialchars($chamadaInfo['titulo_hae']); ?></h4>
+            <h4 class="ellipsis-text "><?php echo htmlspecialchars($chamadaInfo['titulo_hae']); ?></h4>
             <h5>
               <?php echo $chamadaInfo['num_chamada']; ?>° Chamada -
               <?php echo $chamadaInfo['semestre']; ?>° Semestre de <?php echo date('Y'); ?>

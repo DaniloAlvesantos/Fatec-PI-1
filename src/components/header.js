@@ -47,8 +47,7 @@ class HeaderFatec extends HTMLElement {
 
   getUserMenuItems() {
     const basePath = this.getBasePath();
-
-    return [
+    const paths = [
       { title: "Home", href: `${basePath}/pages/home.php`, icon: "🏠" },
       { title: "Edital", href: `${basePath}/pages/edital.php`, icon: "📋" },
       { title: "Vagas", href: `${basePath}/pages/haes.php`, icon: "💼" },
@@ -63,6 +62,16 @@ class HeaderFatec extends HTMLElement {
         icon: "📊",
       },
     ];
+
+    if( window.state?.user?.cargo !== "Professor") {
+      paths.push({
+        title: `Área do ${window.state?.user?.cargo || "Admin"}`,
+        href: `${basePath}/pages/admin/painel.admin.php`,
+        icon: "👨‍💼",
+      })
+    }
+
+    return paths;
   }
 
   getAdminMenuItems() {
@@ -108,6 +117,11 @@ class HeaderFatec extends HTMLElement {
         title: "Cadastrar Usuário",
         href: `${basePath}/pages/admin/dev/cadastro.php`,
         icon: "👤",
+      },
+      {
+        title: "Área Usuário",
+        href: `${basePath}/pages/home.php`,
+        icon: "👨‍🏫",
       },
     ];
   }
@@ -207,8 +221,6 @@ class HeaderFatec extends HTMLElement {
     const menuItems = this.isAdmin
       ? this.getAdminMenuItems()
       : this.getUserMenuItems();
-
-    console.log(this.isAdmin);
 
     menuItems.forEach((item) => {
       const li = document.createElement("li");

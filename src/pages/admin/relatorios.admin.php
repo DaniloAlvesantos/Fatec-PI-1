@@ -23,6 +23,14 @@ $relatorio = new Relatorio();
   <link rel="stylesheet" href="../../styles/global.css" />
   <link rel="stylesheet" href="../../styles/components.css" />
   <link rel="stylesheet" href="../../styles/relatorios.css" />
+  <style>
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+      justify-items: center;
+      gap: 1rem;
+    }
+  </style>
 </head>
 
 <body>
@@ -33,14 +41,14 @@ $relatorio = new Relatorio();
   <section>
     <h2>Enviados</h2>
     <hr />
-    <?php
-    $relatorios = $relatorio->adminGetAllRelatorios($_SESSION["user"]["cargo"], $_SESSION["user"]["curso"]);
+    <main><?php
+          $relatorios = $relatorio->adminGetAllRelatorios($_SESSION["user"]["cargo"], $_SESSION["user"]["curso"]);
 
-    if (empty($relatorios)) {
-      echo '<p class="no-relatorio">Nenhum relatório enviado.</p>';
-    } else {
-      foreach ($relatorios as $rel) {
-        echo '
+          if (empty($relatorios)) {
+            echo '<p class="no-relatorio">Nenhum relatório enviado.</p>';
+          } else {
+            foreach ($relatorios as $rel) {
+              echo '
               <div class="card-container">
                 <div class="card-primary card-rel">
                   <span class="card-rel-title">
@@ -68,9 +76,9 @@ $relatorio = new Relatorio();
                   </a>
                 </div>
               </div>';
-      }
-    }
-    ?>
+            }
+          }
+          ?></main>
   </section>
 
   <script src="../../components/header.js" defer></script>

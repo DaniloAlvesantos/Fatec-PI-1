@@ -148,6 +148,7 @@ class Relatorio
         $extensao     = strtolower($extensaoPath);
         $nomeUnico    = uniqid("relatorio_", true) . "_" . time() . "." . $extensao;
         $finalPath    = $diretorioDocente . $nomeUnico;
+        $descricoes_insert = json_encode($descricoes);
 
         if (!move_uploaded_file($arquivo["tmp_name"], $finalPath)) {
             return json_encode(["error" => "Erro ao mover o arquivo para o diretório."]);
@@ -163,7 +164,7 @@ class Relatorio
         $stmt->bindParam(':id_projeto', $id_projeto);
         $stmt->bindParam(':pdf_url',   $finalPath);
         $stmt->bindParam(':pdf_nome',  $nomeUnico);
-        $stmt->bindParam(':descricoes', $descricoes);
+        $stmt->bindParam(':descricoes', $descricoes_insert);
         $stmt->bindParam(':pdf_original_nome', $nomeOriginal);
 
         if ($stmt->execute()) {

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuário</title>
-    <link rel="stylesheet" href="../../../styles/global.css" />
-    <link rel="stylesheet" href="../../../styles/components.css" />
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/components.css" />
     <style>
         form {
             display: flex;
@@ -38,7 +38,7 @@
 <body>
     <section>
         <main>
-            <form method="POST" action="../../../server/controller/register.php">
+            <form method="POST" action="../server/controller/register.php">
                 <label>Nome</label>
                 <input class="input-secondary" name="name" type="text" placeholder="Nome" />
                 <label>RG</label>

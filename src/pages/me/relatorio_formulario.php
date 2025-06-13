@@ -38,9 +38,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   $resultado = $relatorio->createRelatorio($arquivo, $id, $descricoesFormulario, $_SESSION["user"]["id_docente"]);
   if (isset($resultado["error"])) {
-    $message = '<div class="warn-container"><h3>Oops</h3><span>' . $resultado["error"] . '</span></div>';
+    $message = '<div class="warn-container" style="background-color:#ffe0e0; border:1px solid #ff5c5c; padding:15px; border-radius:8px; color:#b30000; font-family:Arial, sans-serif;">
+                  <h3 style="margin:0 0 8px 0;">Oops</h3>
+                  <span>' . $resultado["error"] . '</span>
+                </div>';
   } else {
-    $message = '<div class="warn-container"><h3>Sucesso</h3><span>Relatório enviado com sucesso!</span></div>';
+    $message = '<div class="warn-container" style="background-color:#e0ffe0; border:1px solid #5cb85c; padding:15px; border-radius:8px; color:#2d862d; font-family:Arial, sans-serif;">
+                  <h3 style="margin:0 0 8px 0;">Sucesso</h3>
+                  <span>Relatório enviado com sucesso!</span>
+                </div>';
   }
 }
 ?>
@@ -107,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   <section id="form-section">
     <h2 class="form-title">Formulário de relatório</h2>
-    <form onsubmit="handleSubmit(event)" id="form-subscription" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=". $id  ?>" enctype="multipart/form-data">
+    <form onsubmit="handleSubmit(event)" id="form-subscription" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=" . $id  ?>" enctype="multipart/form-data">
       <div class="form-container">
         <span class="form-field-column">
           <label for="aprov">Aproveitamento</label>

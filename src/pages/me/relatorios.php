@@ -23,6 +23,14 @@ $relatorio = new Relatorio();
   <link rel="stylesheet" href="../../styles/global.css" />
   <link rel="stylesheet" href="../../styles/components.css" />
   <link rel="stylesheet" href="../../styles/relatorios.css" />
+  <style>
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+      justify-items: center;
+      gap: 1rem;
+    }
+  </style>
 </head>
 
 <body>
@@ -37,7 +45,8 @@ $relatorio = new Relatorio();
       echo '<p class="no-relatorio">Nenhum relatório pendente.</p>';
     } else {
       echo "<h2>Pendentes</h2>
-            <hr />";
+            <hr />
+            <main>";
       foreach ($relatorios as $rel) {
         echo '
               <div class="card-container">
@@ -67,6 +76,7 @@ $relatorio = new Relatorio();
                 </div>
               </div>';
       }
+      echo "</main>";
     }
     ?>
 
@@ -75,6 +85,7 @@ $relatorio = new Relatorio();
     if (count($relatoriosEnviados) > 0) {
       echo "<h2>Enviados</h2>
             <hr />
+            <main>
         ";
       foreach ($relatoriosEnviados as $rel) {
         echo '
@@ -105,6 +116,7 @@ $relatorio = new Relatorio();
                 </div>
               </div>';
       }
+      echo "</main>";
     }
     ?>
   </section>

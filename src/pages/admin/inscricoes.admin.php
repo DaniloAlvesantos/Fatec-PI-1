@@ -21,6 +21,14 @@ if (!isset($_SESSION["user"])) {
   <link rel="stylesheet" href="../../styles/global.css" />
   <link rel="stylesheet" href="../../styles/components.css" />
   <link rel="stylesheet" href="../../styles/haes.css" />
+  <style>
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+      justify-items: center;
+      gap: 1rem;
+    }
+  </style>
 </head>
 
 <body>

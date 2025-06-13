@@ -201,16 +201,34 @@ if (isset($_GET['id'])) {
 
         <span class="form-field-column"><label>Dias de Execução</label>
           <p class="error"></p>
-          <div id="container-inputs" class="form-field-column">
-            <input
-              class="input-primary"
-              type="text"
-              id="dia-execucao1"
-              name="dia-execucao1"
-              autocomplete="off"
-              placeholder="Segunda, Noite, 17-19"
-              ondblclick="removeInput(this)"
-              onblur="verifyExecDay(this)" />
+          <div id="container-inputs" style="gap: 0;" class="form-field-column">
+            <div class="container-fields-execucao" id="dia-dia-execucao1" ondblclick="removeInput(this)">
+              <select name="dia-execucao1">
+                <option value="SEG">Segunda-feira</option>
+                <option value="TER">Terça-feira</option>
+                <option value="QUA">Quarta-feira</option>
+                <option value="QUI">Quinta-feira</option>
+                <option value="SEX">Sexta-feira</option>
+                <option value="SAB">Sábado</option>
+              </select>
+              <select name="turno-execucao1">
+                <option value="M">Manhã</option>
+                <option value="T">Tarde</option>
+                <option value="N">Noite</option>
+              </select>
+              <label>Das:</label>
+              <input
+                type="time"
+                class="input-primary"
+                name="hora-inicio-execucao1"
+                id="hora-inicio-execucao1">
+              <label>Até</label>
+              <input
+                type="time"
+                class="input-primary"
+                name="hora-fim-execucao1"
+                id="hora-fim-execucao1">
+            </div>
           </div>
           <button
             class="button-primary"
@@ -218,6 +236,7 @@ if (isset($_GET['id'])) {
                 --button-color: var(--fatec-red-400);
                 --button-color-hover: var(--fatec-red-500);
                 padding: 0.5rem 1.5rem;
+                margin-left: 0.5rem;
               "
             type="button"
             id="addInputButton"
@@ -239,7 +258,7 @@ if (isset($_GET['id'])) {
         </span>
       </div>
 
-      <div class="form-container">
+      <div class="form-container" style="align-self: baseline;">
         <span class="form-field-column"><label for="objetivos">Objetivos</label>
           <textarea
             oninput="autoSize(this)"
