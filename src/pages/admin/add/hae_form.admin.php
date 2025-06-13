@@ -10,7 +10,7 @@ if (!isset($_SESSION["user"])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   require_once __DIR__  . "/../../../server/model/HAE.php";
   $hae = new HAE();
-  $error = "";
+  $message = "";
   $titulo = $_POST["titulo-hae"];
   $curso = $_POST["tip_hae"];
   $quantidade = $_POST["quant_hae"];
@@ -19,12 +19,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $descricao = $_POST["descricao"];
 
   if (empty($titulo) || empty($curso) || empty($quantidade) || empty($data_inicio) || empty($data_finalizacao) || empty($descricao)) {
-    echo $error = "Preencha os campos!";
+    echo $message = "Preencha os campos!";
   } else {
     if ($hae->createHAE($titulo, $descricao, $data_inicio, $data_finalizacao, $quantidade, $curso)) {
-      echo $error = "Dados inseridos com sucesso!";
+      $message = '<div class="warn-container" style="background-color:#e0ffe0; border:1px solid #5cb85c; padding:15px; border-radius:8px; color:#2d862d; font-family:Arial, sans-serif;">
+                  <h3 style="margin:0 0 8px 0;">Sucesso</h3>
+                  <span>Relatório enviado com sucesso!</span>
+                </div>';
     } else {
-      echo $error = "Erro ao inserir os dados!";
+      $message = '<div class="warn-container" style="background-color:#ffe0e0; border:1px solid #ff5c5c; padding:15px; border-radius:8px; color:#b30000; font-family:Arial, sans-serif;">
+                  <h3 style="margin:0 0 8px 0;">Oops</h3>
+                  <span>Algo deu errado :/</span>
+                </div>';
     };
   }
 }
@@ -46,6 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <header-fatec
     data-button-title="Voltar"
     data-button-href="../haes.admin.php"></header-fatec>
+
+    <?php echo $message; ?>
 
   <section id="hae-section">
     <div id="hae-container">

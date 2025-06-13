@@ -37,7 +37,7 @@ CREATE TABLE `tb_chamada` (
   `justificativa` text,
   `num_chamada` int NOT NULL,
   `semestre` enum('1','2') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -48,15 +48,15 @@ CREATE TABLE `tb_chamada` (
 CREATE TABLE `tb_docente` (
   `id_docente` int NOT NULL,
   `nome` varchar(60) NOT NULL,
-  `RG` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `RG` varchar(12) NOT NULL,
   `email` varchar(100) NOT NULL,
   `matricula` int NOT NULL,
   `turno` varchar(8) NOT NULL,
   `senha` varchar(25) NOT NULL,
-  `cargo` enum('Professor','Coordenador','Secretaria','Diretor') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `cargo` enum('Professor','Coordenador','Secretaria','Diretor') NOT NULL,
   `outras_fatecs` int DEFAULT NULL,
   `curso` varchar(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -68,8 +68,8 @@ CREATE TABLE `tb_feedback` (
   `id_feedback` int NOT NULL,
   `id_inscricao` int NOT NULL,
   `data_envio` datetime DEFAULT CURRENT_TIMESTAMP,
-  `resultado` enum('Aprovada','Reprovada') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `resultado` enum('Aprovada','Reprovada') DEFAULT NULL
+);
 
 -- --------------------------------------------------------
 
@@ -83,7 +83,7 @@ CREATE TABLE `tb_feedback_comentario` (
   `cargo` enum('Coordenador','Diretor') NOT NULL,
   `id_docente` int NOT NULL,
   `comentario` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -96,10 +96,10 @@ CREATE TABLE `tb_hae` (
   `titulo` varchar(60) NOT NULL,
   `tip_hae` varchar(30) NOT NULL,
   `quant_hae` int NOT NULL,
-  `descricao` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `descricao` varchar(500) NOT NULL,
   `data_inicio` date NOT NULL,
   `data_final` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -116,7 +116,7 @@ CREATE TABLE `tb_inscricao` (
   `outras_fatecs` int DEFAULT NULL,
   `id_projeto` int DEFAULT NULL,
   `status` enum('Pendente','Em análise','Aprovada','Reprovada') NOT NULL DEFAULT 'Pendente'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -132,7 +132,7 @@ CREATE TABLE `tb_projeto` (
   `id_hae` int DEFAULT NULL,
   `descricoes` json DEFAULT NULL,
   `dias_exec` json DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -148,8 +148,8 @@ CREATE TABLE `tb_relatorio` (
   `id_feedback` int DEFAULT NULL,
   `descricoes` json DEFAULT NULL,
   `pdf_nome` varchar(100) DEFAULT NULL,
-  `pdf_original_nome` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `pdf_original_nome` varchar(100) DEFAULT NULL
+);
 
 -- --------------------------------------------------------
 
@@ -161,7 +161,7 @@ CREATE TABLE `tb_relatorio_feedback` (
   `id_relatorio_feedback` int NOT NULL,
   `id_relatorio` int NOT NULL,
   `id_feedback` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Indexes for dumped tables

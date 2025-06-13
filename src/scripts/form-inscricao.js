@@ -115,7 +115,7 @@ function handleSubmit(e) {
     })
     .then((data) => {
       if (data.success) {
-        document.querySelector(".error-form").textContent = data.message;
+        document.querySelector(".error-form").innerHTML = data.message;
         document.querySelector(".error-form").style.color = "green";
       } else {
         document.querySelector(".error-form").textContent = data.message;

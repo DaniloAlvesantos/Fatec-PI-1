@@ -73,7 +73,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       if ($inscricaoId) {
         header('Content-Type: application/json');
-        echo json_encode(['success' => true, 'message' => 'Inscrição realizada com sucesso']);
+        echo json_encode(['success' => true, 'message' => '<div class="warn-container" style="background-color:#e0ffe0; border:1px solid #5cb85c; padding:15px; border-radius:8px; color:#2d862d; font-family:Arial, sans-serif;">
+                  <h3 style="margin:0 0 8px 0;">Sucesso</h3>
+                  <span>Inscrição realizada com sucesso!</span>
+                </div>']);
         exit();
       } else {
         throw new Exception('Failed to create subscription');
@@ -81,7 +84,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (Exception $e) {
       header('Content-Type: application/json');
       http_response_code(500);
-      echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
+      echo json_encode(['success' => false, 'message' => '<div class="warn-container" style="background-color:#ffe0e0; border:1px solid #ff5c5c; padding:15px; border-radius:8px; color:#b30000; font-family:Arial, sans-serif;">
+                  <h3 style="margin:0 0 8px 0;">Oops</h3>
+                  <span>Aconteceu algum erro :/</span>
+                  <span>' . $e->getMessage() . '</span>
+                </div>']);
       exit();
     }
     exit();
@@ -126,7 +133,6 @@ if (isset($_GET['id'])) {
 
 <body>
   <header-fatec data-button-title="Voltar" data-button-href="./haes.php"></header-fatec>
-
   <section id="hae-section">
     <div id="hae-container">
       <div>
