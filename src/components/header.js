@@ -63,14 +63,6 @@ class HeaderFatec extends HTMLElement {
       },
     ];
 
-    if( window.state?.user?.cargo !== "Professor") {
-      paths.push({
-        title: `Área do ${window.state?.user?.cargo || "Admin"}`,
-        href: `${basePath}/pages/admin/painel.admin.php`,
-        icon: "👨‍💼",
-      })
-    }
-
     return paths;
   }
 
@@ -117,11 +109,6 @@ class HeaderFatec extends HTMLElement {
         title: "Cadastrar Usuário",
         href: `${basePath}/pages/admin/dev/cadastro.php`,
         icon: "👤",
-      },
-      {
-        title: "Área Usuário",
-        href: `${basePath}/pages/home.php`,
-        icon: "👨‍🏫",
       },
     ];
   }

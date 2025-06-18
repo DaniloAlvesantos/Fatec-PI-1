@@ -45,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $newFeedback->createFeedback($id, $status, $_SESSION["user"]["cargo"], $_SESSION["user"]["id_docente"], $observacao);
 
   $inscricao->setStatus($status);
+  $_SESSION["success_message"] = "Feedback enviado com sucesso!";
   header("Location: " . $_SERVER['PHP_SELF'] . "?id=$id");
   exit();
 }
@@ -67,6 +68,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <header-fatec
     data-button-title="Voltar"
     data-button-href="../inscricoes.admin.php"></header-fatec>
+  <?php
+  if (isset($_SESSION["success_message"])) {
+    echo '<div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin: 1rem; border: 1px solid #c3e6cb; font-family:"Roboto", sans-serif;">
+          ' . $_SESSION["success_message"] . '
+        </div>';
+    unset($_SESSION["success_message"]);
+  }
+  ?>
 
   <section id="hae-section">
     <div id="hae-container">
@@ -297,46 +306,57 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     ?>
 
-    <form class="form-obs" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=$id" ?>" method="post">
-      <h3><?php echo $feedbackCount > 0 ? 'Nova Avaliação:' : 'Observações:'; ?></h3>
+    <?php
+    if ($feedbackCount === 0 && $inscricao->status !== "Pendente") {
+      $userCargo = htmlspecialchars($_SESSION["user"]["cargo"]);
+      $userPrimeiroNome = htmlspecialchars(explode(" ", $_SESSION["user"]["nome"])[0]);
+      $actionUrl = htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=$id";
 
-      <div class="status-comment">
-        <img src="../../../public/icons/user.svg" alt="" />
-        <span><?php echo $_SESSION["user"]["cargo"] . " " . explode(" ", $_SESSION["user"]["nome"])[0] ?>:</span>
-        <textarea
-          name="observacao"
-          id="observacao"
-          class="textarea-primary"
-          oninput="autoSize(this)"
-          placeholder="Digite sua observação"
-          required></textarea>
-      </div>
+      echo <<<HTML
+      <form class="form-obs" action="$actionUrl" method="post">
+        <h3>Observações</h3>
+  
+        <div class="status-comment">
+          <img src="../../../public/icons/user.svg" alt="" />
+          <span>$userCargo $userPrimeiroNome:</span>
+          <textarea
+            name="observacao"
+            id="observacao"
+            class="textarea-primary"
+            oninput="autoSize(this)"
+            placeholder="Digite sua observação"
+            required></textarea>
+        </div>
+  
+        <div class="buttons">
+          <button
+            class="button-primary"
+            style="
+                --button-color: var(--fatec-blue-500);
+                --button-color-hover: var(--fatec-blue-700);
+              "
+            type="submit"
+            name="status"
+            value="Aprovada">
+            Deferir
+          </button>
+          <button
+            class="button-primary"
+            style="
+                --button-color: var(--fatec-red-500);
+                --button-color-hover: var(--fatec-red-400);
+              "
+            type="submit"
+            name="status"
+            value="Reprovada">
+            Indeferir
+          </button>
+        </div>
+      </form>
+  HTML;
+    }
 
-      <div class="buttons">
-        <button
-          class="button-primary"
-          style="
-              --button-color: var(--fatec-blue-500);
-              --button-color-hover: var(--fatec-blue-700);
-            "
-          type="submit"
-          name="status"
-          value="Aprovada">
-          Aprovar
-        </button>
-        <button
-          class="button-primary"
-          style="
-              --button-color: var(--fatec-red-500);
-              --button-color-hover: var(--fatec-red-400);
-            "
-          type="submit"
-          name="status"
-          value="Reprovada">
-          Reprovar
-        </button>
-      </div>
-    </form>
+    ?>
   </article>
 
   <script src="../../../components/header.js" defer></script>

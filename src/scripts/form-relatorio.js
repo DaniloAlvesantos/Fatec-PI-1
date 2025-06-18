@@ -70,3 +70,10 @@ function handleDownload(url) {
   a.click();
   document.body.removeChild(a);
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("textarea.textarea-primary").forEach((textarea) => {
+    textarea.style.height = "auto"; 
+    textarea.style.height = textarea.scrollHeight + "px";
+  });
+});

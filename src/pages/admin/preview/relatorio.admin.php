@@ -102,12 +102,14 @@ if (isset($_GET['id'])) {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
+            font-family: "Roboto", sans-serif;
         }
 
         .alert-error {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
+            font-family: "Roboto", sans-serif;
         }
     </style>
 </head>
@@ -268,7 +270,7 @@ if (isset($_GET['id'])) {
                             <textarea
                                 class="textarea-primary"
                                 disabled
-                                oninput="autoSize(this)">' . htmlspecialchars($comment->comentario_text) . '</textarea>
+                                id="textAreaOBS"">' . htmlspecialchars($comment->comentario_text) . '</textarea>
                         </div>';
                     }
                 }
@@ -280,44 +282,55 @@ if (isset($_GET['id'])) {
         }
         ?>
 
-        <form class="form-obs" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=$id"; ?>" method="post">
-            <h3><?php echo (isset($relatorioData["id_feedback"]) && isset($feedbackCount) && $feedbackCount > 0) ? 'Nova Avaliação:' : 'Observações:'; ?></h3>
-            <div class="status-comment">
-                <img src="../../../public/icons/user.svg" alt="" />
-                <span><?php echo htmlspecialchars($_SESSION["user"]["cargo"] . " " . explode(" ", $_SESSION["user"]["nome"])[0]); ?>:</span>
-                <textarea
-                    name="observacao"
-                    id="observacao"
-                    class="textarea-primary"
-                    oninput="autoSize(this)"
-                    placeholder="Digite sua observação"
-                    required></textarea>
-            </div>
-            <div class="buttons">
-                <button
-                    class="button-primary"
-                    style="
-                        --button-color: var(--fatec-blue-500);
-                        --button-color-hover: var(--fatec-blue-700);
-                    "
-                    type="submit"
-                    name="status"
-                    value="Aprovada">
-                    Aprovar
-                </button>
-                <button
-                    class="button-primary"
-                    style="
-                        --button-color: var(--fatec-red-500);
-                        --button-color-hover: var(--fatec-red-400);
-                    "
-                    type="submit"
-                    name="status"
-                    value="Reprovada">
-                    Reprovar
-                </button>
-            </div>
-        </form>
+        <?php
+        if (!$hasAnyFeedback) {
+            $formAction = htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=" . $id;
+            $userCargo = htmlspecialchars($_SESSION["user"]["cargo"]);
+            $userPrimeiroNome = htmlspecialchars(explode(" ", $_SESSION["user"]["nome"])[0]);
+
+            echo <<<HTML
+            <form class="form-obs" action="$formAction" method="post">
+                <h3>Observações:</h3>
+                <div class="status-comment">
+                    <img src="../../../public/icons/user.svg" alt="" />
+                    <span>$userCargo $userPrimeiroNome:</span>
+                    <textarea
+                        name="observacao"
+                        id="observacao"
+                        class="textarea-primary"
+                        oninput="autoSize(this)"
+                        placeholder="Digite sua observação"
+                        required></textarea>
+                </div>
+                <div class="buttons">
+                    <button
+                        class="button-primary"
+                        style="
+                            --button-color: var(--fatec-blue-500);
+                            --button-color-hover: var(--fatec-blue-700);
+                        "
+                        type="submit"
+                        name="status"
+                        value="Aprovada">
+                        Deferir
+                    </button>
+                    <button
+                        class="button-primary"
+                        style="
+                            --button-color: var(--fatec-red-500);
+                            --button-color-hover: var(--fatec-red-400);
+                        "
+                        type="submit"
+                        name="status"
+                        value="Reprovada">
+                        Indeferir
+                    </button>
+                </div>
+            </form>
+        HTML;
+        }
+
+        ?>
     </article>
 
     <script src="../../../scripts/form-relatorio.js" defer></script>

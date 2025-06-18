@@ -35,7 +35,7 @@ if (isset($_GET["id"])) {
   $haeData = $hae->getHAEById($id);
   $chamadaData = $chamada->getChamadaForm($id);
   if (empty($chamadaData)) {
-    header("Location: ./painel.admin.php");
+    header("Location: ../painel.admin.php");
     exit();
   }
 }
