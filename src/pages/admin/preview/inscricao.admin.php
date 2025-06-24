@@ -307,7 +307,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     ?>
 
     <?php
-    if ($feedbackCount === 0 && $inscricao->status !== "Pendente") {
+    if ($feedbackCount === 0 && $inscricao->status === "Pendente") {
       $userCargo = htmlspecialchars($_SESSION["user"]["cargo"]);
       $userPrimeiroNome = htmlspecialchars(explode(" ", $_SESSION["user"]["nome"])[0]);
       $actionUrl = htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=$id";
